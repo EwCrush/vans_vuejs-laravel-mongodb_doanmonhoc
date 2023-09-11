@@ -14,8 +14,8 @@
 
 <script>
 
-import AdminHeader from '../components/AdminHeader.vue';
-import Sidebar from '../components/Sidebar.vue';
+import AdminHeader from '../components/admin/AdminHeader.vue';
+import Sidebar from '../components/admin/Sidebar.vue';
 
 export default {
     components:{

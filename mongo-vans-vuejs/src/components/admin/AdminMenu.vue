@@ -28,7 +28,7 @@
 <script>
 import { defineComponent } from 'vue';
 import { storeToRefs } from 'pinia';
-import { useMenu } from '../stores/use-menu';
+import { useMenu } from '../../stores/use-menu';
 
 export default defineComponent({
   setup() {

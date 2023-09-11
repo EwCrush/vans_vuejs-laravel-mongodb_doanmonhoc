@@ -37,7 +37,33 @@ const admin = [
                 component: () => import ("../pages/admin/products/index.vue")
             }
         ]
-    }
+    },
+    {
+        path: "/",
+        component: () => import("../layouts/user.vue"),
+        children: [
+            {
+                path: "",
+                name: "home",
+                component: () => import ("../pages/home.vue")
+            },
+            {
+                path: "shop",
+                name: "shop",
+                component: () => import ("../pages/shop.vue")
+            },
+            {
+                path: "sizechart",
+                name: "sizechart",
+                component: () => import ("../pages/sizechart.vue")
+            },
+            {
+                path: "about",
+                name: "about",
+                component: () => import ("../pages/about.vue")
+            },
+        ]
+    },
 ];
 
 export default admin;

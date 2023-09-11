@@ -30,8 +30,8 @@
 
 <script>
 import { useMenu } from "../../../stores/use-menu";
-import SaveButton from "../../../components/admin/SaveButton.vue";
-import CancelButton from "../../../components/admin/CancelButton.vue";
+import SaveButton from "../../../components/admin/buttons/SaveButton.vue";
+import CancelButton from "../../../components/admin/buttons/CancelButton.vue";
 import { defineComponent, ref, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import { useRoute } from "vue-router";
@@ -52,7 +52,7 @@ export default defineComponent({
 
     const UpdateCategory = () => {
       axios
-        .post(`http://127.0.0.1:8000/api/categories/edit/${route.params.id}`, categories)
+        .post(`http://127.0.0.1:8000/api/categories/${route.params.id}`, categories)
         .then(function (response) {
           if (response) {
             Swal.fire({

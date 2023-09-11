@@ -69,9 +69,9 @@
 import { useMenu } from "../../../stores/use-menu";
 import { defineComponent, ref } from "vue";
 import AdminSearch from "../../../components/admin/AdminSearch.vue";
-import DeleteButton from "../../../components/admin/DeleteButton.vue";
-import EditButton from "../../../components/admin/EditButton.vue";
-import AddButton from "../../../components/admin/AddButton.vue";
+import DeleteButton from "../../../components/admin/buttons/DeleteButton.vue";
+import EditButton from "../../../components/admin/buttons/EditButton.vue";
+import AddButton from "../../../components/admin/buttons/AddButton.vue";
 
 export default defineComponent({
   components: { AdminSearch, DeleteButton, EditButton, AddButton },
@@ -203,7 +203,7 @@ export default defineComponent({
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .delete(`http://127.0.0.1:8000/api/categories/delete/${id}`)
+            .delete(`http://127.0.0.1:8000/api/categories/${id}`)
             .then((response) => {
               if (response.data.status == 200) {
                 Swal.fire("Xóa thành công!", response.data.message, "success");

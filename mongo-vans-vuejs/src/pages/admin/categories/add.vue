@@ -30,8 +30,8 @@
 
 <script>
 import { useMenu } from "../../../stores/use-menu";
-import SaveButton from "../../../components/admin/SaveButton.vue";
-import CancelButton from "../../../components/admin/CancelButton.vue";
+import SaveButton from "../../../components/admin/buttons/SaveButton.vue";
+import CancelButton from "../../../components/admin/buttons/CancelButton.vue";
 import { defineComponent, ref, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
 export default defineComponent({

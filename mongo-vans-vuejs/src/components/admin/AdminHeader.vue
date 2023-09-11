@@ -5,7 +5,7 @@
                 <i class="fa-solid fa-bars text-white" @click="showDrawer()"></i>
             </div>
             <div class="header-img">
-                <img src="../assets//imgs/logo.webp" alt="">
+                <img src="../../assets//imgs/logo.webp" alt="">
             </div>
             <div class="text-white px-4 py-4">Admin</div>
         </div>

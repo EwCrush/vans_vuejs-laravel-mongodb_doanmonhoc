@@ -19,7 +19,6 @@ import {
     Card,
     Table,
     Input,
-    Pagination
 } from 'ant-design-vue';
 import App from './App.vue';
 import axios from 'axios';
@@ -40,7 +39,6 @@ app.use(Menu);
 app.use(Card);
 app.use(Table);
 app.use(Input);
-app.use(Pagination);
 app.use(pinia);
 app.mount('#app');
 

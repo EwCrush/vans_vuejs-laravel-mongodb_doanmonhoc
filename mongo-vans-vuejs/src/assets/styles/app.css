@@ -47,7 +47,7 @@ html{
 }
 
 .header-search{
-    width: 440px;
+    width: 50%;
     height: 100%;
     border-radius: 8px;
     background-color: var(--white-color);
