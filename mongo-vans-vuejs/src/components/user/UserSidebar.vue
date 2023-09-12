@@ -5,15 +5,15 @@
                 <span class="ml-2">Danh mục</span>
             </div>
         </template>
-        <admin-menu></admin-menu>
+        <user-menu></user-menu>
   </a-list>
 </template>
 
 <script>
-    import AdminMenu from './Menu.vue';
+    import UserMenu from './UserMenu.vue';
     export default {
     components:{
-        AdminMenu
+        UserMenu
     }
 }
 </script>

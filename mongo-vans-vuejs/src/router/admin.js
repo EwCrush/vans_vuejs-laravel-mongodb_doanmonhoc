@@ -48,19 +48,39 @@ const admin = [
                 component: () => import ("../pages/home.vue")
             },
             {
+                path: "shop/:id",
+                name: "shop-category",
+                component: () => import ("../pages/shop.vue")
+            },
+            {
                 path: "shop",
                 name: "shop",
                 component: () => import ("../pages/shop.vue")
             },
             {
-                path: "sizechart",
-                name: "sizechart",
+                path: "size-chart",
+                name: "size-chart",
                 component: () => import ("../pages/sizechart.vue")
             },
             {
-                path: "about",
-                name: "about",
+                path: "about-us",
+                name: "about-us",
                 component: () => import ("../pages/about.vue")
+            },
+            {
+                path: "contact",
+                name: "contact",
+                component: () => import ("../pages/contact.vue")
+            },
+            {
+                path: "login",
+                name: "login",
+                component: () => import ("../pages/login.vue")
+            },
+            {
+                path: "register",
+                name: "register",
+                component: () => import ("../pages/register.vue")
             },
         ]
     },

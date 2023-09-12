@@ -21,7 +21,7 @@
 
 <script>
     import { defineComponent, ref } from 'vue';
-    import AdminMenu from './AdminMenu.vue';
+    import AdminMenu from './Menu.vue';
     export default defineComponent({
         components: { AdminMenu },
         setup() {

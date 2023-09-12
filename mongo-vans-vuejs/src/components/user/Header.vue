@@ -13,13 +13,13 @@
           <router-link :to="{ name: 'shop' }">SHOP</router-link>
         </div>
         <div class="header-nav-item">
-          <router-link :to="{ name: 'sizechart' }">SIZE CHART</router-link>
+          <router-link :to="{ name: 'size-chart' }">SIZE CHART</router-link>
         </div>
         <div class="header-nav-item">
-          <router-link :to="{ name: 'about' }">ABOUT US</router-link>
+          <router-link :to="{ name: 'about-us' }">ABOUT US</router-link>
         </div>
         <div class="header-nav-item">
-          <router-link :to="{ name: 'about' }">CONTACT</router-link>
+          <router-link :to="{ name: 'contact' }">CONTACT</router-link>
         </div>
         <div class="header-search">
           <input
@@ -33,9 +33,13 @@
         </div>
       </nav>
       <div class="header-user text-white flex justify-evenly w-1/6">
-        <a href="" class="header-nav-item">SIGN IN</a>
+        <div class="header-nav-item"><div class="header-nav-item">
+          <router-link :to="{ name: 'login' }">SIGN IN</router-link>
+        </div></div>
         <span>/</span>
-        <a href="" class="header-nav-item">SIGN UP</a>
+        <div class="header-nav-item"><div class="header-nav-item">
+          <router-link :to="{ name: 'register' }">SIGN UP</router-link>
+        </div></div>
       </div>
     </div>
   </div>

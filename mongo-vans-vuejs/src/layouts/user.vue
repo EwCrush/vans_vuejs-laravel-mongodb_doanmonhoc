@@ -4,7 +4,7 @@
 </template>
 
 <script>
-import UserHeaderVue from '../components/user/UserHeader.vue'
+import UserHeaderVue from '../components/user/Header.vue';
 export default {
     components:{
         UserHeaderVue,
