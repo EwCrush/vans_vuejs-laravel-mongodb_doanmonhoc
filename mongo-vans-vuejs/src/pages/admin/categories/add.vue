@@ -44,13 +44,14 @@ export default defineComponent({
     const categories = reactive({
       categoryname: "",
     });
+    const token = JSON.parse(localStorage.getItem("token"));
 
     const errors = ref({});
     const router = useRouter();
 
     const createNewCategory = () => {
       axios
-        .post("http://127.0.0.1:8000/api/categories", categories)
+        .post("http://127.0.0.1:8000/api/categories", categories, {headers: { Authorization: `Bearer ${token.access_token}` }})
         .then(function (response) {
           if (response) {
             Swal.fire({
@@ -65,6 +66,7 @@ export default defineComponent({
         })
         .catch(function (error) {
           errors.value = error.response.data.errors;
+          console.log(error)
         });
     };
     return {

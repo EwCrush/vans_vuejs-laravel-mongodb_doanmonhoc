@@ -2,6 +2,13 @@ const admin = [
     {
         path: "/admin",
         component: () => import("../layouts/admin.vue"),
+        beforeEnter: (to, from, next) => {
+            if((!localStorage.getItem("token"))||(JSON.parse(localStorage.getItem("token")).role!="admin")){
+                next({ name: 'shop' })
+            }
+            else next()
+            // console.log(JSON.parse(localStorage.getItem("token")).role)
+        },
         children: [
             {
                 path: "",
@@ -75,12 +82,24 @@ const admin = [
             {
                 path: "login",
                 name: "login",
-                component: () => import ("../pages/login.vue")
+                component: () => import ("../pages/login.vue"),
+                beforeEnter: (to, from, next) => {
+                    if(localStorage.getItem("token")){
+                        next({ name: 'shop' })
+                    }
+                    else next()
+                },
             },
             {
                 path: "register",
                 name: "register",
-                component: () => import ("../pages/register.vue")
+                component: () => import ("../pages/register.vue"),
+                beforeEnter: (to, from, next) => {
+                    if(localStorage.getItem("token")){
+                        next({ name: 'shop' })
+                    }
+                    else next()
+                },
             },
         ]
     },

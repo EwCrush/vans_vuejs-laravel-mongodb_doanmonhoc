@@ -32,15 +32,64 @@
           ></i>
         </div>
       </nav>
-      <div class="header-user text-white flex justify-evenly w-1/6">
-        <div class="header-nav-item"><div class="header-nav-item">
-          <router-link :to="{ name: 'login' }">SIGN IN</router-link>
-        </div></div>
-        <span>/</span>
-        <div class="header-nav-item"><div class="header-nav-item">
-          <router-link :to="{ name: 'register' }">SIGN UP</router-link>
-        </div></div>
+      <div class="header-user text-white w-1/6">
+        <div class="flex justify-evenly" v-if="!token">
+          <div class="header-nav-item">
+            <router-link :to="{ name: 'login' }">SIGN IN</router-link>
+          </div>
+          <span>/</span>
+          <div class="header-nav-item">
+            <router-link :to="{ name: 'register' }">SIGN UP</router-link>
+          </div>
+        </div>
+        <div class="" v-if="token">
+          <div class="header-nav-item">
+            <div class="header-nav-item">
+              <span @click="LogOut">Dang xuat</span>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
 </template>
+
+<script>
+import { defineComponent, watch, ref } from "vue";
+import { useRouter, useRoute } from "vue-router";
+export default defineComponent({
+  setup() {
+    const router = useRouter();
+    const route = useRoute();
+    const token = ref(JSON.parse(localStorage.getItem("token")));
+    const LogOut = () => {
+      axios
+        .post("http://127.0.0.1:8000/api/logout", undefined, {
+          headers: { Authorization: `Bearer ${JSON.parse(localStorage.getItem("token")).access_token}` },
+        })
+        .then(function (response) {
+          localStorage.removeItem("token");
+          router.push({ name: "login" });
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
+    };
+
+    watch(
+      () => (route.path),
+      async () => {
+        token.value = JSON.parse(localStorage.getItem("token"));
+      }
+    );
+
+
+
+    // const LogOut = () => {
+    //   localStorage.removeItem("token")
+    //   router.push({name: "login"})
+    // }
+    return { token, LogOut };
+  },
+});
+</script>

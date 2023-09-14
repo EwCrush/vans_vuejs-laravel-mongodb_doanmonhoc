@@ -87,6 +87,7 @@ export default defineComponent({
     const currentPage = ref("");
     const params = new URLSearchParams(window.location.search);
     const keyword = params.get("keyword");
+    const token = JSON.parse(localStorage.getItem("token"));
     // const keywordFromInput = ref("");
 
     const columns = [
@@ -203,7 +204,7 @@ export default defineComponent({
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .delete(`http://127.0.0.1:8000/api/categories/${id}`)
+            .delete(`http://127.0.0.1:8000/api/categories/${id}`, {headers: { Authorization: `Bearer ${token.access_token}` }})
             .then((response) => {
               if (response.data.status == 200) {
                 Swal.fire("Xóa thành công!", response.data.message, "success");

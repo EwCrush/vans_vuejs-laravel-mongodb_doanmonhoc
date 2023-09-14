@@ -2,14 +2,6 @@
   <section class="bg-white dark:bg-gray-900">
     <div class="container flex items-center justify-center px-6 mx-auto">
       <form class="w-full max-w-md">
-        <!-- <div class="flex justify-center mx-auto">
-          <img
-            class="w-auto h-7 sm:h-8"
-            src="../assets/imgs/logo.webp"
-            alt=""
-          />
-        </div> -->
-
         <div class="flex items-center justify-center mt-6">
           <div
             class="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300"
@@ -24,7 +16,7 @@
           </div>
         </div>
 
-        <div class="relative flex items-center mt-8">
+        <div class="relative flex items-center mt-4">
           <span class="absolute">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -44,12 +36,38 @@
 
           <input
             type="text"
-            class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            placeholder="Full Name"
+          />
+        </div>
+
+        <div class="relative flex items-center mt-4">
+          <span class="absolute">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="w-6 h-6 mx-3 text-gray-300 dark:text-gray-500"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M16 12a4 4 0 10-8 0 4 4 0 008 0zm0 0v1.5a2.5 2.5 0 005 0V12a9 9 0 10-9 9m4.5-1.206a8.959 8.959 0 01-4.5 1.207"
+              />
+            </svg>
+          </span>
+
+          <input
+            type="text"
+            class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             placeholder="Username"
           />
         </div>
 
-        <div class="relative flex items-center mt-6">
+        <div class="relative flex items-center mt-4">
           <span class="absolute">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -69,12 +87,12 @@
 
           <input
             type="email"
-            class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             placeholder="Email"
           />
         </div>
 
-        <div class="relative flex items-center mt-6">
+        <div class="relative flex items-center mt-4">
           <span class="absolute">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -94,9 +112,9 @@
           </span>
 
           <input
-            type="email"
-            class="block w-full py-3 text-gray-700 bg-white border rounded-lg px-11 dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
-            placeholder="Phone"
+            type="text"
+            class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
+            placeholder="Phone Number"
           />
         </div>
 
@@ -154,7 +172,7 @@
           <button
             class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
           >
-            Đăng ký
+            SIGN UP
           </button>
 
           <div class="mt-6 text-center">
@@ -163,7 +181,7 @@
               class="text-sm text-blue-500 hover:underline dark:text-blue-400"
             >
               <router-link :to="{ name: 'login' }"
-                >Đã có tài khoản?</router-link
+                >Already have an account? Sign in</router-link
               >
             </a>
           </div>

@@ -49,10 +49,11 @@ export default defineComponent({
     const errors = ref({});
     const router = useRouter();
     const route = useRoute();
+    const token = JSON.parse(localStorage.getItem("token"));
 
     const UpdateCategory = () => {
       axios
-        .post(`http://127.0.0.1:8000/api/categories/${route.params.id}`, categories)
+        .post(`http://127.0.0.1:8000/api/categories/${route.params.id}`, categories, {headers: { Authorization: `Bearer ${token.access_token}` }})
         .then(function (response) {
           if (response) {
             Swal.fire({
