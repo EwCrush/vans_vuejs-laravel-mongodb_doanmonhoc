@@ -42,7 +42,17 @@ const admin = [
                 path: "products",
                 name: "admin-products",
                 component: () => import ("../pages/admin/products/index.vue")
-            }
+            },
+            {
+                path: "products/add",
+                name: "admin-products-add",
+                component: () => import ("../pages/admin/products/add.vue"),
+            },
+            {
+                path: "products/edit/:id",
+                name: "admin-products-edit",
+                component: () => import ("../pages/admin/products/edit.vue"),
+            },
         ]
     },
     {

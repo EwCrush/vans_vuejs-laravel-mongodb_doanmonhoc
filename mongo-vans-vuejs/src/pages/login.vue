@@ -144,10 +144,6 @@
             <span class="mx-2">Sign in with Google</span>
           </div>
 
-          <!-- <GoogleLogin :callback="callback">
-            <button>Login Using Google</button>
-          </GoogleLogin> -->
-
           <div class="mt-6 text-center">
             <div
               class="text-sm text-blue-500 hover:underline dark:text-blue-400"
@@ -198,9 +194,13 @@ export default defineComponent({
     };
 
     const SignInWithGoogle = () => {
-      googleAuthCodeLogin().then((response) => {
-        console.log("Handle the response", response);
-      });
+      googleAuthCodeLogin()
+        .then((response) => {
+          console.log("Handle the response", response);
+        })
+        .catch(function (error) {
+          console.log(error);
+        });
     };
     return { SignIn, errors, ...toRefs(account), SignInWithGoogle };
   },

@@ -1,7 +1,7 @@
 <template>
   <section class="bg-white dark:bg-gray-900">
     <div class="container flex items-center justify-center px-6 mx-auto">
-      <form class="w-full max-w-md">
+      <form @submit.prevent="SignUp" class="w-full max-w-md">
         <div class="flex items-center justify-center mt-6">
           <div
             class="w-1/3 pb-4 font-medium text-center text-gray-500 capitalize border-b dark:border-gray-400 dark:text-gray-300"
@@ -38,8 +38,12 @@
             type="text"
             class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             placeholder="Full Name"
+            v-model="fullname"
           />
         </div>
+        <small class="text-red ml-2" v-if="errors.fullname">{{
+          errors.fullname[0]
+        }}</small>
 
         <div class="relative flex items-center mt-4">
           <span class="absolute">
@@ -64,8 +68,12 @@
             type="text"
             class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             placeholder="Username"
+            v-model="username"
           />
         </div>
+        <small class="text-red ml-2" v-if="errors.username">{{
+          errors.username[0]
+        }}</small>
 
         <div class="relative flex items-center mt-4">
           <span class="absolute">
@@ -89,8 +97,12 @@
             type="email"
             class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             placeholder="Email"
+            v-model="email"
           />
         </div>
+        <small class="text-red ml-2" v-if="errors.email">{{
+          errors.email[0]
+        }}</small>
 
         <div class="relative flex items-center mt-4">
           <span class="absolute">
@@ -115,8 +127,12 @@
             type="text"
             class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             placeholder="Phone Number"
+            v-model="phone"
           />
         </div>
+        <small class="text-red ml-2" v-if="errors.phone">{{
+          errors.phone[0]
+        }}</small>
 
         <div class="relative flex items-center mt-4">
           <span class="absolute">
@@ -140,8 +156,12 @@
             type="password"
             class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             placeholder="Password"
+            v-model="password"
           />
         </div>
+        <small class="text-red ml-2" v-if="errors.password">{{
+          errors.password[0]
+        }}</small>
 
         <div class="relative flex items-center mt-4">
           <span class="absolute">
@@ -165,11 +185,16 @@
             type="password"
             class="block w-full px-10 py-3 text-gray-700 bg-white border rounded-lg dark:bg-gray-900 dark:text-gray-300 dark:border-gray-600 focus:border-blue-400 dark:focus:border-blue-300 focus:ring-blue-300 focus:outline-none focus:ring focus:ring-opacity-40"
             placeholder="Confirm Password"
+            v-model="password_confirmation"
           />
         </div>
+        <small class="text-red ml-2" v-if="errors.password_confirmation">{{
+          errors.password_confirmation[0]
+        }}</small>
 
         <div class="mt-6">
           <button
+            type="submit"
             class="w-full px-6 py-3 text-sm font-medium tracking-wide text-white capitalize transition-colors duration-300 transform bg-blue-500 rounded-lg hover:bg-blue-400 focus:outline-none focus:ring focus:ring-blue-300 focus:ring-opacity-50"
           >
             SIGN UP
@@ -190,3 +215,59 @@
     </div>
   </section>
 </template>
+
+<script>
+import { defineComponent, reactive, ref, toRefs } from "vue";
+import { useRouter } from "vue-router";
+import { googleAuthCodeLogin } from "vue3-google-login";
+export default defineComponent({
+  setup() {
+    const router = useRouter();
+    const account = reactive({
+      fullname: "",
+      username: "",
+      email: "",
+      phone: "",
+      password: "",
+      password_confirmation: "",
+    });
+    const errors = ref({});
+
+    const SignUp = () => {
+      axios
+        .post("http://127.0.0.1:8000/api/register", account)
+        .then(function () {
+          // localStorage.setItem("token", JSON.stringify(response.data));
+          // router.push({ name: "shop" });
+          Swal.fire({
+            title: 'Đăng ký thành công!',
+            text: "Bạn muốn đăng nhập ngay chứ?",
+            icon: "success",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Đăng nhập ngay",
+            cancelButtonText: "Hủy",
+          }).then((result) => {
+            if (result.isConfirmed) {
+              router.push({ name: "login" });
+            }
+          });
+        })
+        .catch(function (error) {
+          if (error.response.status == 422) {
+            errors.value = error.response.data.errors;
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: error.response.data.message,
+            });
+          }
+        });
+    };
+
+    return { SignUp, errors, ...toRefs(account) };
+  },
+});
+</script>
