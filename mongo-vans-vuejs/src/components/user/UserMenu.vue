@@ -31,7 +31,7 @@ export default defineComponent({
 
     async function getAllCategories() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/allcategories');
+        const response = await axios.get('http://127.0.0.1:8000/api/categories/menu');
         categories.value = response.data;
       } catch (error) {
         console.error(error);

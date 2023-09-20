@@ -16,6 +16,9 @@ module.exports = {
         black: "#000000",
         red: "#ed174f",
         yellow: "#CA9C1C"
+      },
+      minWidth: {
+        'label': '150px',
       }
     },
   },

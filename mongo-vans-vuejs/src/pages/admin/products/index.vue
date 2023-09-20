@@ -18,7 +18,8 @@
             <span>{{ (record.originalprice).toLocaleString() }}đ</span>
         </template>
         <template v-if="column.key == 'thumbnail'">
-            <img class="w-14" v-bind:src="'../../src/assets/imgs/products/'+ record.thumbnail" />
+            <cloud-image :path="'products/'+record.thumbnail" :key="componentKey"></cloud-image>
+            <!-- <img class="w-14" v-bind:src="'../../src/assets/imgs/products/'+ record.thumbnail" /> -->
         </template>
         <template v-if="column.key == 'sellingprice'">
             <span>{{ (record.sellingprice).toLocaleString() }}đ</span>
@@ -81,9 +82,12 @@ import AdminSearch from "../../../components/admin/AdminSearch.vue";
 import DeleteButton from "../../../components/admin/buttons/DeleteButton.vue";
 import EditButton from "../../../components/admin/buttons/EditButton.vue";
 import AddButton from "../../../components/admin/buttons/AddButton.vue";
+import { storage } from "../../../firebase";
+import { uploadBytes, ref as fbref } from "firebase/storage";
+import CloudImage from "../../../components/admin/CloudImage.vue";
 
 export default defineComponent({
-  components: { AdminSearch, DeleteButton, EditButton, AddButton },
+  components: { AdminSearch, DeleteButton, EditButton, AddButton, CloudImage },
   setup() {
     useMenu().onSelectedKeys(["admin-products"]);
 
@@ -98,6 +102,7 @@ export default defineComponent({
     const keyword = params.get("keyword");
     const token = JSON.parse(localStorage.getItem("token"));
     // const keywordFromInput = ref("");
+    const componentKey = ref(0);
 
     const columns = [
       {
@@ -165,6 +170,7 @@ export default defineComponent({
         prevPage_url.value = response.data.prev_page_url;
         lastPage.value = response.data.last_page;
         currentPage.value = response.data.current_page;
+        componentKey.value +=1;
       } catch (error) {
         console.error(error);
       }
@@ -177,6 +183,7 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
+        componentKey.value +=1;
       } catch (error) {
         console.log(error);
       }
@@ -189,6 +196,7 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
+        componentKey.value +=1;
       } catch (error) {
         console.log(error);
       }
@@ -208,6 +216,7 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
+        componentKey.value +=1;
       } catch (error) {
         console.log(error);
       }
@@ -284,6 +293,7 @@ export default defineComponent({
       goToPage,
       searchData,
       deleteData,
+      componentKey
     };
   },
 });

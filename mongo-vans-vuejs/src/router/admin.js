@@ -53,6 +53,22 @@ const admin = [
                 name: "admin-products-edit",
                 component: () => import ("../pages/admin/products/edit.vue"),
             },
+            //quan ly user
+            {
+                path: "users",
+                name: "admin-users",
+                component: () => import ("../pages/admin/users/index.vue")
+            },
+            {
+                path: "users/add",
+                name: "admin-users-add",
+                component: () => import ("../pages/admin/users/add.vue"),
+            },
+            {
+                path: "users/edit/:id",
+                name: "admin-users-edit",
+                component: () => import ("../pages/admin/users/edit.vue"),
+            },
         ]
     },
     {
