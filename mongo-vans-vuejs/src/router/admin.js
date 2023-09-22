@@ -53,6 +53,16 @@ const admin = [
                 name: "admin-products-edit",
                 component: () => import ("../pages/admin/products/edit.vue"),
             },
+            {
+                path: "products/images/:id",
+                name: "admin-products-images",
+                component: () => import ("../pages/admin/products/images/index.vue"),
+            },
+            {
+                path: "products/sizes/:id",
+                name: "admin-products-sizes",
+                component: () => import ("../pages/admin/products/sizes/index.vue"),
+            },
             //quan ly user
             {
                 path: "users",

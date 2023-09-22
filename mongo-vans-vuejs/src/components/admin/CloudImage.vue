@@ -10,7 +10,7 @@ export default {
     path: String,
   },
   data: () => {
-    return { url: "../../src/assets/imgs/logo.webp" };
+    return { url: "https://static.thenounproject.com/png/2616533-200.png" };
   },
   mounted(){
     getDownloadURL(ref(storage, this.path)).then(

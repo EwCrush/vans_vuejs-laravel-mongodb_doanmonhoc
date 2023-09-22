@@ -1,8 +1,8 @@
 <template>
-  <a-card title="Sản phẩm" style="width: 100%">
+  <a-card title="Người dùng " style="width: 100%">
     <admin-search
       @click="searchData()"
-      title="Nhập vào tên sản phẩm"
+      title="Nhập vào tên người dùng hoặc tên tài khoản"
     ></admin-search>
     <a-table
       :columns="columns"
@@ -14,18 +14,14 @@
         <!-- <template v-if="column.key=='test'">
                 <span>{{ categories[index].testobject == null ? "" : "123" }}</span>
             </template> -->
-        <template v-if="column.key == 'originalprice'">
-          <span>{{ record.originalprice.toLocaleString() }}đ</span>
-        </template>
-        <template v-if="column.key == 'thumbnail'">
+        <template v-if="column.key == 'avatar'">
           <cloud-image
-            :path="'users/' + record.thumbnail"
+            :path="'users/' + record.avatar"
             :key="componentKey"
           ></cloud-image>
-          <!-- <img class="w-14" v-bind:src="'../../src/assets/imgs/products/'+ record.thumbnail" /> -->
         </template>
-        <template v-if="column.key == 'sellingprice'">
-          <span>{{ record.sellingprice.toLocaleString() }}đ</span>
+        <template v-if="column.key == 'role'">
+          <span v-if="record.role=='admin'" class="bg-primary text-white py-1 px-2 rounded-2xl">{{ record.role }} <i class="fa-solid fa-circle-check"></i></span>
         </template>
         <template v-if="column.key == 'action'">
           <edit-button
@@ -113,7 +109,7 @@ export default defineComponent({
         dataIndex: "_id",
         key: "id",
         fixed: "left",
-        width: 120,
+        width: 150,
       },
       {
         title: "Tên người dùng",
@@ -125,7 +121,7 @@ export default defineComponent({
         title: "Địa chỉ",
         dataIndex: "address",
         key: "address",
-        width: 150,
+        width: 300,
       },
       {
         title: "SĐT",
@@ -137,25 +133,25 @@ export default defineComponent({
         title: "Email",
         dataIndex: "email",
         key: "email",
-        width: 100,
+        width: 300,
       },
       {
         title: "Avatar",
         dataIndex: "avatar",
         key: "avatar",
-        width: 180,
+        width: 100,
       },
       {
         title: "Tên tài khoản",
         dataIndex: "username_account",
         key: "username_account",
-        width: 180,
+        width: 150,
       },
       {
         title: "Vai trò",
         dataIndex: "role",
         key: "role",
-        width: 180,
+        width: 120,
       },
       {
         title: "Thao tác",

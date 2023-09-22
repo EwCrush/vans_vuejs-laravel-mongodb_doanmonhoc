@@ -25,6 +25,16 @@
             <span>{{ (record.sellingprice).toLocaleString() }}đ</span>
         </template>
         <template v-if="column.key == 'action'">
+          <span class="text-primary mr-4 cursor-pointer" title="Thư viện ảnh">
+            <router-link :to="{ name: 'admin-products-images', params: {id: record._id }}">
+              <i class="fa-solid fa-images"></i>
+            </router-link>
+          </span>
+          <span class="text-orange mr-4 cursor-pointer" title="Size sản phẩm">
+            <router-link :to="{ name: 'admin-products-sizes', params: {id: record._id }}">
+              <i class="fa-solid fa-ruler"></i>
+            </router-link>
+          </span>
           <edit-button
             :to="{
               name: 'admin-products-edit',
