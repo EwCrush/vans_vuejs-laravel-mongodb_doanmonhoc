@@ -64,10 +64,12 @@ export default defineComponent({
               timer: 2000,
             });
             router.push({ name: "admin-categories" });
+            //console.log(response);
           }
         })
         .catch(function (error) {
           errors.value = error.response.data.errors;
+          console.log(error)
         });
     };
 
@@ -76,9 +78,11 @@ export default defineComponent({
         const response = await axios.get(
           `http://127.0.0.1:8000/api/categories/get/${route.params.id}`
         );
-        categories.categoryname = response.data.categoryname
+        categories.categoryname = response.data.categoryname;
       } catch (error) {
-        console.error(error);
+        if(error.response.status==404){
+          router.push({ name: "admin-categories" });
+        }
       }
     }
 

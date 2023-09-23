@@ -69,10 +69,12 @@ export default defineComponent({
         })
         .then(function (response) {
           localStorage.removeItem("token");
-          router.push({ name: "login" });
         })
         .catch(function (error) {
           console.log(error);
+        })
+        .finally( function(){
+          router.push({ name: "login" });
         });
     };
 

@@ -12,7 +12,7 @@
               params: { id: record._id },
             }"
           ></edit-button>
-          <delete-button @click="deleteData(record._id)"></delete-button>
+          <delete-button @click="deleteData($route.params.id, record.size)"></delete-button>
         </template>
       </template>
     </a-table>
@@ -20,7 +20,7 @@
     <div class="flex justify-between mt-4 text-black font-[600]">
       <add-button
         :to="{
-          name: 'admin-products-add',
+          name: 'admin-products-sizes-add',
         }"
       ></add-button>
     </div>
@@ -81,7 +81,7 @@ export default defineComponent({
       }
     }
 
-    function deleteData(id) {
+    function deleteData(id, size) {
       Swal.fire({
         title: "Bạn chắc chứ?",
         text: "Dữ liệu sẽ mất nếu bạn xóa nó!",
@@ -94,13 +94,13 @@ export default defineComponent({
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .delete(`http://127.0.0.1:8000/api/products/${id}`, {
+            .delete(`http://127.0.0.1:8000/api/products/sizes/${id}?size=${size}`, {
               headers: { Authorization: `Bearer ${token.access_token}` },
             })
             .then((response) => {
               if (response.data.status == 200) {
                 Swal.fire("Xóa thành công!", response.data.message, "success");
-                getAllProducts(keyword);
+                getAllProductSizes();
               } else {
                 Swal.fire({
                   icon: "error",
@@ -113,7 +113,7 @@ export default defineComponent({
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: error.message,
+                text: error.response.data.message,
               });
             });
         }
