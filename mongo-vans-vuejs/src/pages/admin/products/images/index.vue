@@ -1,16 +1,12 @@
 <template>
   <a-card title="Thư viện ảnh sản phẩm" style="width: 100%">
-    <a-table
-      :columns="columns"
-      :data-source="images"
-      :pagination="false"
-    >
+    <a-table :columns="columns" :data-source="images" :pagination="false">
       <template #bodyCell="{ column, record, index }">
         <template v-if="column.key == 'order'">
-          <span>{{ index+1 }}</span>
+          <span>{{ index + 1 }}</span>
         </template>
         <template v-if="column.key == 'images'">
-            <cloud-image :path="'products/'+record.filename"></cloud-image>
+          <cloud-image :path="'products/' + record.filename"></cloud-image>
         </template>
         <template v-if="column.key == 'action'">
           <delete-button @click="deleteData(record._id)"></delete-button>
@@ -21,7 +17,7 @@
     <div class="flex justify-between mt-4 text-black font-[600]">
       <add-button
         :to="{
-          name: 'admin-products-add',
+          name: 'admin-products-images-add',
         }"
       ></add-button>
     </div>
@@ -36,7 +32,7 @@ import AddButton from "../../../../components/admin/buttons/AddButton.vue";
 import { storage } from "../../../../firebase";
 import { uploadBytes, ref as fbref } from "firebase/storage";
 import CloudImage from "../../../../components/admin/CloudImage.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   components: { DeleteButton, AddButton, CloudImage },
@@ -46,6 +42,7 @@ export default defineComponent({
     const images = ref([]);
     const token = JSON.parse(localStorage.getItem("token"));
     const route = useRoute();
+    const router = useRouter();
 
     const columns = [
       {
@@ -75,14 +72,23 @@ export default defineComponent({
 
     async function getAllProductImages() {
       try {
-        const url ="http://127.0.0.1:8000/api/products/images/" + route.params.id;
+        const url =
+          "http://127.0.0.1:8000/api/products/images/" + route.params.id;
         const response = await axios.get(url);
         images.value = response.data;
       } catch (error) {
-        console.error(error);
+        if (error.response.status == 404) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response.data.message,
+          });
+          router.push({
+            name: "admin-products"
+          });
+        }
       }
     }
-
 
     function deleteData(id) {
       Swal.fire({
@@ -126,7 +132,7 @@ export default defineComponent({
     getAllProductImages();
 
     return {
-    images,
+      images,
       columns,
       deleteData,
     };

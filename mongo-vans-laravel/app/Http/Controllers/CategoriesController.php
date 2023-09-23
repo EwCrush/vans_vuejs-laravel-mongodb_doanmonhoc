@@ -46,9 +46,13 @@ class CategoriesController extends Controller
     }
 
     public function searchByID($id){
-        $data = Category::find($id);
-
-        return response()->json($data);
+        $data = Category::where("_id", (int)$id)->first();
+        if($data){
+            return response()->json($data);
+        }
+        else{
+            return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại!'], 404);
+        }
     }
 
     public function store(CategoryRequest $request){
@@ -72,19 +76,24 @@ class CategoriesController extends Controller
     public function edit(CategoryRequest $request, $id){
         $role = $request->user()->role;
         if($role=="admin"){
-            Category::find($id)->update([
-                "categoryname" => $request["categoryname"],
-            ]);
-            return response()->json(['status'=> 200, 'message'=>'Dữ liệu đã được cập nhật thành công'], 200);
+            $data = Category::where('_id', (int)$id)->first();
+            if($data){
+                $data->update([
+                    "categoryname" => $request["categoryname"],
+                ]);
+                return response()->json(['status'=> 200, 'message'=>'Dữ liệu đã được cập nhật thành công'], 200);
+            }
+            else{
+                return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại!'], 404);
+            }
         }
         else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
     }
 
     public function delete($id, Request $request){
-        //$category = Category::firstWhere('categoryname', 'like', 'Eraaa');
         $role = $request->user()->role;
         if($role=="admin"){
-            $category = Category::find($id);
+            $category = Category::where("_id", (int)$id)->first();
             if($category){
                 $category->delete();
                 return response()->json(['status'=> 200, 'message'=>'Dữ liệu đã được xóa thành công'], 200);

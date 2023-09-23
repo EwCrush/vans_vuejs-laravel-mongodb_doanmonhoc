@@ -24,12 +24,19 @@ Route::middleware('auth:sanctum')->group(function (){
 
     //category auth
     Route::post('/categories', [CategoriesController::class, 'store']);
-    Route::post('/categories/{id}', [CategoriesController::class, 'edit']);
+    Route::put('/categories/{id}', [CategoriesController::class, 'edit']);
     Route::delete('/categories/{id}', [CategoriesController::class, 'delete']);
 
     //user auth
     Route::get('/users', [UsersController::class, 'show']);
     Route::get('/users/search/{keyword}', [UsersController::class, 'searchByKeyword']);
+
+    //product auth
+    Route::post('/products/sizes/{id}', [ProductsController::class, 'storeSize']);
+    Route::delete('/products/sizes/{id}', [ProductsController::class, 'deleteSize']);
+    Route::put('/products/sizes/{id}', [ProductsController::class, 'editSize']);
+    Route::post('/products/images/{id}', [ProductsController::class, 'storeImage']);
+    //Route::get('/products/test', [ProductsController::class, 'test']);
 });
 
 //category
@@ -51,9 +58,12 @@ Route::get('/products/search/{keyword}', [ProductsController::class, 'searchByKe
 Route::get('/products/get/{id}', [ProductsController::class, 'searchByID']);
 //size
 Route::get('/products/sizes/{id}', [ProductsController::class, 'showSizes']);
+//image
 Route::get('/products/images/{id}', [ProductsController::class, 'showImages']);
 
 
 //user
 
+
+//test
 

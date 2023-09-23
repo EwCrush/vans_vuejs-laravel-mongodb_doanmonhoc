@@ -53,7 +53,7 @@ export default defineComponent({
 
     const UpdateCategory = () => {
       axios
-        .post(`http://127.0.0.1:8000/api/categories/${route.params.id}`, categories, {headers: { Authorization: `Bearer ${token.access_token}` }})
+        .put(`http://127.0.0.1:8000/api/categories/${route.params.id}`, categories, {headers: { Authorization: `Bearer ${token.access_token}` }})
         .then(function (response) {
           if (response) {
             Swal.fire({
@@ -81,6 +81,11 @@ export default defineComponent({
         categories.categoryname = response.data.categoryname;
       } catch (error) {
         if(error.response.status==404){
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response.data.message,
+          });
           router.push({ name: "admin-categories" });
         }
       }

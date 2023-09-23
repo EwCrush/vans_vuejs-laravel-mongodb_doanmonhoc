@@ -59,6 +59,11 @@ const admin = [
                 component: () => import ("../pages/admin/products/images/index.vue"),
             },
             {
+                path: "products/images/add/:id",
+                name: "admin-products-images-add",
+                component: () => import ("../pages/admin/products/images/add.vue"),
+            },
+            {
                 path: "products/sizes/:id",
                 name: "admin-products-sizes",
                 component: () => import ("../pages/admin/products/sizes/index.vue"),
@@ -67,6 +72,11 @@ const admin = [
                 path: "products/sizes/add/:id",
                 name: "admin-products-sizes-add",
                 component: () => import ("../pages/admin/products/sizes/add.vue"),
+            },
+            {
+                path: "products/sizes/edit/:id",
+                name: "admin-products-sizes-edit",
+                component: () => import ("../pages/admin/products/sizes/edit.vue"),
             },
             //quan ly user
             {

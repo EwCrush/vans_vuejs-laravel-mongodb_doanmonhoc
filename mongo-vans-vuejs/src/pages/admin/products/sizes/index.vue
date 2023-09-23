@@ -8,8 +8,9 @@
         <template v-if="column.key == 'action'">
           <edit-button
             :to="{
-              name: 'admin-products-edit',
-              params: { id: record._id },
+              name: 'admin-products-sizes-edit',
+              params: { id: $route.params.id },
+              query: { size: record.size },
             }"
           ></edit-button>
           <delete-button @click="deleteData($route.params.id, record.size)"></delete-button>
@@ -33,7 +34,7 @@ import { defineComponent, ref } from "vue";
 import DeleteButton from "../../../../components/admin/buttons/DeleteButton.vue";
 import EditButton from "../../../../components/admin/buttons/EditButton.vue";
 import AddButton from "../../../../components/admin/buttons/AddButton.vue";
-import { useRoute } from "vue-router";
+import { useRoute, useRouter } from "vue-router";
 
 export default defineComponent({
   components: { DeleteButton, EditButton, AddButton },
@@ -43,6 +44,7 @@ export default defineComponent({
     const sizes = ref([]);
     const token = JSON.parse(localStorage.getItem("token"));
     const route = useRoute();
+    const router = useRouter();
 
     const columns = [
       {
@@ -77,7 +79,14 @@ export default defineComponent({
         const response = await axios.get(url);
         sizes.value = response.data;
       } catch (error) {
-        console.error(error);
+        if (error.response.status == 404) {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response.data.message,
+          });
+          router.push({ name: "admin-products", param: { id: route.params.id }, });
+        }
       }
     }
 

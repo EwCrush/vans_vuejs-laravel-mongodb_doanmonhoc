@@ -51,7 +51,13 @@ class AuthController extends Controller
     }
 
     public function register(RegisterRequest $request){
-        User::create([
+        $greatestId = User::orderByDesc('_id')->first();
+        if($greatestId){
+            $id = $greatestId["_id"]+1;
+        }
+        else $id = 1;
+        DB::table('users')->insert([
+            "_id" => $id,
             "fullname" => $request["fullname"],
             "address" => "",
             "numberphone" => $request["phone"],
@@ -62,6 +68,7 @@ class AuthController extends Controller
             "role" => 'user',
         ]);
         return response()->json(['status'=> 200, 'message'=>'Đăng ký tài khoản thành công'], 200);
+        //return $id;
     }
 
     // public function userByToken(){

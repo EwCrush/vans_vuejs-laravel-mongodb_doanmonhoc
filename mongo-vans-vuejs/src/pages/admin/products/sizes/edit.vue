@@ -1,6 +1,6 @@
 <template>
-  <form @submit.prevent="createNewSize">
-    <a-card title="Thêm size sản phẩm mới" style="width: 100%">
+  <form @submit.prevent="updateSize">
+    <a-card title="Sửa size sản phẩm" style="width: 100%">
       <div class="w-full">
         <div class="w-full pb-4">
           <label
@@ -79,10 +79,10 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
 
-    const createNewSize = () => {
+    const updateSize = () => {
       axios
-        .post(
-          "http://127.0.0.1:8000/api/products/sizes/" + route.params.id,
+        .put(
+          "http://127.0.0.1:8000/api/products/sizes/" + route.params.id+"?size="+route.query.size,
           sizes,
           {
             headers: { Authorization: `Bearer ${token.access_token}` },
@@ -97,6 +97,7 @@ export default defineComponent({
               showConfirmButton: false,
               timer: 2000,
             });
+            console.log(response)
             router.push({
               name: "admin-products-sizes",
               params: { id: route.params.id },
@@ -117,11 +118,13 @@ export default defineComponent({
         });
     };
 
-    async function getProductByID() {
+    async function getSize() {
       try {
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/products/get/${route.params.id}`
+          `http://127.0.0.1:8000/api/products/sizes/${route.params.id}?size=${route.query.size}`
         );
+        sizes.size = response.data[0].size;
+        sizes.quantity = response.data[0].quantity;
       } catch (error) {
         if (error.response.status == 404) {
           Swal.fire({
@@ -134,10 +137,12 @@ export default defineComponent({
       }
     }
 
-    getProductByID();
+
+
+    getSize();
 
     return {
-      createNewSize,
+        updateSize,
       ...toRefs(sizes),
       errors,
     };
