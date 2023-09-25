@@ -10,7 +10,8 @@ import {
   Card,
   Table,
   Input,
-  Select
+  Select,
+  Image
 } from "ant-design-vue";
 import App from "./App.vue";
 import axios from "axios";
@@ -36,6 +37,7 @@ app.use(Card);
 app.use(Table);
 app.use(Input);
 app.use(Select);
+app.use(Image);
 app.use(vue3GoogleLogin, { clientId: CLIENT_ID });
 app.use(pinia);
 app.mount("#app");

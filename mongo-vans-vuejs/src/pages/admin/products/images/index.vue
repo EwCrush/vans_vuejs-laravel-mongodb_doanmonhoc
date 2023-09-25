@@ -9,7 +9,9 @@
           <cloud-image :path="'products/' + record.filename"></cloud-image>
         </template>
         <template v-if="column.key == 'action'">
-          <delete-button @click="deleteData(record._id)"></delete-button>
+          <delete-button
+            @click="deleteData($route.params.id, record.filename)"
+          ></delete-button>
         </template>
       </template>
     </a-table>
@@ -30,7 +32,7 @@ import { defineComponent, ref } from "vue";
 import DeleteButton from "../../../../components/admin/buttons/DeleteButton.vue";
 import AddButton from "../../../../components/admin/buttons/AddButton.vue";
 import { storage } from "../../../../firebase";
-import { uploadBytes, ref as fbref } from "firebase/storage";
+import { deleteObject , ref as fbref } from "firebase/storage";
 import CloudImage from "../../../../components/admin/CloudImage.vue";
 import { useRoute, useRouter } from "vue-router";
 
@@ -84,13 +86,13 @@ export default defineComponent({
             text: error.response.data.message,
           });
           router.push({
-            name: "admin-products"
+            name: "admin-products",
           });
         }
       }
     }
 
-    function deleteData(id) {
+    function deleteData(id, image) {
       Swal.fire({
         title: "Bạn chắc chứ?",
         text: "Dữ liệu sẽ mất nếu bạn xóa nó!",
@@ -103,13 +105,17 @@ export default defineComponent({
       }).then((result) => {
         if (result.isConfirmed) {
           axios
-            .delete(`http://127.0.0.1:8000/api/products/${id}`, {
+            .delete(`http://127.0.0.1:8000/api/products/images/${id}`, {
+              data:{filename: image},
               headers: { Authorization: `Bearer ${token.access_token}` },
             })
             .then((response) => {
               if (response.data.status == 200) {
-                Swal.fire("Xóa thành công!", response.data.message, "success");
-                getAllProducts(keyword);
+                const imgRef = fbref(storage, `products/${image}`);
+                deleteObject(imgRef).then(()=>{
+                  Swal.fire("Xóa thành công!", response.data.message, "success");
+                  getAllProductImages();
+                })
               } else {
                 Swal.fire({
                   icon: "error",
@@ -122,7 +128,7 @@ export default defineComponent({
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: error.message,
+                text: error,
               });
             });
         }

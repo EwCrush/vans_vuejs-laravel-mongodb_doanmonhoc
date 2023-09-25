@@ -24,6 +24,12 @@
             errors.filename[0]
           }}</small>
         </div>
+        <div class="ml-fromLabel">
+          <a-image
+          :width="200"
+          v-bind:src="src"
+        />
+        </div>
       </div>
       <div class="flex items-center justify-end w-full">
         <cancel-button
@@ -42,7 +48,7 @@
 import { useMenu } from "../../../../stores/use-menu";
 import SaveButton from "../../../../components/admin/buttons/SaveButton.vue";
 import CancelButton from "../../../../components/admin/buttons/CancelButton.vue";
-import { defineComponent, ref, reactive, toRefs } from "vue";
+import { defineComponent, ref, reactive } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storage } from "../../../../firebase";
 import { uploadBytes, ref as fbref } from "firebase/storage";
@@ -59,6 +65,7 @@ export default defineComponent({
     const route = useRoute();
     const file = ref();
     const token = JSON.parse(localStorage.getItem("token"));
+    const src = ref("https://static.thenounproject.com/png/2616533-200.png");
     const images = reactive({
       filename: "",
     });
@@ -127,6 +134,7 @@ export default defineComponent({
       const time = d.getTime();
       file.value = e.target.files[0];
       images.filename = time + "_" + name;
+      src.value = window.URL.createObjectURL(e.target.files[0])
     }
 
     getProductByID();
@@ -135,6 +143,7 @@ export default defineComponent({
       createNewImage,
       errors,
       imgChange,
+      src
     };
   },
 });

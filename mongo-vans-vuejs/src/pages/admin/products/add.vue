@@ -4,7 +4,6 @@
       <div class="w-full">
         <div class="w-full pb-4">
           <label
-            for=""
             :class="{
               'text-red': errors.productname,
               'min-w-label inline-block': true,
@@ -24,7 +23,6 @@
         </div>
         <div class="w-full pb-4">
           <label
-            for=""
             :class="{
               'text-red': errors.originalprice,
               'min-w-label inline-block': true,
@@ -44,7 +42,6 @@
         </div>
         <div class="w-full pb-4">
           <label
-            for=""
             :class="{
               'text-red': errors.sellingprice,
               'min-w-label inline-block': true,
@@ -64,45 +61,72 @@
         </div>
         <div class="w-full pb-4">
           <label
-            for=""
             :class="{
-              'text-red': errors.sellingprice,
+              'text-red': errors.category_id,
               'min-w-label inline-block': true,
             }"
             >Loại sản phẩm chính:
           </label>
           <a-select
-            placeholder="Chọn loại sản phẩm, nhập ID để tìm..."
+            allowClear
+            placeholder="Chọn loại sản phẩm, nhập tên để tìm kiếm..."
             style="width: 40%"
             show-search
             :options="category"
-            :filter-option="null"
-            :class="{ 'border-1 border-rose-600': errors.sellingprice }"
+            :filter-option="filterOption"
+            v-model:value="category_id"
+            :status="(errors.category_id) ? 'error':''"
           />
-          <small class="text-red ml-2" v-if="errors.sellingprice">{{
-            errors.sellingprice[0]
+          <small class="text-red ml-2" v-if="errors.category_id">{{
+            errors.category_id[0]
           }}</small>
         </div>
         <div class="w-full pb-4">
           <label
-            for=""
             :class="{
-              'text-red': errors.sellingprice,
+              'text-red': errors.subcategory_id,
               'min-w-label inline-block': true,
             }"
             >Loại sản phẩm phụ:
           </label>
           <a-select
-            placeholder="Chọn loại sản phẩm, nhập ID để tìm..."
+            allowClear
+            placeholder="Chọn loại sản phẩm, nhập tên để tìm kiếm..."
             style="width: 40%"
             show-search
             :options="subcategory"
-            :filter-option="null"
-            :class="{ 'border-1 border-rose-600': errors.sellingprice }"
+            :filter-option="filterOption"
+            v-model:value="subcategory_id"
+            :status="(errors.subcategory_id) ? 'error':''"
           />
-          <small class="text-red ml-2" v-if="errors.sellingprice">{{
-            errors.sellingprice[0]
+          <small class="text-red ml-2" v-if="errors.subcategory_id">{{
+            errors.subcategory_id[0]
           }}</small>
+        </div>
+        <div class="w-full pb-4 flex items-center">
+          <label
+            :class="{
+              'text-red': errors.filename,
+              'min-w-label inline-block': true,
+            }"
+            >Hình ảnh:
+          </label>
+          <!-- :class="{ 'border-1 border-rose-600': errors.filename }" -->
+          <div class="w-2/5">
+            <input
+              class="relative m-0 block w-full min-w-0 flex-auto rounded border border-solid border-neutral-300 bg-clip-padding px-3 py-[0.32rem] text-base font-normal text-neutral-700 transition duration-300 ease-in-out file:-mx-3 file:-my-[0.32rem] file:overflow-hidden file:rounded-none file:border-0 file:border-solid file:border-inherit file:bg-neutral-100 file:px-3 file:py-[0.32rem] file:text-neutral-700 file:transition file:duration-150 file:ease-in-out file:[border-inline-end-width:1px] file:[margin-inline-end:0.75rem] hover:file:bg-neutral-200 focus:border-primary focus:text-neutral-700 focus:shadow-te-primary focus:outline-none dark:border-neutral-600 dark:text-neutral-200 dark:file:bg-neutral-700 dark:file:text-neutral-100 dark:focus:border-primary"
+              type="file"
+              id="formFile"
+              @change="imgChange"
+              :class="{ 'border-1 border-rose-600': errors.filename}"
+            />
+          </div>
+          <small class="text-red ml-2" v-if="errors.filename">{{
+            errors.filename[0]
+          }}</small>
+        </div>
+        <div class="ml-fromLabel">
+          <a-image :width="200" v-bind:src="src" />
         </div>
       </div>
       <div class="flex items-center justify-end w-full">
@@ -123,6 +147,8 @@ import SaveButton from "../../../components/admin/buttons/SaveButton.vue";
 import CancelButton from "../../../components/admin/buttons/CancelButton.vue";
 import { defineComponent, ref, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
+import { storage } from "../../../firebase";
+import { uploadBytes, ref as fbref } from "firebase/storage";
 export default defineComponent({
   components: {
     SaveButton,
@@ -134,10 +160,15 @@ export default defineComponent({
       productname: "",
       originalprice: "",
       sellingprice: "",
+      filename: "",
+      category_id: [],
+      subcategory_id: [],
     });
-    const category = ref([])
-    const subcategory = ref([])
+    const category = ref([]);
+    const subcategory = ref([]);
     const token = JSON.parse(localStorage.getItem("token"));
+    const src = ref("https://static.thenounproject.com/png/2616533-200.png");
+    const file = ref();
 
     const errors = ref({});
     const router = useRouter();
@@ -149,14 +180,17 @@ export default defineComponent({
         })
         .then(function (response) {
           if (response) {
-            Swal.fire({
-              position: "center",
-              icon: "success",
-              title: "Dữ liệu đã được lưu!",
-              showConfirmButton: false,
-              timer: 2000,
+            const storageRef = fbref(storage, "products/" + products.filename);
+            uploadBytes(storageRef, file.value).then(function () {
+              Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Dữ liệu đã được lưu!",
+                showConfirmButton: false,
+                timer: 2000,
+              });
+              router.push({ name: "admin-products" });
             });
-            router.push({ name: "admin-products" });
           }
         })
         .catch(function (error) {
@@ -167,12 +201,27 @@ export default defineComponent({
 
     async function getAllCategories() {
       try {
-        const response = await axios.get('http://127.0.0.1:8000/api/categories/options');
-        category.value = response.data
-        subcategory.value = response.data
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/categories/options"
+        );
+        category.value = response.data;
+        subcategory.value = response.data;
       } catch (error) {
         console.error(error);
       }
+    }
+
+    const filterOption = (input, option) => {
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
+
+    function imgChange(e) {
+      const name = e.target.files[0].name;
+      const d = new Date();
+      const time = d.getTime();
+      file.value = e.target.files[0];
+      products.filename = time + "_" + name;
+      src.value = window.URL.createObjectURL(e.target.files[0]);
     }
 
     getAllCategories();
@@ -183,7 +232,10 @@ export default defineComponent({
       errors,
       getAllCategories,
       category,
-      subcategory
+      subcategory,
+      src,
+      imgChange,
+      filterOption,
     };
   },
 });

@@ -20,6 +20,9 @@ module.exports = {
       },
       minWidth: {
         'label': '150px',
+      },
+      margin: {
+        'fromLabel': '150px'
       }
     },
   },
