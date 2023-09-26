@@ -15,23 +15,33 @@
               <span>{{ categories[index].testobject == null ? "" : "123" }}</span>
           </template> -->
         <template v-if="column.key == 'originalprice'">
-            <span>{{ (record.originalprice).toLocaleString() }}đ</span>
+          <span>{{ record.originalprice.toLocaleString() }}đ</span>
         </template>
         <template v-if="column.key == 'thumbnail'">
-            <cloud-image :path="'products/'+record.thumbnail" :key="componentKey"></cloud-image>
-            <!-- <img class="w-14" v-bind:src="'../../src/assets/imgs/products/'+ record.thumbnail" /> -->
+          <cloud-image
+            :path="'products/' + record.thumbnail"
+            :key="componentKey"
+          ></cloud-image>
+          <!-- <img class="w-14" v-bind:src="'../../src/assets/imgs/products/'+ record.thumbnail" /> -->
         </template>
         <template v-if="column.key == 'sellingprice'">
-            <span>{{ (record.sellingprice).toLocaleString() }}đ</span>
+          <span>{{ record.sellingprice.toLocaleString() }}đ</span>
         </template>
         <template v-if="column.key == 'action'">
           <span class="text-primary mr-4 cursor-pointer" title="Thư viện ảnh">
-            <router-link :to="{ name: 'admin-products-images', params: {id: record._id }}">
+            <router-link
+              :to="{
+                name: 'admin-products-images',
+                params: { id: record._id },
+              }"
+            >
               <i class="fa-solid fa-images"></i>
             </router-link>
           </span>
           <span class="text-orange mr-4 cursor-pointer" title="Size sản phẩm">
-            <router-link :to="{ name: 'admin-products-sizes', params: {id: record._id }}">
+            <router-link
+              :to="{ name: 'admin-products-sizes', params: { id: record._id } }"
+            >
               <i class="fa-solid fa-ruler"></i>
             </router-link>
           </span>
@@ -93,7 +103,7 @@ import DeleteButton from "../../../components/admin/buttons/DeleteButton.vue";
 import EditButton from "../../../components/admin/buttons/EditButton.vue";
 import AddButton from "../../../components/admin/buttons/AddButton.vue";
 import { storage } from "../../../firebase";
-import { uploadBytes, ref as fbref } from "firebase/storage";
+import { deleteObject, ref as fbref } from "firebase/storage";
 import CloudImage from "../../../components/admin/CloudImage.vue";
 
 export default defineComponent({
@@ -126,7 +136,7 @@ export default defineComponent({
         title: "Tên sản phẩm",
         dataIndex: "productname",
         key: "productname",
-        width: 250
+        width: 250,
       },
       {
         title: "Giá bán",
@@ -180,7 +190,7 @@ export default defineComponent({
         prevPage_url.value = response.data.prev_page_url;
         lastPage.value = response.data.last_page;
         currentPage.value = response.data.current_page;
-        componentKey.value +=1;
+        componentKey.value += 1;
       } catch (error) {
         console.error(error);
       }
@@ -193,7 +203,7 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
-        componentKey.value +=1;
+        componentKey.value += 1;
       } catch (error) {
         console.log(error);
       }
@@ -206,7 +216,7 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
-        componentKey.value +=1;
+        componentKey.value += 1;
       } catch (error) {
         console.log(error);
       }
@@ -226,7 +236,7 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
-        componentKey.value +=1;
+        componentKey.value += 1;
       } catch (error) {
         console.log(error);
       }
@@ -266,6 +276,13 @@ export default defineComponent({
             })
             .then((response) => {
               if (response.data.status == 200) {
+                if (response.data.filename != "defaultimg.png") {
+                  const imgRef = fbref(
+                    storage,
+                    `products/${response.data.filename}`
+                  );
+                  deleteObject(imgRef);
+                }
                 Swal.fire("Xóa thành công!", response.data.message, "success");
                 getAllProducts(keyword);
               } else {
@@ -303,7 +320,7 @@ export default defineComponent({
       goToPage,
       searchData,
       deleteData,
-      componentKey
+      componentKey,
     };
   },
 });

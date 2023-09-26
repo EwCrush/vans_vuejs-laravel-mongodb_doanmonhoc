@@ -148,7 +148,12 @@ import CancelButton from "../../../components/admin/buttons/CancelButton.vue";
 import { defineComponent, ref, reactive, toRefs } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storage } from "../../../firebase";
-import { uploadBytes, ref as fbref, getDownloadURL } from "firebase/storage";
+import {
+  uploadBytes,
+  ref as fbref,
+  getDownloadURL,
+  deleteObject,
+} from "firebase/storage";
 export default defineComponent({
   components: {
     SaveButton,
@@ -184,24 +189,25 @@ export default defineComponent({
           }
         )
         .then(function (response) {
-          //   if (response) {
-          //     const storageRef = fbref(storage, "products/" + products.filename);
-          //     uploadBytes(storageRef, file.value).then(function () {
-          //       Swal.fire({
-          //         position: "center",
-          //         icon: "success",
-          //         title: "Dữ liệu đã được lưu!",
-          //         showConfirmButton: false,
-          //         timer: 2000,
-          //       });
-          //       router.push({ name: "admin-products" });
-          //     });
-          //   }
-          if(file.value){
-            console.log('co');
+          if (response.data.filename) {
+            if (response.data.filename != "defaultimg.png") {
+              const imgRef = fbref(
+                storage,
+                `products/${response.data.filename}`
+              );
+              deleteObject(imgRef);
+            }
+            const storageRef = fbref(storage, "products/" + products.filename);
+            uploadBytes(storageRef, file.value);
           }
-          else console.log('khong');
-          console.log(response.data);
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Dữ liệu đã được lưu!",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          router.push({ name: "admin-products" });
         })
         .catch(function (error) {
           errors.value = error.response.data.errors;
@@ -245,9 +251,9 @@ export default defineComponent({
         products.category_id = response.data.category;
         products.subcategory_id = response.data.subcategory;
         // products.filename = response.data.thumbnail;
-        getDownloadURL(fbref(storage, 'products/'+response.data.thumbnail)).then(
-          (download_url) => (src.value = download_url)
-        );
+        getDownloadURL(
+          fbref(storage, "products/" + response.data.thumbnail)
+        ).then((download_url) => (src.value = download_url));
       } catch (error) {
         if (error.response.status == 404) {
           Swal.fire({
