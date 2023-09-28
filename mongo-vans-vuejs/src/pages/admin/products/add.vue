@@ -75,7 +75,7 @@
             :options="category"
             :filter-option="filterOption"
             v-model:value="category_id"
-            :status="(errors.category_id) ? 'error':''"
+            :status="errors.category_id ? 'error' : ''"
           />
           <small class="text-red ml-2" v-if="errors.category_id">{{
             errors.category_id[0]
@@ -97,7 +97,7 @@
             :options="subcategory"
             :filter-option="filterOption"
             v-model:value="subcategory_id"
-            :status="(errors.subcategory_id) ? 'error':''"
+            :status="errors.subcategory_id ? 'error' : ''"
           />
           <small class="text-red ml-2" v-if="errors.subcategory_id">{{
             errors.subcategory_id[0]
@@ -118,7 +118,7 @@
               type="file"
               id="formFile"
               @change="imgChange"
-              :class="{ 'border-1 border-rose-600': errors.filename}"
+              :class="{ 'border-1 border-rose-600': errors.filename }"
             />
           </div>
           <small class="text-red ml-2" v-if="errors.filename">{{
@@ -179,19 +179,18 @@ export default defineComponent({
           headers: { Authorization: `Bearer ${token.access_token}` },
         })
         .then(function (response) {
-          if (response) {
+          if (file.value) {
             const storageRef = fbref(storage, "products/" + products.filename);
-            uploadBytes(storageRef, file.value).then(function () {
-              Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Dữ liệu đã được lưu!",
-                showConfirmButton: false,
-                timer: 2000,
-              });
-              router.push({ name: "admin-products" });
-            });
+            uploadBytes(storageRef, file.value);
           }
+          Swal.fire({
+            position: "center",
+            icon: "success",
+            title: "Dữ liệu đã được lưu!",
+            showConfirmButton: false,
+            timer: 2000,
+          });
+          router.push({ name: "admin-products" });
         })
         .catch(function (error) {
           errors.value = error.response.data.errors;

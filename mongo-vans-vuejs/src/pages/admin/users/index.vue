@@ -156,7 +156,7 @@ export default defineComponent({
       {
         title: "Thao tác",
         key: "action",
-        width: 150,
+        width: 100,
         fixed: "right",
       },
     ];
