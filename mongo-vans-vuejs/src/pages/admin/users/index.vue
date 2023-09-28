@@ -21,15 +21,35 @@
           ></cloud-image>
         </template>
         <template v-if="column.key == 'role'">
-          <span v-if="record.role=='admin'" class="bg-primary text-white py-1 px-2 rounded-2xl">{{ record.role }} <i class="fa-solid fa-circle-check"></i></span>
+          <span
+            v-if="record.role == 'admin'"
+            class="bg-primary text-white py-1 px-2 rounded-2xl"
+            >{{ record.role }} <i class="fa-solid fa-circle-check"></i
+          ></span>
         </template>
         <template v-if="column.key == 'action'">
-          <edit-button
+          <span
+            v-if="record.role == 'user'"
+            class="text-primary mr-4 cursor-pointer"
+            title="Thêm vai trò admin"
+            @click="setAdmin(record._id)"
+          >
+            <i class="fa-solid fa-user-shield"></i>
+          </span>
+          <span
+            v-if="record.role == 'admin'"
+            class="text-primary mr-4 cursor-pointer"
+            title="Bỏ vai trò admin"
+            @click="setAdmin(record._id)"
+          >
+            <i class="fa-solid fa-user-slash"></i>
+          </span>
+          <!-- <edit-button
             :to="{
               name: 'admin-users-edit',
               params: { id: record._id },
             }"
-          ></edit-button>
+          ></edit-button> -->
           <delete-button @click="deleteData(record._id)"></delete-button>
         </template>
       </template>
@@ -235,6 +255,31 @@ export default defineComponent({
       }
     };
 
+    const setAdmin = async (id) => {
+      try {
+        const url = "http://127.0.0.1:8000/api/users/setadmin/" + id;
+        const response = await axios.put(url, undefined, {
+          headers: { Authorization: `Bearer ${token.access_token}` },
+        });
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Dữ liệu đã được lưu!",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        getAllUsers(keyword);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
+      }
+
+      // console.log(token.access_token)
+    };
+
     function searchData() {
       const keyword_text = document
         .querySelector("#default-search")
@@ -283,7 +328,7 @@ export default defineComponent({
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: error.message,
+                text: error.response.data.message,
               });
             });
         }
@@ -307,6 +352,7 @@ export default defineComponent({
       searchData,
       deleteData,
       componentKey,
+      setAdmin,
     };
   },
 });

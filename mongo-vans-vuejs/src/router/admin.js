@@ -89,11 +89,6 @@ const admin = [
                 name: "admin-users-add",
                 component: () => import ("../pages/admin/users/add.vue"),
             },
-            {
-                path: "users/edit/:id",
-                name: "admin-users-edit",
-                component: () => import ("../pages/admin/users/edit.vue"),
-            },
         ]
     },
     {
