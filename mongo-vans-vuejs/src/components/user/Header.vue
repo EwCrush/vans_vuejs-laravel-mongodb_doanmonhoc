@@ -26,10 +26,18 @@
             type="text"
             placeholder="Search for products"
             class="header-search-textbox"
+            v-model="keyword"
           />
-          <i
+          <router-link v-if="!$route.params.id" :to="{name: 'shop', query: {keyword: keyword}}">
+            <i
             class="fa-solid fa-magnifying-glass text-black header-nav-item header-search-icon"
           ></i>
+          </router-link>
+          <router-link v-if="$route.params.id" :to="{name: 'shop-category', params:{id: $route.params.id}, query: {keyword: keyword}}">
+            <i
+            class="fa-solid fa-magnifying-glass text-black header-nav-item header-search-icon"
+          ></i>
+          </router-link>
         </div>
       </nav>
       <div class="header-user text-white w-1/6">
@@ -62,6 +70,7 @@ export default defineComponent({
     const router = useRouter();
     const route = useRoute();
     const token = ref(JSON.parse(localStorage.getItem("token")));
+    const keyword = ref("")
     const LogOut = () => {
       axios
         .post("http://127.0.0.1:8000/api/logout", undefined, {
@@ -91,7 +100,7 @@ export default defineComponent({
     //   localStorage.removeItem("token")
     //   router.push({name: "login"})
     // }
-    return { token, LogOut };
+    return { token, LogOut, keyword };
   },
 });
 </script>

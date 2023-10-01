@@ -285,7 +285,7 @@ export default defineComponent({
         .querySelector("#default-search")
         .value.trim();
       getAllUsers(keyword_text);
-      var newurl =
+      const newurl =
         window.location.protocol +
         "//" +
         window.location.host +

@@ -5,6 +5,223 @@
         <sidebar></sidebar>
       </div>
       <div class="grid__column-content">
+        <div class="w-full flex items-center justify-between h-14 px-4">
+          <div class="flex items-center">
+            <a-button
+              v-if="$route.params.id"
+              :class="{
+                'bg-primary text-white': saleoff != 'true' || !saleoff,
+                'mr-2': true,
+              }"
+              ><router-link
+                :to="{
+                  name: 'shop-category',
+                  params: { id: $route.params.id },
+                  query: RemoveQuery('saleoff'),
+                }"
+                >Tất cả</router-link
+              ></a-button
+            >
+            <a-button
+              v-if="!$route.params.id"
+              :class="{
+                'bg-primary text-white': saleoff != 'true' || !saleoff,
+                'mr-2': true,
+              }"
+              ><router-link
+                :to="{
+                  name: 'shop',
+                  query: RemoveQuery('saleoff'),
+                }"
+                >Tất cả</router-link
+              ></a-button
+            >
+            <a-button
+              v-if="$route.params.id"
+              :class="{
+                'bg-primary text-white': saleoff == 'true',
+                'mr-2': true,
+              }"
+              ><router-link
+                :to="{
+                  name: 'shop-category',
+                  params: { id: $route.params.id },
+                  query: { ...$route.params.query, saleoff: 'true' },
+                }"
+                >Đang giảm giá</router-link
+              ></a-button
+            >
+            <a-button
+              v-if="!$route.params.id"
+              :class="{
+                'bg-primary text-white': saleoff == 'true',
+                'mr-2': true,
+              }"
+              ><router-link
+                :to="{
+                  name: 'shop',
+                  query: { ...$route.params.query, saleoff: 'true' },
+                }"
+                >Đang giảm giá</router-link
+              ></a-button
+            >
+            <a-dropdown v-if="$route.params.id">
+              <template #overlay>
+                <a-menu>
+                  <router-link
+                    :to="{
+                      name: 'shop-category',
+                      params: { id: $route.params.id },
+                      query: RemoveQuery('order'),
+                    }"
+                    ><a-menu-item key="1"> Mặc định </a-menu-item></router-link
+                  >
+                  <router-link
+                    :to="{
+                      name: 'shop-category',
+                      params: { id: $route.params.id },
+                      query: {
+                        ...$route.query,
+                        order: 'az',
+                      },
+                    }"
+                    ><a-menu-item key="2">
+                      Tên sản phẩm A-Z
+                    </a-menu-item></router-link
+                  >
+                  <router-link
+                    :to="{
+                      name: 'shop-category',
+                      params: { id: $route.params.id },
+                      query: {
+                        ...$route.query,
+                        order: 'za',
+                      },
+                    }"
+                    ><a-menu-item key="3">
+                      Tên sản phẩm Z-A
+                    </a-menu-item></router-link
+                  >
+                  <router-link
+                    :to="{
+                      name: 'shop-category',
+                      params: { id: $route.params.id },
+                      query: {
+                        ...$route.query,
+                        order: 'increase',
+                      },
+                    }"
+                    ><a-menu-item key="4">
+                      Giá tăng dần
+                    </a-menu-item></router-link
+                  >
+                  <router-link
+                    :to="{
+                      name: 'shop-category',
+                      params: { id: $route.params.id },
+                      query: {
+                        ...$route.query,
+                        order: 'decrease',
+                      },
+                    }"
+                    ><a-menu-item key="5">
+                      Giá giảm dần
+                    </a-menu-item></router-link
+                  >
+                </a-menu>
+              </template>
+              <a-button>
+                Sắp xếp theo<i class="ml-2 fa-solid fa-chevron-down"></i
+              ></a-button>
+            </a-dropdown>
+            <a-dropdown v-if="!$route.params.id">
+              <template #overlay>
+                <a-menu>
+                  <router-link
+                    :to="{
+                      name: 'shop',
+                      query: RemoveQuery('order'),
+                    }"
+                    ><a-menu-item key="1"> Mặc định </a-menu-item></router-link
+                  >
+                  <router-link
+                    :to="{
+                      name: 'shop',
+                      query: {
+                        ...$route.query,
+                        order: 'az',
+                      },
+                    }"
+                    ><a-menu-item key="2">
+                      Tên sản phẩm A-Z
+                    </a-menu-item></router-link
+                  >
+                  <router-link
+                    :to="{
+                      name: 'shop',
+                      query: {
+                        ...$route.query,
+                        order: 'za',
+                      },
+                    }"
+                    ><a-menu-item key="3">
+                      Tên sản phẩm Z-A
+                    </a-menu-item></router-link
+                  >
+                  <router-link
+                    :to="{
+                      name: 'shop',
+                      query: {
+                        ...$route.query,
+                        order: 'increase',
+                      },
+                    }"
+                    ><a-menu-item key="4">
+                      Giá tăng dần
+                    </a-menu-item></router-link
+                  >
+                  <router-link
+                    :to="{
+                      name: 'shop',
+                      query: {
+                        ...$route.query,
+                        order: 'decrease',
+                      },
+                    }"
+                    ><a-menu-item key="5">
+                      Giá giảm dần
+                    </a-menu-item></router-link
+                  >
+                </a-menu>
+              </template>
+              <a-button>
+                Sắp xếp theo<i class="ml-2 fa-solid fa-chevron-down"></i
+              ></a-button>
+            </a-dropdown>
+          </div>
+          <div class="flex items-center justify-center">
+            <span class="text-primary font-semibold text-base">{{
+              currentPage
+            }}</span
+            ><span class="text-base mr-2">/{{ lastPage }}</span>
+            <button
+              title="Đến trang trước đó"
+              class="px-4 py-2 bg-gray-100 hover:text-primary text-base border-r-2"
+              @click="goToPrevPage(!prevPage_url ? lastPage_url : prevPage_url)"
+            >
+              <i class="fa-solid fa-chevron-left"></i>
+            </button>
+            <button
+              title="Đến trang kế tiếp"
+              class="px-4 py-2 bg-gray-100 hover:text-primary text-base"
+              @click="
+                goToNextPage(!nextPage_url ? firstPage_url : nextPage_url)
+              "
+            >
+              <i class="fa-solid fa-chevron-right"></i>
+            </button>
+          </div>
+        </div>
         <div class="grid__row">
           <div
             class="grid__column-content-item"
@@ -75,8 +292,10 @@
             </div>
           </div>
         </div>
-        <div class="flex justify-between mt-4 text-black font-[600]">
-          <div class="flex justify-between items-center">
+        <div
+          class="flex justify-center items-center mt-4 text-black font-[600]"
+        >
+          <div class="flex items-center justify-center">
             <button
               title="Đến trang trước đó"
               class="p-4 hover:text-primary text-lg"
@@ -131,6 +350,7 @@ export default defineComponent({
     const lastPage_url = ref("");
     const lastPage = ref("");
     const currentPage = ref("");
+    const saleoff = ref("");
 
     const setKey = () => {
       if (!route.params.id) {
@@ -140,12 +360,30 @@ export default defineComponent({
       }
     };
 
+    const checkSaleoff = () => {
+      if(route.query.saleoff == 'true'){
+        saleoff.value='true';
+      }
+      else{
+        saleoff.value=''
+      }
+    }
+
+    const saleoffQuery = () => {
+      if (route.query.saleoff == "true") {
+        saleoff.value = "true";
+      }
+    };
+
     async function getAllProducts() {
       try {
+        const id = route.params.id ? route.params.id : "";
+        const keyword = route.query.keyword ? route.query.keyword : "";
+        const saleoff = route.query.saleoff ? route.query.saleoff : "";
+        const order = route.query.order ? route.query.order : "";
         const response = await axios.get(
-          `http://127.0.0.1:8000/api/products/filter/${route.params.id}`
+          `http://127.0.0.1:8000/api/products/filter?id=${id}&keyword=${keyword}&saleoff=${saleoff}&order=${order}`
         );
-        console.log(response);
         data.value = response.data.data;
         firstPage_url.value = response.data.first_page_url;
         lastPage_url.value = response.data.last_page_url;
@@ -154,20 +392,17 @@ export default defineComponent({
         lastPage.value = response.data.last_page;
         currentPage.value = response.data.current_page;
         // this.renderComponent = true;
-        console.log(nextPage_url.value)
       } catch (error) {
         console.error(error);
       }
     }
 
     watch(
-      () => route.params.id,
+      () => route.fullPath,
       async () => {
         getAllProducts();
         setKey();
-        // id.value = !route.params.id ? "all" : route.params.id
-        // useMenu().onSelectedKeys([`${id}`]);
-        // console.log(id.value)
+        checkSaleoff();
       }
     );
 
@@ -178,8 +413,6 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
-        //componentKey.value += 1;
-        console.log()
       } catch (error) {
         console.log(error);
       }
@@ -206,7 +439,7 @@ export default defineComponent({
         //       keyword +
         //       "?page=" +
         //       number;
-        const url = `http://127.0.0.1:8000/api/products/filter/${route.params.id}?page=+${number}`
+        const url = `http://127.0.0.1:8000/api/products/filter?id=${route.params.id}?page=+${number}`;
         const response = await axios.get(url);
         data.value = response.data.data;
         nextPage_url.value = response.data.next_page_url;
@@ -217,9 +450,20 @@ export default defineComponent({
       }
     };
 
+    const RemoveQuery = (query) => {
+      const newQuery = { ...route.query };
+      if (newQuery.hasOwnProperty(query)) {
+        delete newQuery[query];
+      }
+
+      return newQuery;
+    };
+
     getAllProducts();
 
     setKey();
+
+    saleoffQuery();
 
     return {
       data,
@@ -232,6 +476,8 @@ export default defineComponent({
       lastPage_url,
       lastPage,
       currentPage,
+      saleoff,
+      RemoveQuery,
     };
   },
 });
