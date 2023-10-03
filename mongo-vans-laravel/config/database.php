@@ -101,6 +101,7 @@ return [
             'options' => [
                 'appname' => 'homestead',
             ],
+            'timezone' => 'Asia/Ho_Chi_Minh',
         ],
 
     ],

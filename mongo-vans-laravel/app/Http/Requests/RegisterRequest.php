@@ -30,6 +30,7 @@ class RegisterRequest extends FormRequest
             'email' => ['required', 'email', 'max:64', 'unique:users,email'],
             'phone' => ['required', 'numeric', 'starts_with:0', 'regex:/^[0-9]{10}$/'],
             'password' => ['required', 'confirmed', 'min:8', 'max:64', 'not_regex:/[`()_+\-=\[\]{};\':"\\\|,.<>\/?~]|\s/'],
+            'filename' => ['nullable', 'ends_with:jpeg,png,jpg,gif,svg'],
         ];
     }
 
@@ -64,9 +65,12 @@ class RegisterRequest extends FormRequest
             //password
             'password.required' => ':attribute không được để trống',
             'password.confirmed' => ':attribute xác nhận không trùng khớp',
-            'password.not_regex' => ':attribute không được chứa khoảng trắng và các ký tự đặc biệt ngoại trừ !@#$%^&*',
+            'password.not_regex' => ':attribute chỉ được chứa chữ cái, chữ số và các ký tự !@#$%^&*',
             'password.min' => ':attribute có độ dài tối thiểu là :min ký tự',
             'password.max' => ':attribute có độ dài tối đa là :max ký tự',
+
+            //filename
+            'filename.ends_with' => ':attribute phải là dạng jpeg - png - jpg - gif - svg',
         ];
     }
 
@@ -78,6 +82,7 @@ class RegisterRequest extends FormRequest
             'email' => 'Email',
             'phone' => 'Số điện thoại',
             'password' => 'Mật khẩu',
+            'filename' => 'Hình ảnh',
         ];
     }
 }

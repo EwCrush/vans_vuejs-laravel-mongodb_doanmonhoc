@@ -6,6 +6,7 @@ use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\UsersController;
+use App\Http\Controllers\CommentsController;
 
 /*
 |--------------------------------------------------------------------------
@@ -30,13 +31,25 @@ Route::middleware('auth:sanctum')->group(function (){
     //user auth
     Route::get('/users', [UsersController::class, 'show']);
     Route::get('/users/search/{keyword}', [UsersController::class, 'searchByKeyword']);
-
+    Route::post('/users', [UsersController::class, 'store']);
+    Route::put('/users/setadmin/{id}', [UsersController::class, 'setAdmin']);
+    Route::delete('/users/{id}', [UsersController::class, 'delete']);
+    Route::get('/users/token', [UsersController::class, 'getUserFromToken']);
     //product auth
     Route::post('/products/sizes/{id}', [ProductsController::class, 'storeSize']);
     Route::delete('/products/sizes/{id}', [ProductsController::class, 'deleteSize']);
     Route::put('/products/sizes/{id}', [ProductsController::class, 'editSize']);
     Route::post('/products/images/{id}', [ProductsController::class, 'storeImage']);
-    //Route::get('/products/test', [ProductsController::class, 'test']);
+    Route::delete('/products/images/{id}', [ProductsController::class, 'deleteImage']);
+    Route::post('/products', [ProductsController::class, 'storeProduct']);
+    Route::put('/products/{id}', [ProductsController::class, 'editProduct']);
+    Route::delete('/products/{id}', [ProductsController::class, 'deleteProduct']);
+    
+
+    //comment auth
+    Route::put('/comments/likes/{id}', [CommentsController::class, 'like']);
+    Route::post('/comments/{id}', [CommentsController::class, 'storeComment']);
+    Route::delete('/comments/{id}', [CommentsController::class, 'deleteComment']);
 });
 
 //category
@@ -53,6 +66,7 @@ Route::get('/login/google', [AuthController::class, 'loginGoogle']);
 
 //product
 Route::get('/products', [ProductsController::class, 'show']);
+Route::get('/products/filter', [ProductsController::class, 'showByFilter']);
 Route::get('/allproducts', [ProductsController::class, 'showAll']);
 Route::get('/products/search/{keyword}', [ProductsController::class, 'searchByKeyword']);
 Route::get('/products/get/{id}', [ProductsController::class, 'searchByID']);
@@ -65,5 +79,7 @@ Route::get('/products/images/{id}', [ProductsController::class, 'showImages']);
 //user
 
 
-//test
+//comment
+Route::get('/comments/{id}', [CommentsController::class, 'showAllComments']);
+
 

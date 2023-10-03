@@ -60,7 +60,7 @@ class AuthController extends Controller
             "_id" => $id,
             "fullname" => $request["fullname"],
             "address" => "",
-            "numberphone" => $request["phone"],
+            "phonenumber" => $request["phone"],
             "email" => $request["email"],
             "avatar" => "default.jpg",
             "username_account" => $request["username"],
@@ -68,7 +68,6 @@ class AuthController extends Controller
             "role" => 'user',
         ]);
         return response()->json(['status'=> 200, 'message'=>'Đăng ký tài khoản thành công'], 200);
-        //return $id;
     }
 
     // public function userByToken(){

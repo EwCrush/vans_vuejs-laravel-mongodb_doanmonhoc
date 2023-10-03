@@ -8,6 +8,7 @@ use DB;
 use Illuminate\Pagination\Paginator;
 use App\Http\Requests\SizeRequest;
 use App\Http\Requests\ImageRequest;
+use App\Http\Requests\ProductRequest;
 
 class ProductsController extends Controller
 {
@@ -358,4 +359,145 @@ class ProductsController extends Controller
         }
         else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
     }
+
+    public function deleteImage($id, ImageRequest $request){
+        $role = $request->user()->role;
+        if($role=="admin"){
+            $product = Product::where("_id", (int)$id)->first();
+            if($product){
+                $image = Product::where("_id", (int)$id)->where('images', 'elemMatch', ['filename'=>$request["filename"]])->first();
+                if($image){
+                    Product::where("_id", (int)$id)
+                    ->pull('images', array( 'filename' => $request["filename"]));
+                    return response()->json(['status'=> 200, 'message'=>'Dữ liệu đã được thêm thành công'], 200);
+                }
+                else{
+                    return response()->json(['status'=> 404, 'message'=>'Hình ảnh không tồn tại!'], 404);
+                }
+                Product::where("_id", (int)$id)
+                ->pull('images', array( 'filename' => $request["filename"]));
+                return response()->json(['status'=> 200, 'message'=>'Hình ảnh đã được xóa thành công'], 200);
+            }
+            else{
+                return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại!'], 404);
+            }
+        }
+        else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
+    }
+
+    public function storeProduct(ProductRequest $request){
+        $role = $request->user()->role;
+        if($role=="admin"){
+            $greatestId = Product::orderByDesc('_id')->first();
+            if($greatestId){
+                $id = $greatestId["_id"]+1;
+            }
+            $image = !$request["filename"] ? "defaultimg.png" : $request["filename"];
+            DB::table('products')->insert([
+                "_id" => $id,
+                "productname" => $request["productname"],
+                "originalprice" => (int)$request["originalprice"],
+                "sellingprice" => (int)$request["sellingprice"],
+                "thumbnail" => $image,
+                "images" => [],
+                "category" => $request["category_id"],
+                "subcategory" => $request["subcategory_id"],
+                "sizes" => [],
+            ]);
+            return response()->json(['status'=> 200, 'message'=>'Dữ liệu đã được thêm thành công'], 200);
+
+        }
+        else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
+    }
+
+    public function editProduct($id, ProductRequest $request){
+        $role = $request->user()->role;
+        if($role=="admin"){
+            $data = Product::where('_id', (int)$id)->first();
+            if($data){
+                $img_request = $request["filename"];
+                $old_img = $data->thumbnail;
+                if($img_request){
+                    $data->update([
+                        "productname" => $request["productname"],
+                        "originalprice" => $request["originalprice"],
+                        "sellingprice" => $request["sellingprice"],
+                        "category" => $request["category_id"],
+                        "subcategory" => $request["subcategory_id"],
+                        "thumbnail" => $img_request,
+                    ]);
+                    return response()->json(['status'=> 200,
+                                            'message'=>'Dữ liệu đã được cập nhật thành công',
+                                            'filename' => $old_img], 200);
+                }
+                else{
+                    $data->update([
+                        "productname" => $request["productname"],
+                        "originalprice" => $request["originalprice"],
+                        "sellingprice" => $request["sellingprice"],
+                        "category" => $request["category_id"],
+                        "subcategory" => $request["subcategory_id"],
+                    ]);
+                    return response()->json(['status'=> 200,
+                                            'message'=>'Dữ liệu đã được cập nhật thành công',], 200);
+                }
+            }
+            else{
+                return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại!'], 404);
+            }
+        }
+        else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
+    }
+
+    public function deleteProduct($id, Request $request){
+        $role = $request->user()->role;
+        if($role=="admin"){
+            $product = Product::where("_id", (int)$id)->first();
+            if($product){
+                $img = $product->thumbnail;
+                $product->delete();
+                return response()->json(['status'=> 200,
+                                        'message'=>'Dữ liệu đã được xóa thành công',
+                                        'filename'=>$img], 200);
+            }
+            else return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại'], 404);
+        }
+        else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
+    }
+
+    public function showByFilter(Request $request){
+        $data = Product::when($request->filled('id'), function($query) use ($request) {
+                $query->where("category", (int)$request->query('id'))
+                ->orWhere("subcategory", (int)$request->query('id'));
+            })
+            ->when($request->query('saleoff') == 'true', function ($query) {
+                $query->whereRaw([
+                    '$expr' => [
+                        '$gt' => [
+                            ['$toDouble' => '$originalprice'],
+                            ['$toDouble' => '$sellingprice']
+                        ]
+                    ]
+                ]);
+            })
+            ->when($request->filled('keyword'), function ($query) use ($request) {
+                $query->where("productname", "like", '%' . $request->query('keyword') . '%');
+            })
+            ->when($request->filled('order'), function ($query) use ($request) {
+                $order = $request->query('order');
+                switch ($order) {
+                    case 'az':
+                        return $query->orderBy('productname', 'ASC');
+                    case 'za':
+                        return $query->orderBy('productname', 'DESC');
+                    case 'increase':
+                        return $query->orderBy('sellingprice', 'ASC');
+                    case 'decrease':
+                        return $query->orderBy('sellingprice', 'DESC');
+                }
+            })
+            ->paginate(12)->withQueryString();
+        return response()->json($data);
+    }
+    
 }
