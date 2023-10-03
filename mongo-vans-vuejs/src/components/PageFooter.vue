@@ -69,8 +69,7 @@
 
     <!--Copyright section-->
     <div
-      class="w-full p-4 text-center"
-      style="background-color: rgba(0, 0, 0, 0.2)"
+      class="w-full p-4 text-center bg-black"
     >
       © 2023 Copyright:
       <a

@@ -1,68 +1,78 @@
-:root{
-    --white-color: #fff;
-    --black-color: #000;
-    --text-color: #333;
-    --primary-color: #3060FF;
-    --border-color: #dbdbdb;
+:root {
+  --white-color: #fff;
+  --black-color: #000;
+  --text-color: #333;
+  --primary-color: #3060ff;
+  --border-color: #dbdbdb;
 }
 
-*{
-    box-sizing: inherit;
+* {
+  box-sizing: inherit;
 }
 
-html{
-    line-height: 1.6rem;
-    box-sizing: border-box;
-    font-family: 'Roboto', sans-serif;
-    scroll-behavior: smooth;
+html {
+  line-height: 1.6rem;
+  box-sizing: border-box;
+  font-family: "Roboto", sans-serif;
+  scroll-behavior: smooth;
 }
 
-.grid__row{
-    display: flex;
-    flex-wrap: wrap;
+.grid__row {
+  display: flex;
+  flex-wrap: wrap;
 }
 
-.grid__column-sidebar{
-    display: none;
+.grid__column-sidebar {
+  display: none;
 }
 
-.grid__column-content{
-    width: 100%;
-    padding: 0 16px;
+.grid__column-content {
+  width: 100%;
+  padding: 0 16px;
 }
 
-.center-with-flex{
-    display: flex;
-    align-items: center;
-    justify-content: center;
+.center-with-flex {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
-.header-nav-item:hover{
-    color: var(--primary-color);
-    cursor: pointer;
+.header-nav-item:hover {
+  color: var(--primary-color);
+  cursor: pointer;
 }
 
-.header-nav-item{
-    font-weight: 700;
+.header-nav-item {
+  font-weight: 700;
 }
 
-.header-search{
-    width: 50%;
-    height: 100%;
-    border-radius: 8px;
-    background-color: var(--white-color);
-    padding: 4px 0 4px 12px;
-    overflow: hidden;
+.header-search {
+  width: 50%;
+  height: 100%;
+  border-radius: 8px;
+  background-color: var(--white-color);
+  padding: 4px 0 4px 12px;
+  overflow: hidden;
 }
 
-.header-search-textbox{
-    color: var(--black-color);
-    border: none;
-    outline: none;
-    font-size: 16px;
-    width: 90%;
+.header-search-textbox {
+  color: var(--black-color);
+  border: none;
+  outline: none;
+  font-size: 16px;
+  width: 90%;
 }
 
-.header-search-icon{
-    padding: 10px;
+.header-search-icon {
+  padding: 10px;
+}
+
+.no-spinner::-webkit-inner-spin-button,
+.no-spinner::-webkit-outer-spin-button {
+  -webkit-appearance: none !important;
+  margin: 0;
+}
+
+.no-spinner {
+  -moz-appearance: textfield !important;
 }

@@ -1,5 +1,8 @@
 <template>
-  <img class="object-contain" :src="url" />
+  <img
+    class="mr-2 w-6 h-6 rounded-full"
+    :src="url"
+  />
 </template>
 <script>
 import { storage } from "../../firebase";
@@ -11,10 +14,10 @@ export default {
   data: () => {
     return { url: "https://static.thenounproject.com/png/2616533-200.png" };
   },
-  mounted(){
+  mounted() {
     getDownloadURL(ref(storage, this.path)).then(
-        (download_url) => (this.url = download_url)
-    )
-  }
+      (download_url) => (this.url = download_url)
+    );
+  },
 };
 </script>

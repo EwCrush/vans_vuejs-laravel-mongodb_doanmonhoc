@@ -232,33 +232,37 @@
               class="relative m-2 flex w-full max-w-xs flex-col overflow-hidden rounded-lg border border-gray-100 bg-white shadow-md"
             >
               <!-- router here -->
-              <div
-                class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl hover:cursor-pointer"
-              >
-                <shop-image :path="'products/' + data.thumbnail"></shop-image>
-                <span
-                  v-if="data.originalprice != data.sellingprice"
-                  class="absolute top-0 left-0 m-2 rounded-full bg-primary px-2 text-center text-sm font-medium text-white"
-                  >{{
-                    Math.round(
-                      ((data.originalprice - data.sellingprice) /
-                        data.originalprice) *
-                        100
-                    )
-                  }}% OFF</span
+              <router-link :to="{ name: 'detail', params: { id: data._id } }"
+                ><div
+                  class="relative mx-3 mt-3 flex h-60 overflow-hidden rounded-xl hover:cursor-pointer"
                 >
-              </div>
-              <div class="mt-4 px-5 pb-5">
-                <a href="#">
-                  <h5
-                    class="text-base font-medium text-center line-clamp-2 h-12 tracking-tight text-slate-900 hover:text-primary"
+                  <shop-image :path="'products/' + data.thumbnail"></shop-image>
+                  <span
+                    v-if="data.originalprice != data.sellingprice"
+                    class="absolute top-0 left-0 m-2 rounded-full bg-primary px-2 text-center text-sm font-medium text-white"
+                    >{{
+                      Math.round(
+                        ((data.originalprice - data.sellingprice) /
+                          data.originalprice) *
+                          100
+                      )
+                    }}% OFF</span
                   >
-                    {{ data.productname }}
-                  </h5>
-                </a>
+                </div></router-link
+              >
+              <div class="mt-4 px-5 pb-5">
+                <router-link :to="{ name: 'detail', params: { id: data._id } }"
+                  ><div>
+                    <h5
+                      class="text-base font-medium text-center line-clamp-2 h-12 tracking-tight text-slate-900 hover:text-primary"
+                    >
+                      {{ data.productname }}
+                    </h5>
+                  </div></router-link
+                >
                 <div class="mt-2 mb-5 flex items-center justify-between">
                   <p>
-                    <span class="text-xl mr-2 font-bold text-slate-900"
+                    <span class="text-xl mr-2 font-bold text-primary"
                       >{{ data.sellingprice.toLocaleString() }}đ</span
                     >
                     <span
@@ -268,26 +272,6 @@
                     >
                   </p>
                 </div>
-                <a
-                  href="#"
-                  class="flex items-center justify-center rounded-md bg-primary px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-700 focus:outline-none focus:ring-4 focus:ring-blue-300"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    class="mr-2 h-6 w-6"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      stroke-linecap="round"
-                      stroke-linejoin="round"
-                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"
-                    />
-                  </svg>
-                  Add to cart</a
-                >
               </div>
             </div>
           </div>
@@ -361,13 +345,12 @@ export default defineComponent({
     };
 
     const checkSaleoff = () => {
-      if(route.query.saleoff == 'true'){
-        saleoff.value='true';
+      if (route.query.saleoff == "true") {
+        saleoff.value = "true";
+      } else {
+        saleoff.value = "";
       }
-      else{
-        saleoff.value=''
-      }
-    }
+    };
 
     const saleoffQuery = () => {
       if (route.query.saleoff == "true") {
@@ -432,14 +415,11 @@ export default defineComponent({
 
     const goToPage = async (number) => {
       try {
-        // const url =
-        //   keyword === null || keyword === ""
-        //     ? "http://127.0.0.1:8000/api/products?page=" + number
-        //     : "http://127.0.0.1:8000/api/products/search/" +
-        //       keyword +
-        //       "?page=" +
-        //       number;
-        const url = `http://127.0.0.1:8000/api/products/filter?id=${route.params.id}?page=+${number}`;
+        const id = route.params.id ? route.params.id : "";
+        const keyword = route.query.keyword ? route.query.keyword : "";
+        const saleoff = route.query.saleoff ? route.query.saleoff : "";
+        const order = route.query.order ? route.query.order : "";
+        const url = `http://127.0.0.1:8000/api/products/filter?id=${id}&keyword=${keyword}&saleoff=${saleoff}&order=${order}&page=${number}`;
         const response = await axios.get(url);
         data.value = response.data.data;
         nextPage_url.value = response.data.next_page_url;

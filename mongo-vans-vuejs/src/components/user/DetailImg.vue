@@ -1,6 +1,7 @@
 <template>
-  <img class="object-contain" :src="url" />
+  <img class="w-40" :src="url" />
 </template>
+
 <script>
 import { storage } from "../../firebase";
 import { getDownloadURL, ref } from "firebase/storage";

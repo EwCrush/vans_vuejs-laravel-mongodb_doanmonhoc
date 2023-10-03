@@ -106,6 +106,11 @@ const admin = [
                 component: () => import ("../pages/shop.vue")
             },
             {
+                path: "detail/:id",
+                name: "detail",
+                component: () => import ("../pages/detail.vue")
+            },
+            {
                 path: "shop",
                 name: "shop",
                 component: () => import ("../pages/shop.vue")
