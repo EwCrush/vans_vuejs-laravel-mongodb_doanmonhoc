@@ -13,7 +13,8 @@ import {
   Select,
   Image,
   Dropdown,
-  Tabs
+  Tabs,
+  Modal
 } from "ant-design-vue";
 import App from "./App.vue";
 import axios from "axios";
@@ -42,6 +43,7 @@ app.use(Select);
 app.use(Image);
 app.use(Dropdown);
 app.use(Tabs);
+app.use(Modal);
 app.use(vue3GoogleLogin, { clientId: CLIENT_ID });
 app.use(pinia);
 app.mount("#app");

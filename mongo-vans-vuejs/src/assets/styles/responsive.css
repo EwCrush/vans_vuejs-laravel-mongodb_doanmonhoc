@@ -24,4 +24,10 @@
         padding-right: 12px;
         width: 25%;
     }
+
+    .grid__column-content-item-suggest{
+        padding-left: 12px;
+        padding-right: 12px;
+        width: 20%;
+    }
 }
