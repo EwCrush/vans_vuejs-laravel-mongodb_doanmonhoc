@@ -3,7 +3,7 @@
     class="container mx-auto my-8 p-8 bg-white rounded-lg shadow-md max-w-4xl"
   >
     <h1 class="text-4xl font-extrabold mb-8 text-center">
-      Vans: Chặng Đường Vĩ Đại
+      VANS: Chặng Đường Vĩ Đại
     </h1>
     <section class="mb-8">
       <h2 class="text-2xl font-semibold mb-4">Sự Bắt Đầu Đầy Sáng Tạo</h2>

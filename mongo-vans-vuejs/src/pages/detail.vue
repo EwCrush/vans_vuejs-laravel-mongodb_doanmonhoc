@@ -109,6 +109,7 @@
 
             <div class="w-full mb-4 lg:w-full lg:mb-0">
               <button
+                @click="handleAddToCart"
                 class="flex items-center justify-center w-full p-4 text-white border border-primary bg-primary rounded-md dark:text-gray-200 dark:border-primary hover:bg-blue-700 hover:border-primary-dark hover:text-white-dark"
               >
                 Thêm vào giỏ hàng <i class="ml-2 fa-solid fa-cart-plus"></i>
@@ -326,13 +327,18 @@
         </div>
       </div>
       <a-tabs class="w-1/2 px-4" v-model:activeKey="activeKey">
-        <a-tab-pane key="1" tab="Bảng size"><a-image
-    :width="600"
-    src="../../src/assets/imgs/bangsize.webp"
-  /></a-tab-pane>
-        <a-tab-pane key="2" tab="Chính sách bán hàng"><ban-hang></ban-hang></a-tab-pane>
-        <a-tab-pane key="3" tab="Thông tin bảo quản"><bao-quan></bao-quan></a-tab-pane>
-        <a-tab-pane key="4" tab="Chính sách vận chuyển"><van-chuyen></van-chuyen></a-tab-pane>
+        <a-tab-pane key="1" tab="Bảng size"
+          ><a-image :width="600" src="../../src/assets/imgs/bangsize.webp"
+        /></a-tab-pane>
+        <a-tab-pane key="2" tab="Chính sách bán hàng"
+          ><ban-hang></ban-hang
+        ></a-tab-pane>
+        <a-tab-pane key="3" tab="Thông tin bảo quản"
+          ><bao-quan></bao-quan
+        ></a-tab-pane>
+        <a-tab-pane key="4" tab="Chính sách vận chuyển"
+          ><van-chuyen></van-chuyen
+        ></a-tab-pane>
       </a-tabs>
       <a-modal
         cancelText="Hủy"
@@ -380,7 +386,7 @@ export default defineComponent({
     BanHang,
     BaoQuan,
     VanChuyen,
-    DeXuat
+    DeXuat,
   },
   setup() {
     const src = ref("https://static.thenounproject.com/png/2616533-200.png");
@@ -769,6 +775,59 @@ export default defineComponent({
           : quantity.value + 1;
     };
 
+    async function handleAddToCart() {
+      if (token) {
+        if (sizeSelected.value && quantity.value > 0) {
+          try {
+            const response = await axios.post(
+              `http://127.0.0.1:8000/api/carts`,
+              {
+                product: Number(route.params.id),
+                size: sizeSelected.value,
+                quantity: quantity.value,
+              },
+              {
+                headers: { Authorization: `Bearer ${token.access_token}` },
+              }
+            );
+            Swal.fire({
+              position: "top-end",
+              icon: "success",
+              title: "Đã thêm vào giỏ hàng",
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          } catch (error) {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: error.response.data.message,
+            });
+          }
+        } else {
+          Swal.fire({
+            title: "Vui lòng chọn size và số lượng",
+            confirmButtonColor: "#3060FF",
+          });
+        }
+      } else {
+        Swal.fire({
+          title: "Chưa đăng nhập?",
+          text: "Vui lòng đăng nhập để thực hiện",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#3085d6",
+          cancelButtonColor: "#d33",
+          confirmButtonText: "Đăng nhập ngay!",
+          cancelButtonText: "Đóng",
+        }).then((result) => {
+          if (result.isConfirmed) {
+            router.push({ name: "login" });
+          }
+        });
+      }
+    }
+
     getProductByID();
     getCommentsByProductID();
     getUserFromToken();
@@ -801,6 +860,7 @@ export default defineComponent({
       visible,
       editText,
       handleEditComment,
+      handleAddToCart,
     };
   },
 });

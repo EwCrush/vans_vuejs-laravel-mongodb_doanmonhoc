@@ -14,7 +14,7 @@ import {
   Image,
   Dropdown,
   Tabs,
-  Modal
+  Modal,
 } from "ant-design-vue";
 import App from "./App.vue";
 import axios from "axios";
