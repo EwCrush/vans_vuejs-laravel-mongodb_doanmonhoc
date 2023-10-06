@@ -7,12 +7,10 @@ const admin = [
                 next({ name: 'shop' })
             }
             else next()
-            // console.log(JSON.parse(localStorage.getItem("token")).role)
         },
         children: [
             {
                 path: "",
-                //component: () => import ("../pages/admin/categories/index.vue")
                 redirect: "admin/categories"
             },
             //quan ly nguoi dung
@@ -147,6 +145,17 @@ const admin = [
                 component: () => import ("../pages/register.vue"),
                 beforeEnter: (to, from, next) => {
                     if(localStorage.getItem("token")){
+                        next({ name: 'shop' })
+                    }
+                    else next()
+                },
+            },
+            {
+                path: "cart",
+                name: "cart",
+                component: () => import ("../pages/users/cart.vue"),
+                beforeEnter: (to, from, next) => {
+                    if((!localStorage.getItem("token"))){
                         next({ name: 'shop' })
                     }
                     else next()
