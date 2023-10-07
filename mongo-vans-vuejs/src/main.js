@@ -15,6 +15,9 @@ import {
   Dropdown,
   Tabs,
   Modal,
+  Avatar,
+  Popover,
+  Badge
 } from "ant-design-vue";
 import App from "./App.vue";
 import axios from "axios";
@@ -44,6 +47,9 @@ app.use(Image);
 app.use(Dropdown);
 app.use(Tabs);
 app.use(Modal);
+app.use(Avatar);
+app.use(Popover);
+app.use(Badge);
 app.use(vue3GoogleLogin, { clientId: CLIENT_ID });
 app.use(pinia);
 app.mount("#app");

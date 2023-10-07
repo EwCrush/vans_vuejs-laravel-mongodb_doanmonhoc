@@ -386,6 +386,7 @@ export default defineComponent({
         getAllProducts();
         setKey();
         checkSaleoff();
+        scrollToTop();
       }
     );
 
@@ -396,6 +397,7 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
+        scrollToTop()
       } catch (error) {
         console.log(error);
       }
@@ -408,6 +410,7 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
+        scrollToTop()
       } catch (error) {
         console.log(error);
       }
@@ -425,6 +428,7 @@ export default defineComponent({
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
         currentPage.value = response.data.current_page;
+        scrollToTop()
       } catch (error) {
         console.log(error);
       }
@@ -438,6 +442,14 @@ export default defineComponent({
 
       return newQuery;
     };
+
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+
 
     getAllProducts();
 

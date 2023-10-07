@@ -126,7 +126,7 @@ export default defineComponent({
     const data = ref([]);
     const token = JSON.parse(localStorage.getItem("token"));
 
-    async function getProducts() {
+    async function getCart() {
       try {
         const response = await axios.get(`http://127.0.0.1:8000/api/carts`, {
           headers: { Authorization: `Bearer ${token.access_token}` },
@@ -138,7 +138,7 @@ export default defineComponent({
       }
     }
 
-    getProducts();
+    getCart();
     return { data };
   },
 });

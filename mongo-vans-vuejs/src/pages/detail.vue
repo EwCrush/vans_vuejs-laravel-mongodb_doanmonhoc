@@ -367,10 +367,8 @@
 import { defineComponent, ref, reactive, toRefs } from "vue";
 import { storage } from "../firebase";
 import {
-  uploadBytes,
   ref as fbref,
   getDownloadURL,
-  deleteObject,
 } from "firebase/storage";
 import { useRouter, useRoute } from "vue-router";
 import DetailImg from "../components/user/DetailImg.vue";
@@ -828,9 +826,17 @@ export default defineComponent({
       }
     }
 
+    function scrollToTop() {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth',
+      });
+    }
+
     getProductByID();
     getCommentsByProductID();
     getUserFromToken();
+    scrollToTop();
 
     return {
       src,
