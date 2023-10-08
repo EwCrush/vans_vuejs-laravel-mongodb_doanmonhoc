@@ -15,7 +15,7 @@
               <h2 class="text-lg font-bold text-gray-900">
                 {{ item.productname }}
               </h2>
-              <div class="flex items-center justify-between w-2/3">
+              <div class=" items-center w-2/3">
                 <p class="mt-1 text-xs text-gray-700">Size: {{ item.size }}</p>
                 <p class="mt-1 text-xs text-gray-700">
                   Giá: {{ item.price.toLocaleString() }}đ

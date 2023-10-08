@@ -46,7 +46,7 @@
                 :to="{
                   name: 'shop-category',
                   params: { id: $route.params.id },
-                  query: { ...$route.params.query, saleoff: 'true' },
+                  query: { ...$route.query, saleoff: 'true' },
                 }"
                 >Đang giảm giá</router-link
               ></a-button
@@ -60,7 +60,7 @@
               ><router-link
                 :to="{
                   name: 'shop',
-                  query: { ...$route.params.query, saleoff: 'true' },
+                  query: { ...$route.query, saleoff: 'true' },
                 }"
                 >Đang giảm giá</router-link
               ></a-button

@@ -78,7 +78,7 @@
                 <p class="hover:text-primary cursor-pointer">
                   <i class="mr-2 my-2 fa-solid fa-truck-fast"></i>Đơn hàng
                 </p>
-                <p class="hover:text-primary cursor-pointer">
+                <p @click="showEditProfileModal" class="hover:text-primary cursor-pointer">
                   <i class="mr-2 my-2 fa-solid fa-user-pen"></i>Chỉnh sửa thông
                   tin
                 </p>
@@ -163,6 +163,168 @@
         />
       </div>
     </a-modal>
+    <a-modal
+      v-model:visible="editProfileModal"
+      title="Cập nhật thông tin"
+      :okButtonProps="{ style: { backgroundColor: '#3060FF' } }"
+    >
+      <a-tabs v-model:activeKey="activeEditProfileKey">
+        <a-tab-pane key="1" tab="Thông tin cơ bản">
+          <div class="flex flex-col justify-center items-center mb-8">
+            <a-avatar :size="128" :src="changeAvatarSRC"></a-avatar>
+
+            <div class="mt-4">
+              <label for="avatar-upload" class="cursor-pointer">
+                <span
+                  class="mt-2 leading-normal px-4 py-2 bg-blue-500 text-white text-sm rounded-full"
+                  >Thay Avatar</span
+                >
+                <input
+                  id="avatar-upload"
+                  type="file"
+                  class="hidden"
+                  :multiple="false"
+                  accept="image/*"
+                  @change="imgChange"
+                />
+              </label>
+            </div>
+          </div>
+
+          <div class="w-full pb-4">
+            <label
+              :class="{
+                'text-red': errors.fullname,
+                'min-w-label inline-block': true,
+              }"
+              >Tên người dùng:
+            </label>
+            <a-input
+              placeholder="Nhập vào tên người dùng..."
+              allow-clear
+              style="width: 60%"
+              v-model:value="fullname"
+              :class="{ 'border-1 border-rose-600': errors.fullname }"
+            />
+            <small class="text-red ml-2" v-if="errors.fullname">{{
+              errors.fullname[0]
+            }}</small>
+          </div>
+          <div class="w-full pb-4">
+            <label
+              :class="{
+                'text-red': errors.email,
+                'min-w-label inline-block': true,
+              }"
+              >Email:
+            </label>
+            <a-input
+              placeholder="Nhập vào địa chỉ email..."
+              allow-clear
+              style="width: 60%"
+              v-model:value="email"
+              :class="{ 'border-1 border-rose-600': errors.email }"
+            />
+            <small class="text-red ml-2" v-if="errors.email">{{
+              errors.email[0]
+            }}</small>
+          </div>
+          <div class="w-full pb-4">
+            <label
+              :class="{
+                'text-red': errors.phone,
+                'min-w-label inline-block': true,
+              }"
+              >Số điện thoại:
+            </label>
+            <a-input
+              placeholder="Nhập vào số điện thoại..."
+              allow-clear
+              style="width: 60%"
+              v-model:value="phone"
+              :class="{ 'border-1 border-rose-600': errors.phone }"
+            />
+            <small class="text-red ml-2" v-if="errors.phone">{{
+              errors.phone[0]
+            }}</small>
+          </div>
+        </a-tab-pane>
+        <a-tab-pane key="2" tab="Địa chỉ"><div class="w-full pb-4">
+          <label class="min-w-label inline-block">Tỉnh/Thành phố: </label>
+          <a-select
+            placeholder="Chọn tỉnh/thành phố, nhập tên để tìm kiếm..."
+            style="width: 60%"
+            show-search
+            :options="provinces"
+            :field-names="{
+              label: 'name',
+              value: 'code',
+              options: 'provinces',
+            }"
+            :filter-option="filterOption"
+            v-model:value="ProvinceCode"
+            @change="getAllDistricts"
+          />
+        </div>
+        <div class="w-full pb-4">
+          <label class="min-w-label inline-block">Quận/Huyện: </label>
+          <a-select
+            placeholder="Chọn quận/huyện, nhập tên để tìm kiếm..."
+            style="width: 60%"
+            show-search
+            :options="districts"
+            :field-names="{
+              label: 'name',
+              value: 'code',
+              options: 'districts',
+            }"
+            :filter-option="filterOption"
+            v-model:value="DistrictCode"
+            @change="getAllWards"
+          />
+        </div>
+        <div class="w-full pb-4">
+          <label class="min-w-label inline-block">Xã/Phường: </label>
+          <a-select
+            placeholder="Chọn xã/phường, nhập tên để tìm kiếm..."
+            style="width: 60%"
+            show-search
+            :options="wards"
+            :field-names="{ label: 'name', value: 'code', options: 'wards' }"
+            :filter-option="filterOption"
+            v-model:value="WardCode"
+            @change="changeWardName"
+          />
+        </div>
+        <div class="w-full pb-4">
+            <label
+              class="min-w-label inline-block"
+              >Địa chỉ cụ thể:
+            </label>
+            <a-input
+              v-model:value="DetailedAddress"
+              placeholder="Nhập vào địa chỉ cụ thể như số nhà,..."
+              allow-clear
+              style="width: 60%"
+              :disabled="!WardName"
+              @change="ChangeDetailedAddress"
+            />
+          </div>
+          <div class="w-full pb-4">
+            <label
+              class="min-w-label inline-block"
+              >Xem trước thay đổi:
+            </label>
+            <a-textarea
+            disabled
+            :auto-size="{ minRows: 1, maxRows: 5 }"
+            v-model:value="address"
+              style="width: 60%"
+            />
+          </div>
+      </a-tab-pane>
+      </a-tabs>
+    </a-modal>
   </div>
 </template>
 
@@ -183,16 +345,47 @@ export default defineComponent({
     );
     const cartItem = ref(0);
     const ChangePasswordModal = ref(false);
+    const editProfileModal = ref(true);
+    const activeEditProfileKey = ref("1");
+    const changeAvatarSRC = ref("");
+    const avatarfile = ref("");
 
     const password = reactive({
       oldpassword: "",
       newpassword: "",
       newpassword_confirmation: "",
     });
+
+    const provinces = ref([]);
+    const districts = ref([]);
+    const wards = ref([]);
+
+    const ProvinceCode = ref();
+    const DistrictCode = ref();
+    const WardCode = ref();
+
+    const ProvinceName = ref("");
+    const DistrictName = ref("");
+    const WardName = ref("");
+    const DetailedAddress = ref("");
+
     const errors = ref({});
+
+    const profile = reactive({
+      fullname: "",
+      email: "",
+      phone: "",
+      filename: "",
+      address: ""
+    });
 
     const showChangePasswordModal = () => {
       ChangePasswordModal.value = true;
+    };
+
+    const showEditProfileModal = () => {
+      editProfileModal.value = true;
+      changeAvatarSRC.value = src.value;
     };
 
     const LogOut = () => {
@@ -226,6 +419,10 @@ export default defineComponent({
               },
             }
           );
+          profile.fullname = response.data.fullname;
+          profile.email = response.data.email;
+          profile.phone = response.data.phonenumber;
+          profile.address = response.data.address;
           user.value = response.data;
           getDownloadURL(fbref(storage, "users/" + response.data.avatar)).then(
             (download_url) => (src.value = download_url)
@@ -281,8 +478,7 @@ export default defineComponent({
         } catch (error) {
           if (error.response.status == 422) {
             errors.value = error.response.data.errors;
-          }
-          else {
+          } else {
             Swal.fire({
               icon: "error",
               title: "Oops...",
@@ -292,6 +488,79 @@ export default defineComponent({
         }
       }
     }
+
+    function imgChange(e) {
+      const name = e.target.files[0].name;
+      const d = new Date();
+      const time = d.getTime();
+      avatarfile.value = e.target.files[0];
+      profile.filename = time + "_" + name;
+      changeAvatarSRC.value = window.URL.createObjectURL(e.target.files[0])
+    }
+
+    async function getAllProvinces() {
+      try {
+        const response = await axios.get(
+          "https://provinces.open-api.vn/api/?depth=1"
+        );
+        provinces.value = response.data;
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    async function getAllDistricts() {
+      if (ProvinceCode.value) {
+        try {
+          const response = await axios.get(
+            `https://provinces.open-api.vn/api/p/${ProvinceCode.value}?depth=2`
+          );
+          ProvinceName.value = response.data.name
+          districts.value = response.data.districts;
+          profile.address = ProvinceName.value
+          DistrictCode.value = []
+          WardCode.value = []
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+
+    async function getAllWards() {
+      if (DistrictCode.value) {
+        try {
+          const response = await axios.get(
+            `https://provinces.open-api.vn/api/d/${DistrictCode.value}?depth=2`
+          );
+          DistrictName.value = response.data.name
+          wards.value = response.data.wards;
+          profile.address =  DistrictName.value+", "+ProvinceName.value
+          WardCode.value = []
+        } catch (error) {
+          console.error(error);
+        }
+      }
+    }
+
+    async function changeWardName() {
+        try {
+          const response = await axios.get(
+            `https://provinces.open-api.vn/api/w/${WardCode.value}?depth=2`
+          );
+          WardName.value = response.data.name
+          profile.address =  WardName.value+", "+DistrictName.value+", "+ProvinceName.value
+        } catch (error) {
+          console.error(error);
+        }
+    }
+
+    async function ChangeDetailedAddress(){
+      profile.address = DetailedAddress.value+", " + WardName.value+", "+DistrictName.value+", "+ProvinceName.value
+    }
+
+    const filterOption = (input, option) => {
+      return option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
 
     watch(
       () => route.path,
@@ -303,11 +572,8 @@ export default defineComponent({
     getCart();
 
     getUserFromTokenHeader();
+    getAllProvinces();
 
-    // const LogOut = () => {
-    //   localStorage.removeItem("token")
-    //   router.push({name: "login"})
-    // }
     return {
       tokenHeader,
       LogOut,
@@ -319,7 +585,29 @@ export default defineComponent({
       ChangePassword,
       ChangePasswordModal,
       ...toRefs(password),
+      ...toRefs(profile),
       errors,
+      editProfileModal,
+      activeEditProfileKey,
+      changeAvatarSRC,
+      showEditProfileModal,
+      imgChange,
+      getAllProvinces,
+      getAllDistricts,
+      getAllWards,
+      changeWardName,
+      filterOption,
+      ProvinceCode,
+      DistrictCode,
+      WardCode,
+      ProvinceName,
+      DistrictName,
+      WardName,
+      provinces,
+      districts,
+      wards,
+      ChangeDetailedAddress,
+      DetailedAddress
     };
   },
 });
