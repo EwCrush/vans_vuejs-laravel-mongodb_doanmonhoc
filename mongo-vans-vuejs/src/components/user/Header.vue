@@ -69,16 +69,27 @@
                   <p>{{ user.fullname }}</p>
                 </div>
                 <hr class="my-2" />
+                <router-link
+                  v-if="user.role == 'admin'"
+                  :to="{ name: 'admin-categories' }"
+                >
+                  <p class="hover:text-primary cursor-pointer">
+                    <i class="mr-2 mb-2 fa-solid fa-shield-halved"></i>Admin
+                  </p>
+                </router-link>
                 <router-link :to="{ name: 'cart' }">
                   <p class="hover:text-primary cursor-pointer">
-                    <i class="mr-2 mb-2 fa-solid fa-cart-shopping"></i>Giỏ hàng
+                    <i class="mr-2 my-2 fa-solid fa-cart-shopping"></i>Giỏ hàng
                     <span class="text-primary">({{ cartItem }})</span>
                   </p>
                 </router-link>
                 <p class="hover:text-primary cursor-pointer">
                   <i class="mr-2 my-2 fa-solid fa-truck-fast"></i>Đơn hàng
                 </p>
-                <p @click="showEditProfileModal" class="hover:text-primary cursor-pointer">
+                <p
+                  @click="showEditProfileModal"
+                  class="hover:text-primary cursor-pointer"
+                >
                   <i class="mr-2 my-2 fa-solid fa-user-pen"></i>Chỉnh sửa thông
                   tin
                 </p>
@@ -167,6 +178,7 @@
       v-model:visible="editProfileModal"
       title="Cập nhật thông tin"
       :okButtonProps="{ style: { backgroundColor: '#3060FF' } }"
+      @ok="editProfile"
     >
       <a-tabs v-model:activeKey="activeEditProfileKey">
         <a-tab-pane key="1" tab="Thông tin cơ bản">
@@ -206,7 +218,7 @@
               v-model:value="fullname"
               :class="{ 'border-1 border-rose-600': errors.fullname }"
             />
-            <small class="text-red ml-2" v-if="errors.fullname">{{
+            <small class="text-red ml-fromLabel block" v-if="errors.fullname">{{
               errors.fullname[0]
             }}</small>
           </div>
@@ -225,7 +237,7 @@
               v-model:value="email"
               :class="{ 'border-1 border-rose-600': errors.email }"
             />
-            <small class="text-red ml-2" v-if="errors.email">{{
+            <small class="text-red ml-fromLabel block" v-if="errors.email">{{
               errors.email[0]
             }}</small>
           </div>
@@ -244,63 +256,61 @@
               v-model:value="phone"
               :class="{ 'border-1 border-rose-600': errors.phone }"
             />
-            <small class="text-red ml-2" v-if="errors.phone">{{
+            <small class="text-red ml-fromLabel block" v-if="errors.phone">{{
               errors.phone[0]
             }}</small>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="2" tab="Địa chỉ"><div class="w-full pb-4">
-          <label class="min-w-label inline-block">Tỉnh/Thành phố: </label>
-          <a-select
-            placeholder="Chọn tỉnh/thành phố, nhập tên để tìm kiếm..."
-            style="width: 60%"
-            show-search
-            :options="provinces"
-            :field-names="{
-              label: 'name',
-              value: 'code',
-              options: 'provinces',
-            }"
-            :filter-option="filterOption"
-            v-model:value="ProvinceCode"
-            @change="getAllDistricts"
-          />
-        </div>
-        <div class="w-full pb-4">
-          <label class="min-w-label inline-block">Quận/Huyện: </label>
-          <a-select
-            placeholder="Chọn quận/huyện, nhập tên để tìm kiếm..."
-            style="width: 60%"
-            show-search
-            :options="districts"
-            :field-names="{
-              label: 'name',
-              value: 'code',
-              options: 'districts',
-            }"
-            :filter-option="filterOption"
-            v-model:value="DistrictCode"
-            @change="getAllWards"
-          />
-        </div>
-        <div class="w-full pb-4">
-          <label class="min-w-label inline-block">Xã/Phường: </label>
-          <a-select
-            placeholder="Chọn xã/phường, nhập tên để tìm kiếm..."
-            style="width: 60%"
-            show-search
-            :options="wards"
-            :field-names="{ label: 'name', value: 'code', options: 'wards' }"
-            :filter-option="filterOption"
-            v-model:value="WardCode"
-            @change="changeWardName"
-          />
-        </div>
-        <div class="w-full pb-4">
-            <label
-              class="min-w-label inline-block"
-              >Địa chỉ cụ thể:
-            </label>
+        <a-tab-pane key="2" tab="Địa chỉ"
+          ><div class="w-full pb-4">
+            <label class="min-w-label inline-block">Tỉnh/Thành phố: </label>
+            <a-select
+              placeholder="Chọn tỉnh/thành phố, nhập tên để tìm kiếm..."
+              style="width: 60%"
+              show-search
+              :options="provinces"
+              :field-names="{
+                label: 'name',
+                value: 'code',
+                options: 'provinces',
+              }"
+              :filter-option="filterOption"
+              v-model:value="ProvinceCode"
+              @change="getAllDistricts"
+            />
+          </div>
+          <div class="w-full pb-4">
+            <label class="min-w-label inline-block">Quận/Huyện: </label>
+            <a-select
+              placeholder="Chọn quận/huyện, nhập tên để tìm kiếm..."
+              style="width: 60%"
+              show-search
+              :options="districts"
+              :field-names="{
+                label: 'name',
+                value: 'code',
+                options: 'districts',
+              }"
+              :filter-option="filterOption"
+              v-model:value="DistrictCode"
+              @change="getAllWards"
+            />
+          </div>
+          <div class="w-full pb-4">
+            <label class="min-w-label inline-block">Xã/Phường: </label>
+            <a-select
+              placeholder="Chọn xã/phường, nhập tên để tìm kiếm..."
+              style="width: 60%"
+              show-search
+              :options="wards"
+              :field-names="{ label: 'name', value: 'code', options: 'wards' }"
+              :filter-option="filterOption"
+              v-model:value="WardCode"
+              @change="changeWardName"
+            />
+          </div>
+          <div class="w-full pb-4">
+            <label class="min-w-label inline-block">Địa chỉ cụ thể: </label>
             <a-input
               v-model:value="DetailedAddress"
               placeholder="Nhập vào địa chỉ cụ thể như số nhà,..."
@@ -311,18 +321,15 @@
             />
           </div>
           <div class="w-full pb-4">
-            <label
-              class="min-w-label inline-block"
-              >Xem trước thay đổi:
-            </label>
+            <label class="min-w-label inline-block">Xem trước thay đổi: </label>
             <a-textarea
-            disabled
-            :auto-size="{ minRows: 1, maxRows: 5 }"
-            v-model:value="address"
+              disabled
+              :auto-size="{ minRows: 1, maxRows: 5 }"
+              v-model:value="address"
               style="width: 60%"
             />
           </div>
-      </a-tab-pane>
+        </a-tab-pane>
       </a-tabs>
     </a-modal>
   </div>
@@ -332,7 +339,7 @@
 import { defineComponent, watch, ref, reactive, toRefs } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storage } from "../../firebase";
-import { ref as fbref, getDownloadURL } from "firebase/storage";
+import { ref as fbref, getDownloadURL, deleteObject, uploadBytes } from "firebase/storage";
 export default defineComponent({
   setup() {
     const router = useRouter();
@@ -345,7 +352,7 @@ export default defineComponent({
     );
     const cartItem = ref(0);
     const ChangePasswordModal = ref(false);
-    const editProfileModal = ref(true);
+    const editProfileModal = ref(false);
     const activeEditProfileKey = ref("1");
     const changeAvatarSRC = ref("");
     const avatarfile = ref("");
@@ -376,7 +383,7 @@ export default defineComponent({
       email: "",
       phone: "",
       filename: "",
-      address: ""
+      address: "",
     });
 
     const showChangePasswordModal = () => {
@@ -404,12 +411,13 @@ export default defineComponent({
           console.log(error);
         })
         .finally(function () {
+          tokenHeader.value = "";
           router.push({ name: "login" });
         });
     };
 
     async function getUserFromTokenHeader() {
-      if (tokenHeader) {
+      if (tokenHeader.value) {
         try {
           const response = await axios.get(
             `http://127.0.0.1:8000/api/users/token`,
@@ -441,7 +449,7 @@ export default defineComponent({
     }
 
     async function getCart() {
-      if (tokenHeader) {
+      if (tokenHeader.value) {
         try {
           const response = await axios.get(`http://127.0.0.1:8000/api/carts`, {
             headers: {
@@ -495,7 +503,7 @@ export default defineComponent({
       const time = d.getTime();
       avatarfile.value = e.target.files[0];
       profile.filename = time + "_" + name;
-      changeAvatarSRC.value = window.URL.createObjectURL(e.target.files[0])
+      changeAvatarSRC.value = window.URL.createObjectURL(e.target.files[0]);
     }
 
     async function getAllProvinces() {
@@ -515,11 +523,11 @@ export default defineComponent({
           const response = await axios.get(
             `https://provinces.open-api.vn/api/p/${ProvinceCode.value}?depth=2`
           );
-          ProvinceName.value = response.data.name
+          ProvinceName.value = response.data.name;
           districts.value = response.data.districts;
-          profile.address = ProvinceName.value
-          DistrictCode.value = []
-          WardCode.value = []
+          profile.address = ProvinceName.value;
+          DistrictCode.value = [];
+          WardCode.value = [];
         } catch (error) {
           console.error(error);
         }
@@ -532,10 +540,10 @@ export default defineComponent({
           const response = await axios.get(
             `https://provinces.open-api.vn/api/d/${DistrictCode.value}?depth=2`
           );
-          DistrictName.value = response.data.name
+          DistrictName.value = response.data.name;
           wards.value = response.data.wards;
-          profile.address =  DistrictName.value+", "+ProvinceName.value
-          WardCode.value = []
+          profile.address = DistrictName.value + ", " + ProvinceName.value;
+          WardCode.value = [];
         } catch (error) {
           console.error(error);
         }
@@ -543,19 +551,31 @@ export default defineComponent({
     }
 
     async function changeWardName() {
-        try {
-          const response = await axios.get(
-            `https://provinces.open-api.vn/api/w/${WardCode.value}?depth=2`
-          );
-          WardName.value = response.data.name
-          profile.address =  WardName.value+", "+DistrictName.value+", "+ProvinceName.value
-        } catch (error) {
-          console.error(error);
-        }
+      try {
+        const response = await axios.get(
+          `https://provinces.open-api.vn/api/w/${WardCode.value}?depth=2`
+        );
+        WardName.value = response.data.name;
+        profile.address =
+          WardName.value +
+          ", " +
+          DistrictName.value +
+          ", " +
+          ProvinceName.value;
+      } catch (error) {
+        console.error(error);
+      }
     }
 
-    async function ChangeDetailedAddress(){
-      profile.address = DetailedAddress.value+", " + WardName.value+", "+DistrictName.value+", "+ProvinceName.value
+    async function ChangeDetailedAddress() {
+      profile.address =
+        DetailedAddress.value +
+        ", " +
+        WardName.value +
+        ", " +
+        DistrictName.value +
+        ", " +
+        ProvinceName.value;
     }
 
     const filterOption = (input, option) => {
@@ -566,8 +586,54 @@ export default defineComponent({
       () => route.path,
       async () => {
         tokenHeader.value = JSON.parse(localStorage.getItem("token"));
+        if (tokenHeader.value) {
+          getUserFromTokenHeader();
+          getCart();
+        }
       }
     );
+
+    async function editProfile() {
+      try {
+        const response = await axios.put(
+          `http://127.0.0.1:8000/api/users`,
+          profile,
+          {
+            headers: {
+              Authorization: `Bearer ${tokenHeader.value.access_token}`,
+            },
+          }
+        );
+        if (response.data.filename) {
+          if (response.data.filename != "default.jpg") {
+            const imgRef = fbref(storage, `users/${response.data.filename}`);
+            deleteObject(imgRef);
+          }
+          const storageRef = fbref(storage, "users/" + profile.filename);
+          uploadBytes(storageRef, avatarfile.value);
+        }
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        editProfileModal.value = false;
+        getUserFromTokenHeader();
+      } catch (error) {
+        console.log(error);
+        if (error.response.status == 422) {
+            errors.value = error.response.data.errors;
+          } else {
+            Swal.fire({
+              icon: "error",
+              title: "Oops...",
+              text: error.response.data.message,
+            });
+          }
+      }
+    }
 
     getCart();
 
@@ -607,7 +673,8 @@ export default defineComponent({
       districts,
       wards,
       ChangeDetailedAddress,
-      DetailedAddress
+      DetailedAddress,
+      editProfile,
     };
   },
 });

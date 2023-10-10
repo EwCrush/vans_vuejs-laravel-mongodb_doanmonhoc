@@ -22,6 +22,18 @@
               <span class="ml-4">Người dùng</span>
           </router-link>
       </a-menu-item>
+      <a-menu-item key="admin-orders">
+          <router-link :to="{ name: 'admin-orders'}">
+            <i class="fa-solid fa-truck-fast"></i>
+              <span class="ml-4">Đơn hàng</span>
+          </router-link>
+      </a-menu-item>
+      <a-menu-item key="admin-charts">
+          <router-link :to="{ name: 'admin-charts'}">
+            <i class="fa-solid fa-chart-simple"></i>
+              <span class="ml-4">Thống kê</span>
+          </router-link>
+      </a-menu-item>
     </a-menu>
 </template>
 

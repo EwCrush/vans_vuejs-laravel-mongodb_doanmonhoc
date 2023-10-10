@@ -87,6 +87,18 @@ const admin = [
                 name: "admin-users-add",
                 component: () => import ("../pages/admin/users/add.vue"),
             },
+            //quan ly order
+            {
+                path: "orders",
+                name: "admin-orders",
+                component: () => import ("../pages/admin/orders/index.vue")
+            },
+            //chart
+            {
+                path: "charts",
+                name: "admin-charts",
+                component: () => import ("../pages/admin/charts/index.vue")
+            },
         ]
     },
     {

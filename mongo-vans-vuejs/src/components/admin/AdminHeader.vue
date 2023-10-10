@@ -7,7 +7,11 @@
             <div class="header-img">
                 <img src="../../assets//imgs/logo.webp" alt="">
             </div>
-            <div class="text-white px-4 py-4">Admin</div>
+            <router-link :to="{ name: 'shop' }">
+                  <p class="text-white hover:text-primary cursor-pointer">
+                    <i class=" mr-2 mb-2 fa-solid fa-shop"></i>Cửa hàng
+                  </p>
+                </router-link>
         </div>
      </div>
      <a-drawer

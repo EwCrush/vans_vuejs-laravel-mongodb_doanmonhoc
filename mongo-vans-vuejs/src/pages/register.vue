@@ -200,7 +200,7 @@
             SIGN UP
           </button>
 
-          <div class="mt-6 text-center">
+          <div class="my-6 text-center">
             <a
               href="#"
               class="text-sm text-blue-500 hover:underline dark:text-blue-400"
