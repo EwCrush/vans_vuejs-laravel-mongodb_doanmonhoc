@@ -499,5 +499,27 @@ class ProductsController extends Controller
             ->paginate(12)->withQueryString();
         return response()->json($data);
     }
-    
+
+    public function searchByCategory($id){
+        $product = Product::where("_id", (int)$id)->first();
+            if($product){
+                $category = $product->category;
+                $subcategory = $product->subcategory;
+                $data = Product::where("category", $category)
+                ->orWhere("subcategory", $category)
+                ->orWhere("category", $subcategory)
+                ->orWhere("subcategory", $subcategory)
+                ->offset(0)->limit(10)->get();
+                return response()->json($data);
+            }
+            else return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại'], 404);
+
+        // return response()->json($data);
+
+    }
+
+    public function searchByClassic(){
+        $product = Product::where('category', 7)->orWhere('subcategory', 7)->limit(10)->get();
+        return response()->json($product, 200);
+    }
 }

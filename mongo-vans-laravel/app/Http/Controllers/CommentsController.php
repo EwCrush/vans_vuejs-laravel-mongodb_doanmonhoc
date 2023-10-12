@@ -10,6 +10,7 @@ use App\Http\Requests\CommentRequest;
 use DB;
 use Carbon\Carbon;
 
+
 class CommentsController extends Controller
 {
     public function showAllComments($id, Request $request){
@@ -88,6 +89,7 @@ class CommentsController extends Controller
 
     public function storeComment($id, CommentRequest $request){
         $user = $request->user()->_id;
+        $reply = $request->reply ? $request->reply :  "";
         $product = Product::where("_id", (int)$id)->first();
         if($product){
             $date = Carbon::now()->format('Y-m-d\TH:i:s.uP');
@@ -98,7 +100,7 @@ class CommentsController extends Controller
                 "user" => $request->user()->_id,
                 "text" => $request["text"],
                 "likes" => [],
-                "reply" => ""
+                "reply" => $reply
             ]);
             return response()->json(['status'=> 200, 'message'=>'Đã bình luận'], 200);
         }
@@ -120,6 +122,23 @@ class CommentsController extends Controller
                 return response()->json(['status'=> 200, 'message'=>'Đã xóa bình luận'], 200);
             }
             else return response()->json(['status'=> 200, 'message'=>'Không thể xóa'], 200);
+        }
+        else {
+            return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại!'], 404);
+        }
+    }
+
+    public function editComment($id, CommentRequest $request){
+        $user = $request->user()->_id;
+        $comment = Comment::where("_id", $id)->first();
+        if($comment){
+            if($comment->user==$user){
+                $comment->update([
+                    "text" => $request["text"],
+                ]);
+                return response()->json(['status'=> 200, 'message'=>'Đã xóa bình luận'], 200);
+            }
+            else return response()->json(['status'=> 404, 'message'=>'Không thể xóa'], 200);
         }
         else {
             return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại!'], 404);

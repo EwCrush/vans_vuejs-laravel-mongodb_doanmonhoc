@@ -7,6 +7,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CommentsController;
+use App\Http\Controllers\CartController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,6 +22,7 @@ use App\Http\Controllers\CommentsController;
 
 Route::middleware('auth:sanctum')->group(function (){
     Route::post('/logout', [AuthController::class, 'logout']);
+    Route::post('/users/changepassword', [UsersController::class, 'changePassword']);
     // Route::post('/userbytoken', [AuthController::class, 'userByToken']);
 
     //category auth
@@ -35,6 +37,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::put('/users/setadmin/{id}', [UsersController::class, 'setAdmin']);
     Route::delete('/users/{id}', [UsersController::class, 'delete']);
     Route::get('/users/token', [UsersController::class, 'getUserFromToken']);
+    Route::put('/users', [UsersController::class, 'editUser']);
     //product auth
     Route::post('/products/sizes/{id}', [ProductsController::class, 'storeSize']);
     Route::delete('/products/sizes/{id}', [ProductsController::class, 'deleteSize']);
@@ -44,12 +47,16 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('/products', [ProductsController::class, 'storeProduct']);
     Route::put('/products/{id}', [ProductsController::class, 'editProduct']);
     Route::delete('/products/{id}', [ProductsController::class, 'deleteProduct']);
-    
 
     //comment auth
     Route::put('/comments/likes/{id}', [CommentsController::class, 'like']);
     Route::post('/comments/{id}', [CommentsController::class, 'storeComment']);
+    Route::put('/comments/{id}', [CommentsController::class, 'editComment']);
     Route::delete('/comments/{id}', [CommentsController::class, 'deleteComment']);
+
+    //cart auth
+    Route::post('/carts', [CartController::class, 'addToCart']);
+    Route::get('/carts', [CartController::class, 'showCart']);
 });
 
 //category
@@ -70,6 +77,8 @@ Route::get('/products/filter', [ProductsController::class, 'showByFilter']);
 Route::get('/allproducts', [ProductsController::class, 'showAll']);
 Route::get('/products/search/{keyword}', [ProductsController::class, 'searchByKeyword']);
 Route::get('/products/get/{id}', [ProductsController::class, 'searchByID']);
+Route::get('/products/categories/{id}', [ProductsController::class, 'searchByCategory']);
+Route::get('/products/classic', [ProductsController::class, 'searchByClassic']);
 //size
 Route::get('/products/sizes/{id}', [ProductsController::class, 'showSizes']);
 //image
@@ -81,5 +90,6 @@ Route::get('/products/images/{id}', [ProductsController::class, 'showImages']);
 
 //comment
 Route::get('/comments/{id}', [CommentsController::class, 'showAllComments']);
+
 
 

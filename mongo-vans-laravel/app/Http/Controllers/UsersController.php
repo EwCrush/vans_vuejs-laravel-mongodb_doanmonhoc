@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Models\User;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\EditProfileRequest;
 use Illuminate\Support\Facades\Hash;
 // use App\Http\Requests\CategoryRequest;
 
@@ -97,5 +98,32 @@ class UsersController extends Controller
 
     public function getUserFromToken(Request $request){
         return $request->user();
+    }
+
+    public function editUser(EditProfileRequest $request){
+        $user = $request->user();
+        $oldAvatar = $user->avatar;
+        if ($user->email != $request->email) {
+            $checkEmail = User::where('_id', '!=', $user->_id)->where('email', $request->email)->first();
+            if ($checkEmail) {
+                return response()->json(['status' => 422, 'errors' => ['email' => ['Email này đã tồn tại']]], 422);
+            }
+        }
+        $updateData = [
+            'fullname' => $request->fullname,
+            'address' => $request->address,
+            'phonenumber' => $request->phone,
+            'email' => $request->email,
+        ];
+        if ($request->filename) {
+            $updateData['avatar'] = $request->filename;
+        }
+        User::where('_id', $user->_id)->update($updateData);
+        if($request->filename){
+            return response()->json(['status' => 200, 'filename' => $oldAvatar, 'message' => 'Cập nhật thông tin thành công'], 200);
+        }
+        else {
+            return response()->json(['status' => 200, 'message' => 'Cập nhật thông tin thành công'], 200);
+        }
     }
 }

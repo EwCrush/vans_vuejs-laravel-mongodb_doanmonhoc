@@ -103,14 +103,4 @@ class CategoriesController extends Controller
         else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
         //return response()->json(['id'=>$id]);
     }
-
-    public function test(){
-        $greatestId = Category::orderByDesc('_id')->first();
-            if($greatestId){
-                $id = $greatestId["_id"]+1;
-            }
-            else $id = 1;
-
-        return $id;
-    }
 }

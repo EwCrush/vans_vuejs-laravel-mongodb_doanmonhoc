@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use DB;
 use App\Http\Requests\LoginRequest;
 use App\Http\Requests\RegisterRequest;
+use App\Http\Requests\ChangePasswordRequest;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -75,6 +76,23 @@ class AuthController extends Controller
     // }
 
     public function loginGoogle(){
-        
+
+    }
+
+    public function changePassword(ChangePasswordRequest $request){
+        if(Hash::check($request->oldpassword, $request->user()->password_account)){
+            User::where('_id', $request->user()->_id)->update([
+                'password_account' => Hash::make($request["newpassword"]),
+            ]);
+            return response()->json(['status'=> 200, 'message'=>'Đổi mật khẩu thành công'], 200);
+        }
+        else{
+            return response()->json(
+                [
+                'message' => 'Sai mật khẩu!',
+            ],
+            404
+            );
+        }
     }
 }
