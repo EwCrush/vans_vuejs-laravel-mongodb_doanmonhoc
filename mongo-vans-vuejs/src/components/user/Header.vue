@@ -177,6 +177,7 @@
     <a-modal
       v-model:visible="editProfileModal"
       title="Cập nhật thông tin"
+      cancelText="Hủy"
       :okButtonProps="{ style: { backgroundColor: '#3060FF' } }"
       @ok="editProfile"
     >
@@ -261,74 +262,8 @@
             }}</small>
           </div>
         </a-tab-pane>
-        <a-tab-pane key="2" tab="Địa chỉ"
-          ><div class="w-full pb-4">
-            <label class="min-w-label inline-block">Tỉnh/Thành phố: </label>
-            <a-select
-              placeholder="Chọn tỉnh/thành phố, nhập tên để tìm kiếm..."
-              style="width: 60%"
-              show-search
-              :options="provinces"
-              :field-names="{
-                label: 'name',
-                value: 'code',
-                options: 'provinces',
-              }"
-              :filter-option="filterOption"
-              v-model:value="ProvinceCode"
-              @change="getAllDistricts"
-            />
-          </div>
-          <div class="w-full pb-4">
-            <label class="min-w-label inline-block">Quận/Huyện: </label>
-            <a-select
-              placeholder="Chọn quận/huyện, nhập tên để tìm kiếm..."
-              style="width: 60%"
-              show-search
-              :options="districts"
-              :field-names="{
-                label: 'name',
-                value: 'code',
-                options: 'districts',
-              }"
-              :filter-option="filterOption"
-              v-model:value="DistrictCode"
-              @change="getAllWards"
-            />
-          </div>
-          <div class="w-full pb-4">
-            <label class="min-w-label inline-block">Xã/Phường: </label>
-            <a-select
-              placeholder="Chọn xã/phường, nhập tên để tìm kiếm..."
-              style="width: 60%"
-              show-search
-              :options="wards"
-              :field-names="{ label: 'name', value: 'code', options: 'wards' }"
-              :filter-option="filterOption"
-              v-model:value="WardCode"
-              @change="changeWardName"
-            />
-          </div>
-          <div class="w-full pb-4">
-            <label class="min-w-label inline-block">Địa chỉ cụ thể: </label>
-            <a-input
-              v-model:value="DetailedAddress"
-              placeholder="Nhập vào địa chỉ cụ thể như số nhà,..."
-              allow-clear
-              style="width: 60%"
-              :disabled="!WardName"
-              @change="ChangeDetailedAddress"
-            />
-          </div>
-          <div class="w-full pb-4">
-            <label class="min-w-label inline-block">Xem trước thay đổi: </label>
-            <a-textarea
-              disabled
-              :auto-size="{ minRows: 1, maxRows: 5 }"
-              v-model:value="address"
-              style="width: 60%"
-            />
-          </div>
+        <a-tab-pane key="2" tab="Địa chỉ">
+          <change-address :address="address" @address-changed="handleAddressChange"></change-address>
         </a-tab-pane>
       </a-tabs>
     </a-modal>
@@ -339,8 +274,15 @@
 import { defineComponent, watch, ref, reactive, toRefs } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { storage } from "../../firebase";
-import { ref as fbref, getDownloadURL, deleteObject, uploadBytes } from "firebase/storage";
+import {
+  ref as fbref,
+  getDownloadURL,
+  deleteObject,
+  uploadBytes,
+} from "firebase/storage";
+import ChangeAddress from "./ChangeAddress.vue";
 export default defineComponent({
+  components: { ChangeAddress },
   setup() {
     const router = useRouter();
     const route = useRoute();
@@ -362,19 +304,6 @@ export default defineComponent({
       newpassword: "",
       newpassword_confirmation: "",
     });
-
-    const provinces = ref([]);
-    const districts = ref([]);
-    const wards = ref([]);
-
-    const ProvinceCode = ref();
-    const DistrictCode = ref();
-    const WardCode = ref();
-
-    const ProvinceName = ref("");
-    const DistrictName = ref("");
-    const WardName = ref("");
-    const DetailedAddress = ref("");
 
     const errors = ref({});
 
@@ -506,82 +435,6 @@ export default defineComponent({
       changeAvatarSRC.value = window.URL.createObjectURL(e.target.files[0]);
     }
 
-    async function getAllProvinces() {
-      try {
-        const response = await axios.get(
-          "https://provinces.open-api.vn/api/?depth=1"
-        );
-        provinces.value = response.data;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    async function getAllDistricts() {
-      if (ProvinceCode.value) {
-        try {
-          const response = await axios.get(
-            `https://provinces.open-api.vn/api/p/${ProvinceCode.value}?depth=2`
-          );
-          ProvinceName.value = response.data.name;
-          districts.value = response.data.districts;
-          profile.address = ProvinceName.value;
-          DistrictCode.value = [];
-          WardCode.value = [];
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    }
-
-    async function getAllWards() {
-      if (DistrictCode.value) {
-        try {
-          const response = await axios.get(
-            `https://provinces.open-api.vn/api/d/${DistrictCode.value}?depth=2`
-          );
-          DistrictName.value = response.data.name;
-          wards.value = response.data.wards;
-          profile.address = DistrictName.value + ", " + ProvinceName.value;
-          WardCode.value = [];
-        } catch (error) {
-          console.error(error);
-        }
-      }
-    }
-
-    async function changeWardName() {
-      try {
-        const response = await axios.get(
-          `https://provinces.open-api.vn/api/w/${WardCode.value}?depth=2`
-        );
-        WardName.value = response.data.name;
-        profile.address =
-          WardName.value +
-          ", " +
-          DistrictName.value +
-          ", " +
-          ProvinceName.value;
-      } catch (error) {
-        console.error(error);
-      }
-    }
-
-    async function ChangeDetailedAddress() {
-      profile.address =
-        DetailedAddress.value +
-        ", " +
-        WardName.value +
-        ", " +
-        DistrictName.value +
-        ", " +
-        ProvinceName.value;
-    }
-
-    const filterOption = (input, option) => {
-      return option.name.toLowerCase().indexOf(input.toLowerCase()) >= 0;
-    };
-
     watch(
       () => route.path,
       async () => {
@@ -592,6 +445,10 @@ export default defineComponent({
         }
       }
     );
+
+    const handleAddressChange = (newAddress) => {
+      profile.address = newAddress;
+    };
 
     async function editProfile() {
       try {
@@ -613,32 +470,31 @@ export default defineComponent({
           uploadBytes(storageRef, avatarfile.value);
         }
         Swal.fire({
-            position: "top-end",
-            icon: "success",
-            title: response.data.message,
-            showConfirmButton: false,
-            timer: 1500,
-          });
+          position: "top-end",
+          icon: "success",
+          title: response.data.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
         editProfileModal.value = false;
         getUserFromTokenHeader();
       } catch (error) {
         console.log(error);
         if (error.response.status == 422) {
-            errors.value = error.response.data.errors;
-          } else {
-            Swal.fire({
-              icon: "error",
-              title: "Oops...",
-              text: error.response.data.message,
-            });
-          }
+          errors.value = error.response.data.errors;
+        } else {
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response.data.message,
+          });
+        }
       }
     }
 
     getCart();
 
     getUserFromTokenHeader();
-    getAllProvinces();
 
     return {
       tokenHeader,
@@ -658,23 +514,8 @@ export default defineComponent({
       changeAvatarSRC,
       showEditProfileModal,
       imgChange,
-      getAllProvinces,
-      getAllDistricts,
-      getAllWards,
-      changeWardName,
-      filterOption,
-      ProvinceCode,
-      DistrictCode,
-      WardCode,
-      ProvinceName,
-      DistrictName,
-      WardName,
-      provinces,
-      districts,
-      wards,
-      ChangeDetailedAddress,
-      DetailedAddress,
       editProfile,
+      handleAddressChange
     };
   },
 });

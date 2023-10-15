@@ -22,7 +22,7 @@ module.exports = {
         'label': '150px',
       },
       margin: {
-        'fromLabel': '150px'
+        'fromLabel': '150px',
       }
     },
   },
