@@ -6,7 +6,7 @@
       <div class="rounded-lg md:w-2/3">
         <div
           v-for="item in data.items"
-          v-bind:key="item.productid"
+          v-bind:key="item.productid+item.size"
           class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start"
         >
           <cart-img :path="'products/' + item.image"></cart-img>
@@ -27,6 +27,7 @@
             >
               <div class="flex items-center border-gray-100">
                 <span
+                @click="handleMinus(item.productid, item.size, item.quantity)"
                   class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
                 >
                   -
@@ -38,7 +39,7 @@
                   disabled
                   min="1"
                 />
-                <span
+                <span @click="handlePlus(item.productid, item.size, item.quantity)"
                   class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
                 >
                   +
@@ -265,6 +266,40 @@ export default defineComponent({
       consignee.addressConsignee = newAddress;
     };
 
+    function handlePlus(product, size, quantity) {
+      editQuantity(product, size, quantity+1)
+    }
+
+    function handleMinus(product, size, quantity) {
+      if(quantity!=1){
+        editQuantity(product, size, quantity-1)
+      }
+    }
+
+    async function editQuantity(product, size, quantity) {
+      try {
+        const response = await axios.put(
+          `http://127.0.0.1:8000/api/carts`,
+          {
+            product: product,
+            size: size,
+            quantity: quantity
+          },
+          {
+            headers: { Authorization: `Bearer ${token.access_token}` },
+          }
+        );
+        getCart();
+        //console.log(response);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
+      }
+    }
+
     getCart();
     return {
       data,
@@ -275,7 +310,9 @@ export default defineComponent({
       showEditConsigneeModal,
       editConsignee,
       activeEditConsigneeKey,
-      errors
+      errors,
+      handleMinus,
+      handlePlus
     };
   },
 });
