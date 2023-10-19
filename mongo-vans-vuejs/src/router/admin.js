@@ -93,6 +93,11 @@ const admin = [
                 name: "admin-orders",
                 component: () => import ("../pages/admin/orders/index.vue")
             },
+            {
+                path: "orders/cart/:id",
+                name: "admin-orders-cart",
+                component: () => import ("../pages/admin/orders/cart.vue")
+            },
             //chart
             {
                 path: "charts",

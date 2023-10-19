@@ -8,6 +8,7 @@ use App\Http\Controllers\ProductsController;
 use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\OrderController;
 
 /*
 |--------------------------------------------------------------------------
@@ -38,6 +39,8 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::delete('/users/{id}', [UsersController::class, 'delete']);
     Route::get('/users/token', [UsersController::class, 'getUserFromToken']);
     Route::put('/users', [UsersController::class, 'editUser']);
+    Route::post('/users/sendmail', [UsersController::class, 'sendMail']);
+
     //product auth
     Route::post('/products/sizes/{id}', [ProductsController::class, 'storeSize']);
     Route::delete('/products/sizes/{id}', [ProductsController::class, 'deleteSize']);
@@ -57,6 +60,15 @@ Route::middleware('auth:sanctum')->group(function (){
     //cart auth
     Route::post('/carts', [CartController::class, 'addToCart']);
     Route::get('/carts', [CartController::class, 'showCart']);
+    Route::delete('/carts', [CartController::class, 'deleteFromCart']);
+    Route::put('/carts/consignee', [CartController::class, 'editConsignee']);
+    Route::put('/carts', [CartController::class, 'editQuantity']);
+    Route::post('/carts/order', [CartController::class, 'order']);
+
+    //order auth
+    Route::get('/orders', [OrderController::class, 'show']);
+    Route::get('/orders/get/{id}', [OrderController::class, 'getItemsByID']);
+    Route::put('/orders/{id}', [OrderController::class, 'editOrder']);
 });
 
 //category
@@ -86,7 +98,9 @@ Route::get('/products/images/{id}', [ProductsController::class, 'showImages']);
 
 
 //user
-
+Route::post('/users/sendmail', [UsersController::class, 'sendMail']);
+Route::post('/users/sendotp', [UsersController::class, 'sendOTP']);
+Route::post('/users/resetpassword', [UsersController::class, 'resetPassword']);
 
 //comment
 Route::get('/comments/{id}', [CommentsController::class, 'showAllComments']);

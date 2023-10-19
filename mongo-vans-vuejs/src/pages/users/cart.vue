@@ -111,7 +111,7 @@
             </p>
           </div>
         </div>
-        <button
+        <button @click="OrderSubmit"
           class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600"
         >
           Đặt hàng
@@ -185,12 +185,14 @@
 import { defineComponent, reactive, ref, toRefs } from "vue";
 import CartImg from "../../components/user/CartImg.vue";
 import ChangeAddress from "../../components/user/ChangeAddress.vue";
+import { useRouter } from "vue-router";
 
 export default defineComponent({
   components: { CartImg, ChangeAddress },
   setup() {
     const data = ref([]);
     const token = JSON.parse(localStorage.getItem("token"));
+    const router = useRouter()
 
     const consignee = reactive({
       fullnameConsignee: "",
@@ -300,6 +302,32 @@ export default defineComponent({
       }
     }
 
+    async function OrderSubmit() {
+      try {
+        const response = await axios.post(
+          `http://127.0.0.1:8000/api/carts/order`,
+          undefined,
+          {
+            headers: { Authorization: `Bearer ${token.access_token}` },
+          }
+        );
+        Swal.fire({
+            position: "top-end",
+            icon: "success",
+            title: response.data.message,
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          router.push({ name: "shop" });
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
+      }
+    }
+
     getCart();
     return {
       data,
@@ -312,7 +340,8 @@ export default defineComponent({
       activeEditConsigneeKey,
       errors,
       handleMinus,
-      handlePlus
+      handlePlus,
+      OrderSubmit
     };
   },
 });

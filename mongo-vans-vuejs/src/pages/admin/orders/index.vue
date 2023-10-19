@@ -1,20 +1,33 @@
 <template>
   <a-card title="Đơn đặt hàng" style="width: 100%">
     <div class="flex flex-row-reverse mb-4">
-        <a-dropdown>
-      <template #overlay>
-        <a-menu>
-          <a-menu-item key="1" @click="filterOrders('')"> Mặc định </a-menu-item>
-          <a-menu-item key="2" @click="filterOrders('confirmationpending')"> Đang chờ xác nhận </a-menu-item>
-          <a-menu-item key="3" @click="filterOrders('intransit')"> Đang vận chuyển </a-menu-item>
-          <a-menu-item key="4" @click="filterOrders('failed')"> Giao hàng thất bại </a-menu-item>
-          <a-menu-item key="5" @click="filterOrders('completed')"> Giao hàng thành công </a-menu-item>
-        </a-menu>
-      </template>
-      <a-button>
-        Lọc đơn hàng theo<i class="ml-2 fa-solid fa-chevron-down"></i>
-      </a-button>
-    </a-dropdown>
+      <a-dropdown>
+        <template #overlay>
+          <a-menu>
+            <a-menu-item key="1" @click="filterOrders('')">
+              Mặc định
+            </a-menu-item>
+            <a-menu-item key="2" @click="filterOrders('confirmationpending')">
+              Đang chờ xác nhận
+            </a-menu-item>
+            <a-menu-item key="3" @click="filterOrders('processing')">
+              Đang xử lý
+            </a-menu-item>
+            <a-menu-item key="4" @click="filterOrders('intransit')">
+              Đang vận chuyển
+            </a-menu-item>
+            <a-menu-item key="5" @click="filterOrders('failed')">
+              Giao hàng thất bại
+            </a-menu-item>
+            <a-menu-item key="6" @click="filterOrders('completed')">
+              Giao hàng thành công
+            </a-menu-item>
+          </a-menu>
+        </template>
+        <a-button>
+          Lọc đơn hàng theo<i class="ml-2 fa-solid fa-chevron-down"></i>
+        </a-button>
+      </a-dropdown>
     </div>
     <a-table
       :columns="columns"
@@ -29,25 +42,39 @@
         <template v-if="column.key == 'total'">
           <span>{{ record.total.toLocaleString() }}đ</span>
         </template>
+        <template v-if="column.key == 'updated_at'">
+          <span>{{ formatDate(record.updated_at) }}</span>
+        </template>
         <template v-if="column.key == 'action'">
           <span
+            @click="handleConfirmationPending(record._id)"
             v-if="record.status == 'confirmation pending'"
             class="text-primary mr-4 cursor-pointer"
             title="Xác nhận thành công"
           >
             <i class="fa-solid fa-user-check"></i>
           </span>
-          <edit-button
+          <span
             v-if="record.status != 'confirmation pending'"
+            @click="showEditOrderStatusModal(record._id, record.status)"
+            class="text-yellow mr-4 cursor-pointer"
+            title="Chỉnh sửa"
+          >
+            <i class="fa-solid fa-pen-to-square"></i>
+          </span>
+          <router-link
+            class="text-green mr-4 cursor-pointer"
+            title="Xem giỏ hàng"
             :to="{
-              name: 'admin-categories-edit',
+              name: 'admin-orders-cart',
               params: { id: record._id },
             }"
-          ></edit-button>
+          >
+            <i class="fa-solid fa-cart-shopping"></i>
+          </router-link>
         </template>
       </template>
     </a-table>
-
     <div
       class="flex flex-row-reverse justify-between mt-4 text-black font-[600]"
     >
@@ -81,16 +108,37 @@
         </button>
       </div>
     </div>
+    <a-modal
+      v-model:visible="editOrderStatus"
+      title="Cập nhật trạng thái đơn hàng"
+      cancelText="Hủy"
+      :okButtonProps="{ style: { backgroundColor: '#3060FF' } }"
+      @ok="handleEditOrderStatus"
+    >
+      <div class="w-full py-4">
+        <a-select
+          allowClear
+          placeholder="Chọn trạng thái đơn hàng, nhập tên để tìm kiếm..."
+          style="width: 100%"
+          show-search
+          :options="options"
+          :filter-option="filterOption"
+          v-model:value="OrderStatus"
+          :status="errors.OrderStatus ? 'error' : ''"
+        />
+        <small class="text-red ml-2" v-if="errors.OrderStatus">{{
+          errors.OrderStatus
+        }}</small>
+      </div>
+    </a-modal>
   </a-card>
 </template>
 
 <script>
 import { useMenu } from "../../../stores/use-menu";
 import { defineComponent, ref } from "vue";
-import EditButton from "../../../components/admin/buttons/EditButton.vue";
 
 export default defineComponent({
-  components: { EditButton },
   setup() {
     useMenu().onSelectedKeys(["admin-orders"]);
 
@@ -101,15 +149,41 @@ export default defineComponent({
     const lastPage_url = ref("");
     const lastPage = ref("");
     const currentPage = ref("");
-    const status = ref('');
+    const status = ref("");
     const token = JSON.parse(localStorage.getItem("token"));
+    const editOrderStatus = ref(false);
+    const OrderStatus = ref([]);
+    const errors = ref({});
+    const orderID = ref("");
+
+    const options = ref([
+      {
+        value: "confirmation pending",
+        label: "confirmation pending",
+      },
+      {
+        value: "processing",
+        label: "processing",
+      },
+      {
+        value: "in transit",
+        label: "in transit",
+      },
+      {
+        value: "completed",
+        label: "completed",
+      },
+      {
+        value: "failed",
+        label: "failed",
+      },
+    ]);
 
     const columns = [
       {
         title: "Mã đơn hàng",
         dataIndex: "_id",
         key: "id",
-        fixed: "left",
         width: 250,
       },
       {
@@ -149,6 +223,12 @@ export default defineComponent({
         width: 200,
       },
       {
+        title: "Ngày cập nhật",
+        dataIndex: "updated_at",
+        key: "updated_at",
+        width: 200,
+      },
+      {
         title: "Thao tác",
         key: "action",
         width: 100,
@@ -158,9 +238,12 @@ export default defineComponent({
 
     async function getAllOrders() {
       try {
-        const response = await axios.get("http://127.0.0.1:8000/api/orders?status="+status.value, {
-          headers: { Authorization: `Bearer ${token.access_token}` },
-        });
+        const response = await axios.get(
+          "http://127.0.0.1:8000/api/orders?status=" + status.value,
+          {
+            headers: { Authorization: `Bearer ${token.access_token}` },
+          }
+        );
         orders.value = response.data.data;
         firstPage_url.value = response.data.first_page_url;
         lastPage_url.value = response.data.last_page_url;
@@ -170,6 +253,32 @@ export default defineComponent({
         currentPage.value = response.data.current_page;
       } catch (error) {
         console.error(error);
+      }
+    }
+
+    async function handleConfirmationPending(id) {
+      try {
+        const response = await axios.put(
+          "http://127.0.0.1:8000/api/orders/" + id,
+          undefined,
+          {
+            headers: { Authorization: `Bearer ${token.access_token}` },
+          }
+        );
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: response.data.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        getAllOrders();
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
       }
     }
 
@@ -204,7 +313,10 @@ export default defineComponent({
     const goToPage = async (number) => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/orders?status="+status.value+"?page=" + number,
+          "http://127.0.0.1:8000/api/orders?status=" +
+            status.value +
+            "?page=" +
+            number,
           {
             headers: { Authorization: `Bearer ${token.access_token}` },
           }
@@ -218,9 +330,62 @@ export default defineComponent({
       }
     };
 
-    function filterOrders(statusFilter){
-        status.value = statusFilter
-        getAllOrders()
+    function filterOrders(statusFilter) {
+      status.value = statusFilter;
+      getAllOrders();
+    }
+
+    function formatDate(dateObject) {
+      const date = new Date(dateObject);
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
+      const hours = date.getHours();
+      const minutes = date.getMinutes();
+      const seconds = date.getSeconds();
+      return `${hours}:${minutes}:${seconds} ${day}/${month}/${year}`;
+    }
+
+    const filterOption = (input, option) => {
+      return option.label.toLowerCase().indexOf(input.toLowerCase()) >= 0;
+    };
+
+    const showEditOrderStatusModal = (id, status) => {
+      editOrderStatus.value = true;
+      orderID.value = id;
+      OrderStatus.value = status;
+    };
+
+    async function handleEditOrderStatus() {
+      try {
+        const response = await axios.put(
+          "http://127.0.0.1:8000/api/orders/" + orderID.value,
+          {status: OrderStatus.value},
+          {
+            headers: { Authorization: `Bearer ${token.access_token}` },
+          }
+        );
+        Swal.fire({
+          position: "top-end",
+          icon: "success",
+          title: response.data.message,
+          showConfirmButton: false,
+          timer: 1500,
+        });
+        getAllOrders();
+        editOrderStatus.value = false
+      } catch (error) {
+        if(error.response.status==422){
+          errors.value = error.response.data.errors;
+        }
+        else{
+          Swal.fire({
+            icon: "error",
+            title: "Oops...",
+            text: error.response.data.message,
+          });
+        }
+      }
     }
 
     getAllOrders();
@@ -237,7 +402,16 @@ export default defineComponent({
       goToNextPage,
       goToPrevPage,
       goToPage,
-      filterOrders
+      filterOrders,
+      formatDate,
+      handleConfirmationPending,
+      editOrderStatus,
+      OrderStatus,
+      filterOption,
+      options,
+      errors,
+      showEditOrderStatusModal,
+      handleEditOrderStatus,
     };
   },
 });
