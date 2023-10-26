@@ -1,0 +1,14 @@
+[{
+  "_id": {
+    "$oid": "64e2efe4d2846831fa0b2772"
+  },
+  "migration": "2019_12_14_000001_create_personal_access_tokens_table",
+  "batch": 1
+},
+{
+  "_id": {
+    "$oid": "64e2efe4d2846831fa0b2773"
+  },
+  "migration": "2023_08_21_043127_create_categories_table",
+  "batch": 1
+}]

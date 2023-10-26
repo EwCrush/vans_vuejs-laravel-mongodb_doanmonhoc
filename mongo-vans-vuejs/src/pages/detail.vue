@@ -366,10 +366,7 @@
 <script>
 import { defineComponent, ref, reactive, toRefs } from "vue";
 import { storage } from "../firebase";
-import {
-  ref as fbref,
-  getDownloadURL,
-} from "firebase/storage";
+import { ref as fbref, getDownloadURL } from "firebase/storage";
 import { useRouter, useRoute } from "vue-router";
 import DetailImg from "../components/user/DetailImg.vue";
 import AvatarUser from "../components/user/AvatarUser.vue";
@@ -829,9 +826,17 @@ export default defineComponent({
     function scrollToTop() {
       window.scrollTo({
         top: 0,
-        behavior: 'smooth',
+        behavior: "smooth",
       });
     }
+
+    // function scrollToComment(id) {
+    //   const element = document.getElementById(id);
+    //   if (element) {
+    //     element.scrollIntoView({ behavior: "smooth" });
+    //   }
+    //   console.log(element);
+    // }
 
     getProductByID();
     getCommentsByProductID();

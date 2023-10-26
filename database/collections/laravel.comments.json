@@ -1,0 +1,272 @@
+[{
+  "_id": {
+    "$oid": "651ad155b3248974855579fd"
+  },
+  "product": 2,
+  "user": 2,
+  "text": "Sản phẩm chất lượng ngoài mong đợi, gói hàng cẩn thận và giao rất nhanh, cảm ơn Vault đã mang tới người dùng chương trình giảm giá tuyệt vời này",
+  "likes": [
+    {
+      "user": 2
+    },
+    {
+      "user": 6
+    },
+    {
+      "user": 1
+    }
+  ],
+  "reply": "",
+  "created_at": {
+    "$date": "2023-10-02T14:19:01.271Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651ad30ab3248974855579fe"
+  },
+  "product": 2,
+  "user": 1,
+  "text": "Sản phẩm tuyệt vời, đáp ứng đầy đủ mong đợi của tôi. Giao hàng nhanh chóng và dịch vụ khách hàng rất tận tâm.",
+  "likes": [
+    {
+      "user": 2
+    },
+    {
+      "user": 6
+    }
+  ],
+  "reply": "",
+  "created_at": {
+    "$date": "2023-10-02T14:26:18.257Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651ad30ab3248974855579ff"
+  },
+  "product": 2,
+  "user": 6,
+  "text": "Mình rất hài lòng với chất lượng sản phẩm. Gói hàng cẩn thận và an toàn. Đặc biệt thích chương trình giảm giá!",
+  "likes": [
+    {
+      "user": 4
+    }
+  ],
+  "reply": "",
+  "created_at": {
+    "$date": "2023-10-02T14:26:18.257Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651ad30ab324897485557a00"
+  },
+  "product": 2,
+  "user": 2,
+  "text": "Bình luận đánh giá tích cực! Sản phẩm đáp ứng mọi kỳ vọng của tôi, và dịch vụ giao hàng rất chuyên nghiệp.",
+  "likes": [
+    {
+      "user": 1
+    },
+    {
+      "user": 6
+    }
+  ],
+  "reply": "",
+  "created_at": {
+    "$date": "2023-10-02T14:26:18.257Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651ad30ab324897485557a01"
+  },
+  "product": 2,
+  "user": 2,
+  "text": "Sản phẩm rất đẹp và chất lượng. Giao hàng nhanh chóng, không gặp bất kỳ vấn đề nào. Cảm ơn Vault!",
+  "likes": [
+    {
+      "user": 1
+    },
+    {
+      "user": 2
+    }
+  ],
+  "reply": "",
+  "created_at": {
+    "$date": "2023-10-02T14:26:18.257Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651ad30ab324897485557a02"
+  },
+  "product": 2,
+  "user": 1,
+  "text": "Sản phẩm đẹp và chất lượng, đúng như mô tả. Giao hàng nhanh chóng và dịch vụ khách hàng rất thân thiện.",
+  "likes": [
+    {
+      "user": 2
+    },
+    {
+      "user": 6
+    }
+  ],
+  "reply": "",
+  "created_at": {
+    "$date": "2023-10-02T14:26:18.257Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651ad30ab324897485557a03"
+  },
+  "product": 2,
+  "user": 6,
+  "text": "Mình đã mua sản phẩm này cho người thân và họ rất hài lòng. Cảm ơn Vault vì chất lượng tốt!",
+  "likes": [
+    {
+      "user": 1
+    },
+    {
+      "user": 2
+    }
+  ],
+  "reply": "",
+  "created_at": {
+    "$date": "2023-10-02T14:26:18.257Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651b5f817cb0d3435ade378d"
+  },
+  "product": 2,
+  "user": 1,
+  "text": "Mình đã mua sản phẩm này cho người thân và cũng thấy rất hài lòng với sản phẩm này!",
+  "likes": [
+    {
+      "user": 1
+    },
+    {
+      "user": 2
+    }
+  ],
+  "reply": "651ad155b3248974855579fd",
+  "created_at": {
+    "$date": "2023-10-02T14:26:18.257Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651b5fd17cb0d3435ade378e"
+  },
+  "product": 2,
+  "user": 6,
+  "text": "Công nhận là đôi Vans Old Skool White này đẹp và rẻ hết sức, đi rất là êm chân, không bị đau, bên shop tư vấn nhiệt tình phết keke",
+  "likes": [
+    {
+      "user": 2
+    },
+    {
+      "user": 2
+    }
+  ],
+  "reply": "651ad155b3248974855579fd",
+  "created_at": {
+    "$date": "2023-10-02T14:26:18.257Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651b61f47cb0d3435ade3799"
+  },
+  "product": 1,
+  "user": 2,
+  "text": "Bình luận đánh giá tích cực! Sản phẩm đáp ứng mọi kỳ vọng của tôi, và dịch vụ giao hàng rất chuyên nghiệp.",
+  "likes": [
+    {
+      "user": 2
+    },
+    {
+      "user": 6
+    }
+  ],
+  "reply": "",
+  "created_at": {
+    "$date": "2023-10-02T14:26:18.257Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651b767e4a9ae6727737516d"
+  },
+  "product": 2,
+  "user": 6,
+  "text": "Mình đã mua sản phẩm này cho người thân và cũng thấy rất hài lòng với sản phẩm này!",
+  "likes": [
+    {
+      "user": 1
+    },
+    {
+      "user": 2
+    }
+  ],
+  "reply": "",
+  "created_at": {
+    "$date": "2023-10-03T02:03:42.350Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651cf86726af21bca50d56b3"
+  },
+  "product": 2,
+  "user": 1,
+  "text": "test 1",
+  "likes": [],
+  "reply": "",
+  "updated_at": {
+    "$date": "2023-10-04T05:30:15.604Z"
+  },
+  "created_at": {
+    "$date": "2023-10-04T05:30:15.604Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651d053f26af21bca50d56b5"
+  },
+  "product": 2,
+  "user": 1,
+  "text": "test 9",
+  "likes": [],
+  "reply": "",
+  "updated_at": {
+    "$date": "2023-10-04T07:37:58.055Z"
+  },
+  "created_at": {
+    "$date": "2023-10-04T06:25:03.305Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "651d05d526af21bca50d56b7"
+  },
+  "product": 2,
+  "user": 1,
+  "text": "test 5",
+  "likes": [
+    {
+      "user": 1
+    }
+  ],
+  "reply": "651d053f26af21bca50d56b5",
+  "updated_at": {
+    "$date": "2023-10-04T07:31:49.831Z"
+  },
+  "created_at": {
+    "$date": "2023-10-04T06:27:33.497Z"
+  }
+}]

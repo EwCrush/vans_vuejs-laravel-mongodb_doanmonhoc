@@ -146,6 +146,17 @@ const admin = [
                 component: () => import ("../pages/contact.vue")
             },
             {
+                path: "order",
+                name: "order",
+                component: () => import ("../pages/users/order.vue"),
+                beforeEnter: (to, from, next) => {
+                    if(!localStorage.getItem("token")){
+                        next({ name: 'shop' })
+                    }
+                    else next()
+                },
+            },
+            {
                 path: "login",
                 name: "login",
                 component: () => import ("../pages/login.vue"),

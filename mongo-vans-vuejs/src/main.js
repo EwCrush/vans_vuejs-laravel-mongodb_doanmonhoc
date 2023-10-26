@@ -23,9 +23,9 @@ import App from "./App.vue";
 import axios from "axios";
 window.axios = axios;
 
-import vue3GoogleLogin from "vue3-google-login";
-const CLIENT_ID =
-  "180080061879-2nhkoqn4jcff8sgmfum7b6pqifcga919.apps.googleusercontent.com";
+// import vue3GoogleLogin from "vue3-google-login";
+// const CLIENT_ID =
+//   "180080061879-6loc3ajv7m5kufdsnouumourrt3f2stn.apps.googleusercontent.com";
 
 import "ant-design-vue/dist/reset.css";
 import "./assets/styles/app.css";
@@ -50,7 +50,7 @@ app.use(Modal);
 app.use(Avatar);
 app.use(Popover);
 app.use(Badge);
-app.use(vue3GoogleLogin, { clientId: CLIENT_ID });
+// app.use(vue3GoogleLogin, { clientId: CLIENT_ID });
 app.use(pinia);
 app.mount("#app");
 

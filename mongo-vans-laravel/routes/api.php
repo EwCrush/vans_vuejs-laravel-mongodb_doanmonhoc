@@ -9,6 +9,7 @@ use App\Http\Controllers\UsersController;
 use App\Http\Controllers\CommentsController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\NotificationController;
 
 /*
 |--------------------------------------------------------------------------
@@ -67,8 +68,15 @@ Route::middleware('auth:sanctum')->group(function (){
 
     //order auth
     Route::get('/orders', [OrderController::class, 'show']);
+    Route::get('/orders/user', [OrderController::class, 'showWithUser']);
+    Route::get('/orders/user/chart', [OrderController::class, 'showChartFromUser']);
+    Route::delete('/orders/user/{id}', [OrderController::class, 'deleteOrder']);
     Route::get('/orders/get/{id}', [OrderController::class, 'getItemsByID']);
     Route::put('/orders/{id}', [OrderController::class, 'editOrder']);
+
+    //notification auth
+    Route::get('/notifications', [NotificationController::class, 'show']);
+    Route::put('/notifications/{id}', [NotificationController::class, 'read']);
 });
 
 //category

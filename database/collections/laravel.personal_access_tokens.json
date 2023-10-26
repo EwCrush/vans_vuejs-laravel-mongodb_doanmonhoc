@@ -1,0 +1,20 @@
+[{
+  "_id": {
+    "$oid": "65256397c223fbf39f070e82"
+  },
+  "name": "authToken",
+  "token": "c3011b80b787610a23792038ee67fe311391afb4b277a9bfdfc1d1f504c4a7e9",
+  "abilities": "[\"*\"]",
+  "expires_at": null,
+  "tokenable_id": 1,
+  "tokenable_type": "App\\Models\\User",
+  "updated_at": {
+    "$date": "2023-10-10T14:45:44.464Z"
+  },
+  "created_at": {
+    "$date": "2023-10-10T14:45:43.631Z"
+  },
+  "last_used_at": {
+    "$date": "2023-10-10T14:45:44.464Z"
+  }
+}]

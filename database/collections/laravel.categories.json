@@ -1,0 +1,53 @@
+[{
+  "_id": 1,
+  "categoryname": "Old Skool"
+},
+{
+  "_id": 2,
+  "categoryname": "Era"
+},
+{
+  "_id": 3,
+  "categoryname": "Authentic"
+},
+{
+  "_id": 4,
+  "categoryname": "Slip On"
+},
+{
+  "_id": 5,
+  "categoryname": "Vault"
+},
+{
+  "_id": 6,
+  "categoryname": "SK8"
+},
+{
+  "_id": 7,
+  "categoryname": "Classic"
+},
+{
+  "_id": 8,
+  "categoryname": "Accessories & apparel"
+},
+{
+  "_id": 9,
+  "categoryname": "zzzzz",
+  "updated_at": {
+    "$date": "2023-09-22T13:50:11.813Z"
+  }
+},
+{
+  "_id": 10,
+  "categoryname": "test put",
+  "updated_at": {
+    "$date": "2023-09-23T05:54:34.837Z"
+  }
+},
+{
+  "_id": 11,
+  "categoryname": "test123put",
+  "updated_at": {
+    "$date": "2023-09-28T13:59:37.342Z"
+  }
+}]

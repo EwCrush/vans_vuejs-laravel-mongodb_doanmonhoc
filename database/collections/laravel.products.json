@@ -1,0 +1,698 @@
+[{
+  "_id": 1,
+  "productname": "Vans Old Skool Black White",
+  "originalprice": 1850000,
+  "sellingprice": 1665000,
+  "thumbnail": "os-1.jpg",
+  "images": [
+    {
+      "filename": "os-2.jpg"
+    },
+    {
+      "filename": "os-3.jpg"
+    },
+    {
+      "filename": "os-4.jpg"
+    }
+  ],
+  "category": 1,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    }
+  ]
+},
+{
+  "_id": 2,
+  "productname": "Vans Old Skool White",
+  "originalprice": 1750000,
+  "sellingprice": 1575000,
+  "thumbnail": "osw-1.jpg",
+  "images": [
+    {
+      "filename": "osw-2.jpg"
+    },
+    {
+      "filename": "osw-3.jpg"
+    },
+    {
+      "filename": "osw-4.jpg"
+    }
+  ],
+  "category": 1,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 3,
+  "productname": "Vans Old Skool Navy",
+  "originalprice": 1750000,
+  "sellingprice": 1575000,
+  "thumbnail": "osn-1.jpg",
+  "images": [
+    {
+      "filename": "osn-2.jpg"
+    },
+    {
+      "filename": "osn-3.jpg"
+    },
+    {
+      "filename": "osn-4.jpg"
+    }
+  ],
+  "category": 1,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    },
+    {
+      "size": "43",
+      "quantity": 90
+    }
+  ]
+},
+{
+  "_id": 4,
+  "productname": "Vans Old Skool Checkerboard",
+  "originalprice": 1750000,
+  "sellingprice": 1575000,
+  "thumbnail": "osc-1.jpg",
+  "images": [
+    {
+      "filename": "osc-2.jpg"
+    },
+    {
+      "filename": "osc-3.jpg"
+    },
+    {
+      "filename": "osc-4.jpg"
+    }
+  ],
+  "category": 1,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 5,
+  "productname": "Vans Era Black White",
+  "originalprice": 1450000,
+  "sellingprice": 1305000,
+  "thumbnail": "era-1.jpg",
+  "images": [
+    {
+      "filename": "era-2.jpg"
+    },
+    {
+      "filename": "era-3.jpg"
+    },
+    {
+      "filename": "era-4.jpg"
+    }
+  ],
+  "category": 2,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 6,
+  "productname": "Vans Authentic Black",
+  "originalprice": 1450000,
+  "sellingprice": 1305000,
+  "thumbnail": "ab-1.jpg",
+  "images": [
+    {
+      "filename": "ab-2.jpg"
+    },
+    {
+      "filename": "ab-3.jpg"
+    },
+    {
+      "filename": "ab-4.jpg"
+    }
+  ],
+  "category": 3,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 7,
+  "productname": "Vans Authentic Black White",
+  "originalprice": 1450000,
+  "sellingprice": 1305000,
+  "thumbnail": "abw-1.jpg",
+  "images": [
+    {
+      "filename": "abw-2.jpg"
+    },
+    {
+      "filename": "abw-3.jpg"
+    },
+    {
+      "filename": "abw-4.jpg"
+    }
+  ],
+  "category": 3,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 8,
+  "productname": "Vans Authentic White",
+  "originalprice": 1450000,
+  "sellingprice": 1305000,
+  "thumbnail": "aw-1.jpg",
+  "images": [
+    {
+      "filename": "aw-2.jpg"
+    },
+    {
+      "filename": "aw-3.jpg"
+    },
+    {
+      "filename": "aw-4.jpg"
+    }
+  ],
+  "category": 3,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 9,
+  "productname": "Vans SK8-Hi Black White",
+  "originalprice": 1950000,
+  "sellingprice": 1755000,
+  "thumbnail": "sk8-1.jpg",
+  "images": [
+    {
+      "filename": "sk8-2.jpg"
+    },
+    {
+      "filename": "sk8-3.jpg"
+    },
+    {
+      "filename": "sk8-4.jpg"
+    }
+  ],
+  "category": 6,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 10,
+  "productname": "Vans SK8-Hi White",
+  "originalprice": 2000000,
+  "sellingprice": 1800000,
+  "thumbnail": "sk8w-1.jpg",
+  "images": [
+    {
+      "filename": "sk8w-2.jpg"
+    },
+    {
+      "filename": "sk8w-3.jpg"
+    },
+    {
+      "filename": "sk8w-4.jpg"
+    }
+  ],
+  "category": 6,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 11,
+  "productname": "Vans Slip On Checkerboard",
+  "originalprice": 1450000,
+  "sellingprice": 1305000,
+  "thumbnail": "soc-1.jpg",
+  "images": [
+    {
+      "filename": "soc-2.jpg"
+    },
+    {
+      "filename": "soc-3.jpg"
+    },
+    {
+      "filename": "soc-4.jpg"
+    }
+  ],
+  "category": 4,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 12,
+  "productname": "Vans Slip On Black White",
+  "originalprice": 1450000,
+  "sellingprice": 1305000,
+  "thumbnail": "so-1.jpg",
+  "images": [
+    {
+      "filename": "so-2.jpg"
+    },
+    {
+      "filename": "so-3.jpg"
+    },
+    {
+      "filename": "so-4.jpg"
+    }
+  ],
+  "category": 4,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 13,
+  "productname": "Vans Slip On Black",
+  "originalprice": 1450000,
+  "sellingprice": 1305000,
+  "thumbnail": "sob-1.jpg",
+  "images": [
+    {
+      "filename": "sob-2.jpg"
+    },
+    {
+      "filename": "sob-3.jpg"
+    },
+    {
+      "filename": "sob-4.jpg"
+    }
+  ],
+  "category": 4,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 14,
+  "productname": "Vans Slip On White",
+  "originalprice": 1450000,
+  "sellingprice": 1305000,
+  "thumbnail": "sow-1.jpg",
+  "images": [
+    {
+      "filename": "sow-2.jpg"
+    },
+    {
+      "filename": "sow-3.jpg"
+    },
+    {
+      "filename": "sow-4.jpg"
+    }
+  ],
+  "category": 4,
+  "subcategory": 7,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 15,
+  "productname": "Vans Vault Old Skool LX – Bonnie Blue",
+  "originalprice": 2500000,
+  "sellingprice": 1800000,
+  "thumbnail": "vaultosblue-1.jpg",
+  "images": [
+    {
+      "filename": "vaultosblue-2.jpg"
+    },
+    {
+      "filename": "vaultosblue-3.jpg"
+    },
+    {
+      "filename": "vaultosblue-4.jpg"
+    }
+  ],
+  "category": 1,
+  "subcategory": 5,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 16,
+  "productname": "Vans Vault OG Style 36 LX – Red Orange",
+  "originalprice": 2000000,
+  "sellingprice": 1500000,
+  "thumbnail": "vaultosorange-1.jpg",
+  "images": [
+    {
+      "filename": "vaultosorange-2.jpg"
+    },
+    {
+      "filename": "vaultosorange-3.jpg"
+    }
+  ],
+  "category": 1,
+  "subcategory": 5,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 17,
+  "productname": "Vans Vault Old Skool LX – Chili Pepper",
+  "originalprice": 2500000,
+  "sellingprice": 2500000,
+  "thumbnail": "vaultoschili-1.jpg",
+  "images": [
+    {
+      "filename": "vaultoschili-2.jpg"
+    },
+    {
+      "filename": "vaultoschili-3.jpg"
+    },
+    {
+      "filename": "vaultoschili-4.jpg"
+    }
+  ],
+  "category": 1,
+  "subcategory": 5,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 18,
+  "productname": "Vans Vault OG Old Skool LX – White/Black",
+  "originalprice": 2500000,
+  "sellingprice": 2500000,
+  "thumbnail": "vaultosbw-1.jpg",
+  "images": [
+    {
+      "filename": "vaultosbw-2.jpg"
+    },
+    {
+      "filename": "vaultosbw-3.jpg"
+    },
+    {
+      "filename": "vaultosbw-4.jpg"
+    }
+  ],
+  "category": 1,
+  "subcategory": 5,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 19,
+  "productname": "Vans Vault OG Slip On Checkerboard – White/Black",
+  "originalprice": 2350000,
+  "sellingprice": 2350000,
+  "thumbnail": "vaultsoc-1.jpg",
+  "images": [
+    {
+      "filename": "vaultsoc-2.jpg"
+    },
+    {
+      "filename": "vaultsoc-3.jpg"
+    },
+    {
+      "filename": "vaultsoc-4.jpg"
+    }
+  ],
+  "category": 1,
+  "subcategory": 5,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 20,
+  "productname": "Vans Era Daisy",
+  "originalprice": 2150000,
+  "sellingprice": 1500000,
+  "thumbnail": "eradaisy-1.jpg",
+  "images": [
+    {
+      "filename": "eradaisy-2.jpg"
+    },
+    {
+      "filename": "eradaisy-3.jpg"
+    },
+    {
+      "filename": "eradaisy-4.jpg"
+    }
+  ],
+  "category": 2,
+  "subcategory": 2,
+  "sizes": [
+    {
+      "size": "40",
+      "quantity": 100
+    },
+    {
+      "size": "40.5",
+      "quantity": 100
+    },
+    {
+      "size": "41",
+      "quantity": 0
+    }
+  ]
+},
+{
+  "_id": 21,
+  "productname": "SSSSSSSS",
+  "originalprice": 1231321,
+  "sellingprice": 31231,
+  "thumbnail": "1695882453597_defaultimg.png",
+  "images": [],
+  "category": 2,
+  "subcategory": 4,
+  "sizes": []
+},
+{
+  "_id": 22,
+  "productname": "Test",
+  "originalprice": 123456,
+  "sellingprice": 123456,
+  "thumbnail": "1696947592194_download.png",
+  "images": [],
+  "category": 8,
+  "subcategory": 7,
+  "sizes": [],
+  "updated_at": {
+    "$date": "2023-10-10T14:20:24.950Z"
+  }
+}]

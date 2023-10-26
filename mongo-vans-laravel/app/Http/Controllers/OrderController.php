@@ -39,6 +39,51 @@ class OrderController extends Controller
         else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
     }
 
+    public function showWithUser(Request $request){
+        $data = Bill::where('status', '!=', 'cart')
+        ->where('user', $request->user()->_id)
+        ->when($request->filled('status'), function ($query) use ($request) {
+            $status = $request->query('status');
+            switch ($status) {
+                case 'intransit':
+                    return $query->where('status', 'in transit');
+                case 'failed':
+                    return $query->where('status', 'failed');
+                case 'completed':
+                    return $query->where('status', 'completed');
+                case 'confirmationpending':
+                    return $query->where('status', 'confirmation pending');
+                case 'processing':
+                    return $query->where('status', 'processing');
+            }
+        })
+        ->orderBy('updated_at', 'DESC')
+        ->orderBy('status')
+        ->get();
+
+        return response()->json($data, 200);
+    }
+
+    public function showChartFromUser(Request $request){
+        $id = $request->user()->_id;
+        $data = [
+            'failed' => Bill::where('user', $id)->where('status', 'failed')->count(),
+            'completed' => Bill::where('user', $id)->where('status', 'completed')->count(),
+            'total_amount_completed' => Bill::where('user', $id)->where('status', 'completed')->sum('total'),
+        ];
+        return response()->json($data, 200);
+    }
+
+    public function deleteOrder(Request $request, $id){
+        $user = $request->user()->_id;
+        $order = Bill::where('_id', $id)->first();
+        if($order->user == $user){
+            $order->delete();
+            return response()->json(['status'=> 200, 'message'=>'Hủy đặt hàng thành công!'], 200);
+        }
+        else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
+    }
+
     public function getItemsByID($id, Request $request){
         $role = $request->user()->role;
         if($role=="admin"){

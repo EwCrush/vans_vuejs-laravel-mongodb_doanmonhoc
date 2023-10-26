@@ -1,0 +1,57 @@
+[{
+  "_id": 1,
+  "fullname": "Nguyễn Thành Văn",
+  "address": "Mỹ Hạnh Nam, Đức Hòa, Long An",
+  "phonenumber": "0383633081",
+  "email": "ntvan39a7@gmail.com",
+  "avatar": "anhconmeo.jpg",
+  "username_account": "admin",
+  "password_account": "$2y$10$dT1FD5oHJNr949H2cXvJx.rBF1sZoP9b1zg6I2Zsx4NgmqUyALYYO",
+  "role": "admin",
+  "updated_at": {
+    "$date": "2023-10-07T14:27:11.257Z"
+  },
+  "OTP": ""
+},
+{
+  "_id": 2,
+  "fullname": "Hứa Hiền Vinh",
+  "address": "Gần công ty Vĩnh Thịnh, Xã Xuân Thới Sơn, Huyện Hóc Môn, Thành phố Hồ Chí Minh",
+  "phonenumber": "0123455588",
+  "email": "40.huahienvinh97@gmail.com",
+  "avatar": "1696949081311_download.png",
+  "username_account": "vinh",
+  "password_account": "$2y$10$xPJLJwFtKxRdkA0dLxbeZuKpXlMKAOzYoaobcCBARZiTdf8BU9v3a",
+  "role": "user",
+  "updated_at": {
+    "$date": "2023-10-10T14:44:42.814Z"
+  },
+  "OTP": ""
+},
+{
+  "_id": 6,
+  "fullname": "Thanh Van",
+  "address": "Xã Xín Cái, Huyện Mèo Vạc, Tỉnh Hà Giang",
+  "phonenumber": "0123321123",
+  "email": "ntvan39a272@gmail.com",
+  "avatar": "1695882756794_download.png",
+  "username_account": "vansdasda",
+  "password_account": "$2y$10$zyMe2xIhYSIFy7.l9CLeA.ye3dhrfZdq0sOV.zqsIfg.EpY8/0Jlm",
+  "role": "user",
+  "updated_at": {
+    "$date": "2023-09-28T14:36:49.845Z"
+  },
+  "OTP": ""
+},
+{
+  "_id": 7,
+  "fullname": "Test Thu",
+  "address": "Phường Phúc Xá, Quận Ba Đình, Thành phố Hà Nội",
+  "phonenumber": "0123123123",
+  "email": "test@gmail.com",
+  "avatar": "1696688695236_download.png",
+  "username_account": "testthu",
+  "password_account": "$2y$10$k51kiGuzuSR0WHTjFX1mN.fW.KfOTHFNVJ5Afv4c9Tx8CCrx7ZY5q",
+  "role": "user",
+  "OTP": ""
+}]

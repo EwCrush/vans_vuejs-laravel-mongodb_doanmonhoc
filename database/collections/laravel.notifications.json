@@ -1,0 +1,64 @@
+[{
+  "_id": {
+    "$oid": "653a4a830d677272e70655e3"
+  },
+  "from": 2,
+  "to": 6,
+  "comment": "651b767e4a9ae6727737516d",
+  "type": "like",
+  "status": "unread",
+  "updated_at": {
+    "$date": "2023-10-26T11:16:19.049Z"
+  },
+  "created_at": {
+    "$date": "2023-10-26T11:16:19.049Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "653a4a840d677272e70655e4"
+  },
+  "from": 2,
+  "to": 1,
+  "comment": "651ad30ab3248974855579fe",
+  "type": "like",
+  "status": "seen",
+  "updated_at": {
+    "$date": "2023-10-26T11:16:20.999Z"
+  },
+  "created_at": {
+    "$date": "2023-10-26T11:16:20.999Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "653a4a870d677272e70655e5"
+  },
+  "from": 2,
+  "to": 7,
+  "comment": "6538b0635d0dd609480cad28",
+  "type": "like",
+  "status": "unread",
+  "updated_at": {
+    "$date": "2023-10-26T11:16:23.489Z"
+  },
+  "created_at": {
+    "$date": "2023-10-26T11:16:23.489Z"
+  }
+},
+{
+  "_id": {
+    "$oid": "653a4b0b0d677272e70655ee"
+  },
+  "from": 2,
+  "to": 1,
+  "comment": "653a4b0b0d677272e70655ed",
+  "type": "reply",
+  "status": "seen",
+  "updated_at": {
+    "$date": "2023-10-26T11:18:35.693Z"
+  },
+  "created_at": {
+    "$date": "2023-10-26T11:18:35.693Z"
+  }
+}]

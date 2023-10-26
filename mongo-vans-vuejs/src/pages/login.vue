@@ -255,7 +255,7 @@
 <script>
 import { defineComponent, reactive, ref, toRefs } from "vue";
 import { useRouter } from "vue-router";
-import { googleAuthCodeLogin } from "vue3-google-login";
+// import { googleAuthCodeLogin } from "vue3-google-login";
 import { ref as fbref, getDownloadURL } from "firebase/storage";
 import { storage } from "../firebase";
 export default defineComponent({
@@ -394,13 +394,13 @@ export default defineComponent({
     };
 
     const SignInWithGoogle = () => {
-      googleAuthCodeLogin()
-        .then((response) => {
-          console.log("Handle the response", response);
-        })
-        .catch(function (error) {
-          console.log(error);
-        });
+      // googleAuthCodeLogin()
+      //   .then((response) => {
+      //     console.log("Handle the response", response);
+      //   })
+      //   .catch(function (error) {
+      //     console.log(error);
+      //   });
     };
     return {
       SignIn,
