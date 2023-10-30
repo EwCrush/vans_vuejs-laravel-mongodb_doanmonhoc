@@ -28,6 +28,22 @@
           <span>{{ record.sellingprice.toLocaleString() }}đ</span>
         </template>
         <template v-if="column.key == 'action'">
+          <span
+            v-if="record.status == 'public'"
+            class="text-green mr-4 cursor-pointer"
+            title="Ẩn sản phẩm"
+            @click="setStatus(record._id)"
+          >
+          <i class="fa-solid fa-eye-slash"></i>
+          </span>
+          <span
+            v-if="record.status == 'private'"
+            class="text-green mr-4 cursor-pointer"
+            title="Công khai sản phẩm"
+            @click="setStatus(record._id)"
+          >
+          <i class="fa-solid fa-eye"></i>
+          </span>
           <span class="text-primary mr-4 cursor-pointer" title="Thư viện ảnh">
             <router-link
               :to="{
@@ -169,9 +185,15 @@ export default defineComponent({
         width: 180,
       },
       {
+        title: "Trạng thái",
+        dataIndex: "status",
+        key: "status",
+        width: 100,
+      },
+      {
         title: "Thao tác",
         key: "action",
-        width: 150,
+        width: 180,
         fixed: "right",
       },
     ];
@@ -258,6 +280,29 @@ export default defineComponent({
       //keywordFromInput.value = keyword_text;
     }
 
+    const setStatus = async (id) => {
+      try {
+        const url = "http://127.0.0.1:8000/api/products/status/" + id;
+        const response = await axios.put(url, undefined, {
+          headers: { Authorization: `Bearer ${token.access_token}` },
+        });
+        Swal.fire({
+          position: "center",
+          icon: "success",
+          title: "Dữ liệu đã được lưu!",
+          showConfirmButton: false,
+          timer: 2000,
+        });
+        getAllProducts(keyword);
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: error.response.data.message,
+        });
+      }
+    }
+
     function deleteData(id) {
       Swal.fire({
         title: "Bạn chắc chứ?",
@@ -297,7 +342,7 @@ export default defineComponent({
               Swal.fire({
                 icon: "error",
                 title: "Oops...",
-                text: error.message,
+                text: error.response.data.message,
               });
             });
         }
@@ -321,6 +366,7 @@ export default defineComponent({
       searchData,
       deleteData,
       componentKey,
+      setStatus,
     };
   },
 });

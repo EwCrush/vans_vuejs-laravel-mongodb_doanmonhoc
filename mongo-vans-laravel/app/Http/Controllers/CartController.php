@@ -96,6 +96,40 @@ class CartController extends Controller
                                             'quantity' => $quantity,
                                             'amount' => $productinfo->sellingprice*$quantity));
             }
+            //update so luong size san pham
+            $productwithsize = Product::raw((function($collection) use($product, $size) {
+                return $collection->aggregate([
+                    [
+                        '$match' => [
+                                '_id' => [ '$eq' => (int)$product],
+                                'sizes.size' => $size
+                        ],
+                    ],
+                    [
+                        '$unwind' => '$sizes'
+                    ],
+                    [
+                        '$match' => [
+                                '_id' => [ '$eq' => (int)$product],
+                                'sizes.size' => $size
+                        ],
+                    ],
+                    [
+                        '$project' => [
+                            '_id' => 0,
+                            'size' => '$sizes.size',
+                            'quantity' => '$sizes.quantity',
+                        ]
+                    ],
+                ]);
+            }));
+
+            Product::where("_id", $product)
+            ->pull('sizes', array( 'size' => $size));
+            Product::where("_id", $product)
+            ->push('sizes', array( 'size' => $size, 'quantity' => ($productwithsize[0]['quantity'] - $quantity)));
+
+            //update tong tien
             $cartForUpdateTotal = Bill::raw(function($collection) use ($request) {
                 return $collection->aggregate([
                     [
@@ -247,8 +281,9 @@ class CartController extends Controller
         $product = $request->product;
         $size = $request->size;
         $quantity = $request->quantity;
-        $checksize = Product::where("_id", $product)
-        ->where('sizes', 'elemMatch', ['size'=>$size, 'quantity' => ['$gte' => $quantity]])->first();
+        $newQuantitySize = 0;
+        $newCheckQuantitySize = 0;
+        $checksize = Product::where("_id", $product)->where('sizes', 'elemMatch', ['size'=>$size])->first();
         if($checksize){
             //lay ra thong tin product
             $productinfo = Product::where('_id', $product)->first();
@@ -308,54 +343,97 @@ class CartController extends Controller
                 });
 
                 $oldItem = $collection[0];
-                //thay doi so luong, gia tien
-                $cart->pull('items', array( 'productid' => $product, 'size' => $size));
-                $cart->push('items', array('productid' => $product,
-                                            'productname' => $productinfo->productname,
-                                            'image' => $productinfo->thumbnail,
-                                            'size' => $size,
-                                            'price' => $productinfo->sellingprice,
-                                            'quantity' => $quantity,
-                                            'amount' => $productinfo->sellingprice*$quantity));
-            }
-            else{
-                //them san pham
-                $cart->push('items', array('productid' => $product,
-                                            'productname' => $productinfo->productname,
-                                            'image' => $productinfo->thumbnail,
-                                            'size' => $size,
-                                            'price' => $productinfo->sellingprice,
-                                            'quantity' => $quantity,
-                                            'amount' => $productinfo->sellingprice*$quantity));
-            }
-            $cartForUpdateTotal = Bill::raw(function($collection) use ($request) {
-                return $collection->aggregate([
-                    [
-                        '$match' => [
-                            'user' => $request->user()->_id,
-                            'status' => 'cart',
-                        ],
-                    ],
-                    [
-                        '$sort' => ['created_at' => -1]
-                    ],
-                    [
-                        '$limit' => 1
-                    ],
-                ]);
-            });
+                //kiem tra tang hay giam so luong
+                if($oldItem->quantity < $quantity){
+                    $newQuantitySize = - abs($oldItem->quantity - $quantity);
+                    $newCheckQuantitySize = abs($oldItem->quantity - $quantity);
+                }
+                else{
+                    $newQuantitySize = abs($oldItem->quantity - $quantity);
+                    $newCheckQuantitySize = 0;
+                }
+                $checksizewithQuantity = Product::where("_id", $product)
+                ->where('sizes', 'elemMatch', ['size'=>$size, 'quantity' => ['$gte' => $newCheckQuantitySize]])->first();
+                if($checksizewithQuantity){
+                    //thay doi so luong, gia tien
+                    $cart->pull('items', array( 'productid' => $product, 'size' => $size));
+                    $cart->push('items', array('productid' => $product,
+                                                'productname' => $productinfo->productname,
+                                                'image' => $productinfo->thumbnail,
+                                                'size' => $size,
+                                                'price' => $productinfo->sellingprice,
+                                                'quantity' => $quantity,
+                                                'amount' => $productinfo->sellingprice*$quantity));
+                    //update so luong size san pham
+                    $productwithsize = Product::raw((function($collection) use($product, $size) {
+                        return $collection->aggregate([
+                            [
+                                '$match' => [
+                                        '_id' => [ '$eq' => (int)$product],
+                                        'sizes.size' => $size
+                                ],
+                            ],
+                            [
+                                '$unwind' => '$sizes'
+                            ],
+                            [
+                                '$match' => [
+                                        '_id' => [ '$eq' => (int)$product],
+                                        'sizes.size' => $size
+                                ],
+                            ],
+                            [
+                                '$project' => [
+                                    '_id' => 0,
+                                    'size' => '$sizes.size',
+                                    'quantity' => '$sizes.quantity',
+                                ]
+                            ],
+                        ]);
+                    }));
 
-            $totalAmount = 0;
-            $totalItem = 0;
-            foreach ($cartForUpdateTotal[0]->items as $item) {
-                $totalAmount += $item['amount'];
-                $totalItem += 1;
+                    Product::where("_id", $product)
+                    ->pull('sizes', array( 'size' => $size));
+                    Product::where("_id", $product)
+                    ->push('sizes', array( 'size' => $size, 'quantity' => ($productwithsize[0]['quantity'] + $newQuantitySize)));
+
+                    //update tong tien
+                    $cartForUpdateTotal = Bill::raw(function($collection) use ($request) {
+                        return $collection->aggregate([
+                            [
+                                '$match' => [
+                                    'user' => $request->user()->_id,
+                                    'status' => 'cart',
+                                ],
+                            ],
+                            [
+                                '$sort' => ['created_at' => -1]
+                            ],
+                            [
+                                '$limit' => 1
+                            ],
+                        ]);
+                    });
+
+                    $totalAmount = 0;
+                    $totalItem = 0;
+                    foreach ($cartForUpdateTotal[0]->items as $item) {
+                        $totalAmount += $item['amount'];
+                        $totalItem += 1;
+                    }
+                    $cartForUpdateTotal[0]->update(['shippingcost' => $totalItem*15000,'total' => $totalAmount+($totalItem*15000)]);
+                    return response()->json(['status'=> 200, 'message'=>'Đã cập nhật giỏ hàng'], 200);
+                }
+                else {
+                    return response()->json(['status'=> 404, 'message'=>'Sản phẩm đã hết hàng!'], 404);
+                }
             }
-            $cartForUpdateTotal[0]->update(['shippingcost' => $totalItem*15000,'total' => $totalAmount+($totalItem*15000)]);
-            return response()->json(['status'=> 200, 'message'=>'Đã cập nhật giỏ hàng'], 200);
+            else {
+                return response()->json(['status'=> 404, 'message'=>'Sản phẩm không tồn tại trong giỏ hàng!'], 404);
+            }
         }
         else{
-            return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại!'], 404);
+            return response()->json(['status'=> 404, 'message'=>'Sản phẩm không tồn tại!'], 404);
         }
     }
 

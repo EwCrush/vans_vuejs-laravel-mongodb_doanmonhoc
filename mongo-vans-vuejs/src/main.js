@@ -22,6 +22,7 @@ import {
 import App from "./App.vue";
 import axios from "axios";
 window.axios = axios;
+import VueGoogleCharts from 'vue-google-charts'
 
 // import vue3GoogleLogin from "vue3-google-login";
 // const CLIENT_ID =
@@ -50,6 +51,7 @@ app.use(Modal);
 app.use(Avatar);
 app.use(Popover);
 app.use(Badge);
+app.use(VueGoogleCharts);
 // app.use(vue3GoogleLogin, { clientId: CLIENT_ID });
 app.use(pinia);
 app.mount("#app");

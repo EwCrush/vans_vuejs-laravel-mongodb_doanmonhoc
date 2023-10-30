@@ -51,6 +51,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::post('/products', [ProductsController::class, 'storeProduct']);
     Route::put('/products/{id}', [ProductsController::class, 'editProduct']);
     Route::delete('/products/{id}', [ProductsController::class, 'deleteProduct']);
+    Route::put('/products/status/{id}', [ProductsController::class, 'editProductStatus']);
 
     //comment auth
     Route::put('/comments/likes/{id}', [CommentsController::class, 'like']);
@@ -72,6 +73,7 @@ Route::middleware('auth:sanctum')->group(function (){
     Route::get('/orders/user/chart', [OrderController::class, 'showChartFromUser']);
     Route::delete('/orders/user/{id}', [OrderController::class, 'deleteOrder']);
     Route::get('/orders/get/{id}', [OrderController::class, 'getItemsByID']);
+    Route::get('/orders/charts', [OrderController::class, 'charts']);
     Route::put('/orders/{id}', [OrderController::class, 'editOrder']);
 
     //notification auth

@@ -19,14 +19,15 @@
   "subcategory": 7,
   "sizes": [
     {
-      "size": "40",
+      "size": "40.5",
       "quantity": 100
     },
     {
-      "size": "40.5",
-      "quantity": 100
+      "size": "40",
+      "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 2,
@@ -60,7 +61,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 3,
@@ -83,18 +85,19 @@
   "subcategory": 7,
   "sizes": [
     {
-      "size": "40",
-      "quantity": 100
-    },
-    {
       "size": "41",
       "quantity": 0
     },
     {
       "size": "43",
-      "quantity": 90
+      "quantity": 85
+    },
+    {
+      "size": "40",
+      "quantity": 99
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 4,
@@ -128,7 +131,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 5,
@@ -162,7 +166,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 6,
@@ -196,7 +201,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 7,
@@ -230,7 +236,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 8,
@@ -264,7 +271,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 9,
@@ -298,7 +306,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 10,
@@ -332,7 +341,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 11,
@@ -366,7 +376,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 12,
@@ -400,7 +411,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 13,
@@ -434,7 +446,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 14,
@@ -468,7 +481,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 15,
@@ -502,7 +516,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 16,
@@ -533,7 +548,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 17,
@@ -567,7 +583,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 18,
@@ -601,7 +618,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 19,
@@ -635,7 +653,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 20,
@@ -669,7 +688,8 @@
       "size": "41",
       "quantity": 0
     }
-  ]
+  ],
+  "status": "public"
 },
 {
   "_id": 21,
@@ -680,7 +700,8 @@
   "images": [],
   "category": 2,
   "subcategory": 4,
-  "sizes": []
+  "sizes": [],
+  "status": "public"
 },
 {
   "_id": 22,
@@ -694,5 +715,21 @@
   "sizes": [],
   "updated_at": {
     "$date": "2023-10-10T14:20:24.950Z"
+  },
+  "status": "public"
+},
+{
+  "_id": 24,
+  "productname": "Test New Status",
+  "originalprice": 1111111,
+  "sellingprice": 1111111,
+  "thumbnail": "1698548102914_default.jpg",
+  "images": [],
+  "category": 1,
+  "subcategory": 1,
+  "sizes": [],
+  "status": "private",
+  "updated_at": {
+    "$date": "2023-10-29T03:08:04.634Z"
   }
 }]

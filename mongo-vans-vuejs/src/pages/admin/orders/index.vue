@@ -313,17 +313,17 @@ export default defineComponent({
     const goToPage = async (number) => {
       try {
         const response = await axios.get(
-          "http://127.0.0.1:8000/api/orders?status=" +
-            status.value +
-            "?page=" +
-            number,
+          "http://127.0.0.1:8000/api/orders?status=" + status.value+"&page="+number,
           {
             headers: { Authorization: `Bearer ${token.access_token}` },
           }
         );
         orders.value = response.data.data;
+        firstPage_url.value = response.data.first_page_url;
+        lastPage_url.value = response.data.last_page_url;
         nextPage_url.value = response.data.next_page_url;
         prevPage_url.value = response.data.prev_page_url;
+        lastPage.value = response.data.last_page;
         currentPage.value = response.data.current_page;
       } catch (error) {
         console.log(error);

@@ -133,4 +133,132 @@ class OrderController extends Controller
         }
         else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
     }
+
+    public function charts(Request $request){
+        $filter = $request->query('filter') ? $request->query('filter') : 'sevendays';
+        switch($filter){
+            case 'sevendays':
+                $startDate = new \MongoDB\BSON\UTCDateTime(\now()->subDays(7));
+                $endDate = new \MongoDB\BSON\UTCDateTime(\now());
+                $idField = [
+                    '$dateToString' => [
+                        'format' => '%d-%m-%Y',
+                        'date' => '$updated_at',
+                        'timezone' => 'Asia/Ho_Chi_Minh'
+                    ]
+                ];
+            break;
+            case 'month-week':
+                $startDate = new \MongoDB\BSON\UTCDateTime(\now()->startOfMonth());
+                $endDate = new \MongoDB\BSON\UTCDateTime(\now()->endOfMonth());
+                $idField = ['week' => ['$week' => '$updated_at']];
+            break;
+            case 'month-day':
+                $startDate = new \MongoDB\BSON\UTCDateTime(\now()->startOfMonth());
+                $endDate = new \MongoDB\BSON\UTCDateTime(\now()->endOfMonth());
+                $idField = [['_id' => ['$dayOfMonth' => '$updated_at']]];
+            break;
+            case 'quarter-week':
+                $currentMonth = now()->month;
+                if ($currentMonth >= 1 && $currentMonth <= 3) {
+                    // Quý 1
+                    $quarterStartDate = now()->startOfYear();
+                    $quarterEndDate = now()->startOfYear()->addMonths(2)->endOfMonth();
+                } elseif ($currentMonth >= 4 && $currentMonth <= 6) {
+                    // Quý 2
+                    $quarterStartDate = now()->startOfMonth()->addMonths(3);
+                    $quarterEndDate = now()->startOfYear()->addMonths(5)->endOfMonth();
+                } elseif ($currentMonth >= 7 && $currentMonth <= 9) {
+                    // Quý 3
+                    $quarterStartDate = now()->startOfYear()->addMonths(6);
+                    $quarterEndDate = now()->startOfYear()->addMonths(8)->endOfMonth();
+                } else {
+                    // Quý 4
+                    $quarterStartDate = now()->startOfYear()->addMonths(9);
+                    $quarterEndDate = now()->endOfYear();
+                }
+                $startDate =new \MongoDB\BSON\UTCDateTime($quarterStartDate);
+                $endDate = new \MongoDB\BSON\UTCDateTime($quarterEndDate);
+                $idField = ['week' => ['$week' => '$updated_at']];
+            break;
+            case 'quarter-month':
+                $currentMonth = now()->month;
+                if ($currentMonth >= 1 && $currentMonth <= 3) {
+                    // Quý 1
+                    $quarterStartDate = now()->startOfYear();
+                    $quarterEndDate = now()->startOfYear()->addMonths(2)->endOfMonth();
+                } elseif ($currentMonth >= 4 && $currentMonth <= 6) {
+                    // Quý 2
+                    $quarterStartDate = now()->startOfMonth()->addMonths(3);
+                    $quarterEndDate = now()->startOfYear()->addMonths(5)->endOfMonth();
+                } elseif ($currentMonth >= 7 && $currentMonth <= 9) {
+                    // Quý 3
+                    $quarterStartDate = now()->startOfYear()->addMonths(6);
+                    $quarterEndDate = now()->startOfYear()->addMonths(8)->endOfMonth();
+                } else {
+                    // Quý 4
+                    $quarterStartDate = now()->startOfYear()->addMonths(9);
+                    $quarterEndDate = now()->endOfYear();
+                }
+                $startDate =new \MongoDB\BSON\UTCDateTime($quarterStartDate);
+                $endDate = new \MongoDB\BSON\UTCDateTime($quarterEndDate);
+                $idField = ['month' => ['$month' => '$updated_at']];
+            break;
+            case 'year-quarter':
+                $startDate = new \MongoDB\BSON\UTCDateTime(\now()->startOfYear());
+                $endDate = new \MongoDB\BSON\UTCDateTime(\now()->endOfYear());
+                $idField = ['quarter' => ['$quarter' => '$updated_at']];
+            break;
+            case 'year-month':
+                $startDate = new \MongoDB\BSON\UTCDateTime(\now()->startOfYear());
+                $endDate = new \MongoDB\BSON\UTCDateTime(\now()->endOfYear());
+                $idField = ['month' => ['$month' => '$updated_at']];
+            break;
+        }
+        $pipeline = [
+            [
+                '$match' => [
+                    'updated_at' => [
+                        '$gte' => $startDate,
+                        '$lte' => $endDate,
+                    ],
+                    'status' => 'completed',
+                ],
+            ],
+            [
+                '$group' => [
+                    '_id' => $idField,
+                    'totalAmount' => [
+                        '$sum' => '$total',
+                    ],
+                ],
+            ],
+            [
+                '$sort' => [
+                    '_id' => 1,
+                ],
+            ],
+        ];
+
+        $charts = Bill::raw(function ($collection) use ($pipeline) {
+            return $collection->aggregate($pipeline);
+        });
+
+        if($filter=='month-week' || $filter=='quarter-week'){
+            foreach ($charts as $chart) {
+                $chart->_id = 'Tuần '.$chart->_id->week;
+            }
+        }
+        else if($filter=='month-day'){
+            foreach ($charts as $chart) {
+                $chart->_id = 'Ngày '.$chart->_id[0]->_id;
+            }
+        }
+        else if($filter=='quarter-month' || $filter=='year-month'){
+            foreach ($charts as $chart) {
+                $chart->_id = 'Tháng '.$chart->_id->month;
+            }
+        }
+        return response()->json($charts, 200);
+    }
 }

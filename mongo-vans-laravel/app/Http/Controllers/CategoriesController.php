@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Category;
+use App\Models\Product;
 use DB;
 use App\Http\Requests\CategoryRequest;
 use Illuminate\Support\Facades\Auth;
@@ -95,8 +96,14 @@ class CategoriesController extends Controller
         if($role=="admin"){
             $category = Category::where("_id", (int)$id)->first();
             if($category){
-                $category->delete();
-                return response()->json(['status'=> 200, 'message'=>'Dữ liệu đã được xóa thành công'], 200);
+                $product = Product::where('category', (int)$id)->orWhere('subcategory', (int)$id)->first();
+                if($product){
+                    return response()->json(['status'=> 409, 'message'=>'Vẫn còn sản phẩm thuộc loại sản phẩm này, không thể xóa'], 409);
+                }
+                else{
+                    $category->delete();
+                    return response()->json(['status'=> 200, 'message'=>'Dữ liệu đã được xóa thành công'], 200);
+                }
             }
             else return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại'], 404);
         }

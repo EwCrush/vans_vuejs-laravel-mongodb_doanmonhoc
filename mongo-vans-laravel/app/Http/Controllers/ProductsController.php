@@ -4,6 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Bill;
+use App\Models\Comment;
+use App\Models\Notification;
 use DB;
 use Illuminate\Pagination\Paginator;
 use App\Http\Requests\SizeRequest;
@@ -50,6 +53,7 @@ class ProductsController extends Controller
                         'thumbnail' => 1,
                         'images' => 1,
                         'sizes' => 1,
+                        'status' => 1,
                         'category' => '$category.categoryname',
                         'subcategory' => '$subcategory.categoryname',
                     ]
@@ -111,6 +115,7 @@ class ProductsController extends Controller
                         'thumbnail' => 1,
                         'images' => 1,
                         'sizes' => 1,
+                        'status' => 1,
                         'category' => '$category.categoryname',
                         'subcategory' => '$subcategory.categoryname',
                     ]
@@ -403,6 +408,7 @@ class ProductsController extends Controller
                 "category" => $request["category_id"],
                 "subcategory" => $request["subcategory_id"],
                 "sizes" => [],
+                "status" => "public",
             ]);
             return response()->json(['status'=> 200, 'message'=>'Dữ liệu đã được thêm thành công'], 200);
 
@@ -454,11 +460,27 @@ class ProductsController extends Controller
         if($role=="admin"){
             $product = Product::where("_id", (int)$id)->first();
             if($product){
-                $img = $product->thumbnail;
-                $product->delete();
-                return response()->json(['status'=> 200,
-                                        'message'=>'Dữ liệu đã được xóa thành công',
-                                        'filename'=>$img], 200);
+                $cart = Bill::where('items', 'elemMatch', ['productid'=>(int)$id])->first();
+                if(!$cart){
+                    $img = $product->thumbnail;
+                    //xoa comments trong san pham
+                    $comments = Comment::where('product', (int)$id)->get();
+                    foreach ($comments as $comment) {
+                        //xoa thong bao lien quan den comment
+                        $notifies = Notification::where("comment", $comment->_id)->get();
+                        foreach ($notifies as $notify) {
+                            $notify->delete();
+                        }
+                        $comment->delete();
+                    }
+                    $product->delete();
+                    return response()->json(['status'=> 200,
+                                            'message'=>'Dữ liệu đã được xóa thành công',
+                                            'filename'=>$img], 200);
+                }
+                else{
+                    return response()->json(['status'=> 404, 'message'=>'Không thể xóa sản phẩm đã được bán đi, bạn có thể ẩn chúng nếu muốn ngừng bán'], 404);
+                }
             }
             else return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại'], 404);
         }
@@ -496,6 +518,7 @@ class ProductsController extends Controller
                         return $query->orderBy('sellingprice', 'DESC');
                 }
             })
+            ->where('status', 'public')
             ->paginate(12)->withQueryString();
         return response()->json($data);
     }
@@ -521,5 +544,23 @@ class ProductsController extends Controller
     public function searchByClassic(){
         $product = Product::where('category', 7)->orWhere('subcategory', 7)->limit(10)->get();
         return response()->json($product, 200);
+    }
+
+    public function editProductStatus($id, Request $request){
+        $role = $request->user()->role;
+        if($role=="admin"){
+            $product = Product::where("_id", (int)$id)->first();
+            if($product){
+                if($product->status=='public'){
+                    $product->update(['status' => 'private']);
+                }
+                else {
+                    $product->update(['status' => 'public']);
+                }
+                return response()->json(['status'=> 200, 'message'=>'Dữ liệu đã được cập nhật thành công'], 200);
+            }
+            else return response()->json(['status'=> 404, 'message'=>'Dữ liệu không tồn tại'], 404);
+        }
+        else return response()->json(['status'=> 404, 'message'=>'Bạn không có quyền này!'], 404);
     }
 }
