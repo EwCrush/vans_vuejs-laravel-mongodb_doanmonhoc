@@ -426,8 +426,8 @@ class ProductsController extends Controller
                 if($img_request){
                     $data->update([
                         "productname" => $request["productname"],
-                        "originalprice" => $request["originalprice"],
-                        "sellingprice" => $request["sellingprice"],
+                        "originalprice" => (int)$request["originalprice"],
+                        "sellingprice" => (int)$request["sellingprice"],
                         "category" => $request["category_id"],
                         "subcategory" => $request["subcategory_id"],
                         "thumbnail" => $img_request,
