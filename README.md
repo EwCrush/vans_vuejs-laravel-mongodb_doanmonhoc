@@ -18,7 +18,7 @@
 
 ## Khởi động ứng dụng ##
 - Laravel:
-  > php artisan serve
+  > `php artisan serve`
 - NodeJS:
   - Sử dụng npm:
     >`npm run dev`
