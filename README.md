@@ -18,12 +18,23 @@
 
 ## Khởi động ứng dụng ##
 - Laravel:
-  > `php artisan serve`
+  - Nếu port là 8000:
+    > `php artisan serve`
+  - Nếu port không phải 8000:
+    > `php artisan serve --port=8000`
 - NodeJS:
   - Sử dụng npm:
     >`npm run dev`
   - Sử dụng yarn:
     >`yarn dev`
+
+## Sử dụng ##
+- `Tailwind CSS`
+- `Laravel 9`
+- `VueJS 3`
+- `Ant Design Vue`
+- `MongoDB`
+- `Firebase`
 
 ## Chức năng ##
 - Đăng ký tài khoản
@@ -46,6 +57,7 @@
 - Chưa thể đăng nhập với ``Google``
 - Chưa tích hợp ``VNPay`` để thanh toán trực tuyến
 - Chưa **responsive** để trang web có khả năng thích nghi và hiển thị tốt trên các thiết bị
+- Xử lý hình ảnh với `firebase` ở `giao diện` thay vì ở `api`
    
 ## Kết quả ##
 >Xem hình ảnh kết quả ở file word mục kết quả
