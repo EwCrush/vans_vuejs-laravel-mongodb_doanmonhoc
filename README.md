@@ -58,6 +58,9 @@
 - Chưa tích hợp ``VNPay`` để thanh toán trực tuyến
 - Chưa **responsive** để trang web có khả năng thích nghi và hiển thị tốt trên các thiết bị
 - Xử lý hình ảnh với `firebase` ở `giao diện` thay vì ở `api`
+
+## Thời gian thực hiện ##
+> 31/8/2023 - 31/10/2023
    
 ## Kết quả ##
 >Xem hình ảnh kết quả ở file word mục kết quả
